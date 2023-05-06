@@ -1,4 +1,9 @@
 <template>
+  <v-app id="home">
+    <v-container fluid>
+
+    </v-container>
+  </v-app>
   <HelloWorld />
 </template>
 
