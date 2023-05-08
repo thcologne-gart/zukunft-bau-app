@@ -1,6 +1,6 @@
 <template>
     <v-footer
-      class="bg-indigo-lighten-1 text-center d-flex flex-column"
+      class="text-center d-flex flex-column" color="secondary-darken-1"
     >
       <div>
         <v-btn

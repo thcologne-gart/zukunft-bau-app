@@ -2,7 +2,7 @@
     <div>
         <v-app-bar
             id="top-header"
-            color="grey lighten-5"
+            color="primary"
             >
             
             <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
