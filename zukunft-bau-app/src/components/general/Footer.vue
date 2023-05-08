@@ -2,6 +2,10 @@
     <v-footer
       class="text-center d-flex flex-column" color="secondary-darken-1"
     >
+    <v-avatar size="100px" rounded="0">
+              <v-img src="@/assets/logo_TH.png">
+            </v-img>
+            </v-avatar>
       <div>
         <v-btn
           v-for="icon in icons"

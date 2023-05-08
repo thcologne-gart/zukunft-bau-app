@@ -31,7 +31,7 @@
                     <v-row my-2 py-2>
                         <v-col cols="4"></v-col>
                             <v-col cols="12">
-                                <v-list-item prepend-icon="mdi-home-plus-outline" title="Hinzufügen" value="meinehäuserköln"></v-list-item>
+                                <v-list-item prepend-icon="mdi-home-plus-outline" title="Hinzufügen" value="hinzufügen"></v-list-item>
                             </v-col>
                     </v-row>
                 </v-list>

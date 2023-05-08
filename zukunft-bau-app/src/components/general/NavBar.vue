@@ -5,13 +5,13 @@
             color="primary"
             >
             
-            <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-            <!-- <v-btn id="home-icon" icon @click="$router.push('/home')">
-                <v-icon >mdi-home</v-icon>
-            </v-btn> -->
+            <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
+            <!-- <v-btn id="home-icon" icon @click="$router.push('/home')"></v-btn> -->
+           
             <v-toolbar-title
                 id="navbar-title" 
-                >GART</v-toolbar-title>           
+                >
+                GART-Labor</v-toolbar-title>           
             <v-spacer></v-spacer>
             <div v-for="solution in solutions" :key="solution.title">
               <v-btn plain @click="() => {}" :to="solution.link">
@@ -36,7 +36,7 @@
                 </v-list>
             </v-menu> -->
             </v-app-bar>
-            <v-navigation-drawer
+            <!-- <v-navigation-drawer
               v-model="drawer"
               absolute
               temporary
@@ -51,16 +51,16 @@
                   active-class="deep-purple--text text--accent-4"
                 >
                 <div v-for="item in appBarItems" :key="item.title">
-                  <v-list-item :to="item.link">
+                  <v-list-item :to="item.link"> -->
                     <!-- <v-list-item-icon>
                       <v-icon>mdi-home</v-icon>
                     </v-list-item-icon> -->
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    <!-- <v-list-item-title>{{ item.title }}</v-list-item-title>
                   </v-list-item>
                 </div>
                 </v-list-item-group>
               </v-list>
-            </v-navigation-drawer>
+            </v-navigation-drawer> -->
     </div>
 </template>
 
