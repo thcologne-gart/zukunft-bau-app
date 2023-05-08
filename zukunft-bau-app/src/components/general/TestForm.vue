@@ -10,10 +10,10 @@
         </v-text-field>
         <v-text-field v-model="country" label="Land">
         </v-text-field>
-        <v-text-field v-model="sites" label="Standorte z.B. Köln, Hamburg, München">
+        <v-text-field v-model="sites" label="Standorte z.B. Köln-Deutz, Köln-Südstadt, Hamburg">
         </v-text-field>
     </v-form>   
-    <v-btn type="submit" block class="mt-2" @click="sm_companyinformation">Submit</v-btn>
+    <v-btn type="submit" color='primary-darken-1' block class="mt-2" @click="sm_companyinformation">Submit</v-btn>
     
   </template>
 
@@ -26,11 +26,11 @@ export default{
   setup() {
     const count=ref(0)
     const companyName=ref('')
-    const city=ref('köln')
+    const city=ref('')
     const street=ref('')
     const zipcode=ref('')
     const country=ref('')
-    const sites=ref(['Köln','Hamburg'])
+    const sites=ref(['Köln-Deutz','Hamburg'])
     let result={}
     const number_sites = computed(() => {return sites.value.length})
    

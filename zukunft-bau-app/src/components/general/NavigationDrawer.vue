@@ -17,7 +17,7 @@
                         <v-col cols="4" my-0 py-0></v-col>
                             <v-col cols="6" my-0 py-0> 
                                 <v-list-item 
-                                    prepend-icon="" title="Köln" value="meinehäuserköln">
+                                    prepend-icon="" title="Köln" value="meinehäuserköln" @click="$router.push('/koeln')">
                                 </v-list-item>
                             </v-col>
                     </v-row>
