@@ -1,6 +1,5 @@
 <template>
-  <v-app id="home">
-    <v-container>
+    <v-container >
       <v-row>
           <v-col cols="4" >
             <v-card color="primary-darken-1">
@@ -28,7 +27,7 @@
         </v-row>
 
     </v-container>
-  </v-app>
+
  
 </template>
 

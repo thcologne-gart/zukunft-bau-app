@@ -3,6 +3,7 @@
         <v-navigation-drawer
           expand-on-hover
           rail
+          permanent
         >
           <v-list>
             <v-list-item
@@ -44,7 +45,7 @@
         
         
         </v-navigation-drawer>
-        <v-main style="height: 250px"></v-main>
+        
     
   </template>
 
