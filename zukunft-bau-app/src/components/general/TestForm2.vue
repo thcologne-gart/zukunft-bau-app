@@ -37,7 +37,7 @@ export default{
                 buildingName=''
             }
         }
-        return{ handleSubmit,buildingName,baujahr, buildingStore }
+        return{ handleSubmit,buildingName,baujahr }
 
     }
 }

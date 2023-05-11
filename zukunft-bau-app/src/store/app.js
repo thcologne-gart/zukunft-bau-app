@@ -23,9 +23,9 @@ export const useBuildingStore = defineStore('building', {
       this.buildings.push(building)
     },
     deleteBuilding(id) {
-      this.buildings = this.buildings.filter(b => {return b.id !== id})
+      this.buildings=this.buildings.filter(b => {return b.id !== id})
     },
-    toggleFav(id){
+    toggleFav(id) {
       const building = this.buildings.find(b => b.id === id)
       building.isfav = !building.isfav
     }
