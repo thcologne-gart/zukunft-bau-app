@@ -1,11 +1,11 @@
 <template>
     <v-footer
-      class="text-center d-flex flex-column" color="secondary-darken-1"
+      class="text-center d-flex justify-space-between" color="secondary-darken-1"
     >
-    <v-avatar size="100px" rounded="0">
-              <v-img src="@/assets/logo_TH.png">
-            </v-img>
-            </v-avatar>
+    <div>   
+    </div>
+
+    <div>
       <div>
         <v-btn
           v-for="icon in icons"
@@ -15,17 +15,22 @@
           variant="text"
         ></v-btn>
       </div>
-  
       <div class="pt-0">
-       
       </div>
-  
       <v-divider></v-divider>
-  
       <div>
         {{ new Date().getFullYear() }} — <strong>TH Köln</strong>
         <p>Institut für Technische Gebäudeausrüstung</p>
       </div>
+    </div>
+      
+      <div >
+      <v-avatar size="150px" rounded="0">
+              <v-img src="@/assets/logo_TH.png">
+            </v-img>
+          </v-avatar>
+
+     </div>
     </v-footer>
   </template>
   
