@@ -16,7 +16,9 @@
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "aws-amplify": "5.2.1",
+    "@aws-amplify/ui-vue": "3.1.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
