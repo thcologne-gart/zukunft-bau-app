@@ -26,7 +26,7 @@
                         <v-col cols="4"></v-col>
                             <v-col cols="6">
                                 <v-list-item 
-                                    prepend-icon="" title="Hamburg" value="hamburg" @click="$router.push('/')">
+                                    prepend-icon="" title="hamburg" value="hamburg" @click="$router.push('/')">
                                 </v-list-item>
                             </v-col>
                     </v-row>
