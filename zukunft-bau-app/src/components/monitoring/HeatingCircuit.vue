@@ -20,7 +20,8 @@
         <v-divider></v-divider>
 
         <v-card-text>
-          I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+          Ich bin ein Heizkreis. Du siehst hier meine Vorlauf- und Rücklauftemperatur sowie die Außentemperatur. Den Sollwert meiner Vorlauftemperatur siehst du ebenfalls.
+          Auch wann die Pumpe on/off ist kannst du sehen. Dazu klicke einfach auf den Button "Anforderung Wärme?"
         </v-card-text>
       </div>
     </v-expand-transition>
@@ -40,12 +41,17 @@ import {
 } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import { ref } from 'vue';
+import { useMonitoringStore } from '@/store/monitoring';
+
 ChartJS.register(CategoryScale,LinearScale,PointElement,
   LineElement,Title,Tooltip,Legend)
 
 export default{
     components: {Line},
     setup () { 
+        const DataStore=useMonitoringStore()
+        DataStore.getData()
+        
         const show=ref(false)
         const loaded=true
         const data = {
@@ -62,7 +68,7 @@ export default{
         //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
         //buildingStore.getBuildings()
         //const filter = ref('all')
-        return { show, data, loaded  }
+        return { show, data, loaded, DataStore}
     }
 }
 </script>
