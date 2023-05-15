@@ -3,10 +3,8 @@ import { defineStore } from 'pinia'
 
 export const useBuildingStore = defineStore('building', {
   state: () => ({
-    buildings: [
-      {id:1, buildingname:"Halle West",year:"1983", isfav:true},
-      {id:2, buildingname:"IWZ",year:"1970", isfav:false}
-    ],
+    buildings: [],
+    loading:false
   }),
   getters: { 
     favs(){
@@ -19,6 +17,15 @@ export const useBuildingStore = defineStore('building', {
     totalCount:(state) => { return state.buildings.length}   
   },
   actions: {
+    async getBuildings (){
+      this.loading=true
+      const res=await fetch ('http://localhost:3000/buildings')
+      const data=await res.json()
+      this.buildings=data
+      this.loading=false
+
+    },
+
     addBuilding(building) {
       this.buildings.push(building)
     },

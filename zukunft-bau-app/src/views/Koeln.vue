@@ -17,6 +17,7 @@
           <BuildingDetails :building ="building"/>
         </div>
     </div>
+    <div class="loading" v-if="buildingStore.loading">Loading tasks...</div>
 
 </template>
 
@@ -30,6 +31,7 @@ export default{
     components:{ BuildingDetails, TestForm2},
     setup () {
         const buildingStore= useBuildingStore()
+        buildingStore.getBuildings()
         const filter = ref('all')
         return { buildingStore, filter }
     }
