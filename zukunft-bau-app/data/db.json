@@ -1,4 +1,14 @@
-
 {
-"backend": "Hier kommt das backend rein, also was Björn/Basics an JSON-Objekten bereitstellt"
+  "organization": [
+    {
+      "organizationInformation": {
+        "organizationName": "TH Köln",
+        "country": "Deutschland",
+        "city": "Köln",
+        "zipcode": 50674,
+        "street": "Moltkestraße 97"
+      },
+      "id": 1
+    }
+  ]
 }
