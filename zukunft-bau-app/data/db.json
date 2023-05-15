@@ -7,10 +7,10 @@
       "isfav": true
     },
     {
-      "id": 2
-    },
-    {
-      "id": 3
+      "id": 2,
+      "buildingname": "trier",
+      "year": "1983",
+      "isfav": false
     }
   ]
 }

@@ -9,16 +9,18 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@aws-amplify/ui-vue": "3.1.15",
     "@mdi/font": "7.0.96",
+    "aws-amplify": "5.2.1",
+    "chart.js": "^4.3.0",
     "core-js": "^3.29.0",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0",
-    "aws-amplify": "5.2.1",
-    "@aws-amplify/ui-vue": "3.1.15"
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

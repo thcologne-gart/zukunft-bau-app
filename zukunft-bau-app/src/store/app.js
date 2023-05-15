@@ -33,7 +33,7 @@ export const useBuildingStore = defineStore('building', {
       const res=await fetch ('http://localhost:3000/buildings/',{
         method: 'POST', 
         body: JSON.stringify(building),
-        //header:{'Content-Type':'application/json'}
+        header:{'Content-Type':'application/json'}
       })
       console.log(res.body, this.buildings)
       if (res.error){
@@ -56,6 +56,7 @@ export const useBuildingStore = defineStore('building', {
     async toggleFav(id) {
       const building = this.buildings.find(b => b.id === id)
       building.isfav = !building.isfav
+      console.log(building.isfav)
 
       const res=await fetch ('http://localhost:3000/buildings/'+ id,{
         method: 'PATCH',

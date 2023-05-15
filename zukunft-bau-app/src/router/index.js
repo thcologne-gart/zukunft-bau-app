@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Register from '../views/Register.vue'
 import Koeln from '../views/Koeln.vue'
 import DigitalTwins from '../views/digitaltwins/general.vue'
+import Monitoring from '../views/monitoring/general.vue'
 import DigitalTwins_Site from '../views/digitaltwins/site/general.vue'
 import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/general.vue'
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/digitaltwins/:siteid/:buildingid',
     name: 'DigitalTwins_Site_Building',
     component: DigitalTwins_Site_Building,
+  },
+  {
+    path: '/monitoring',
+    name: 'Monitoring',
+    component: Monitoring,
   },
 ]
 
