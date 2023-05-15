@@ -1,6 +1,6 @@
 <template>
     <v-form fast-fail @submit.prevent>
-        <v-text-field v-model="buildingName" label="Bezeichnung des Gebäudes">
+        <v-text-field v-model="newBuilding" label="Bezeichnung des Gebäudes">
         </v-text-field>
         <!-- <v-text-field v-model="street" label="Straße und Hausnummer">
         </v-text-field>
@@ -24,20 +24,24 @@ import {ref} from 'vue';
 export default{
     setup(){
         const buildingStore=useBuildingStore()
-        const buildingName=ref('')
+        const newBuilding=ref('')
         const baujahr=ref('')
         const handleSubmit=() => {
-            if (buildingName.value.length>0){
+            console.log(newBuilding.value)
+            if (newBuilding.value.length>0){
+                console.log(newBuilding.value, baujahr.value)
                 buildingStore.addBuilding({
-                    buildingname: buildingName.value,
-                    year: baujahr.value,
                     id: Math.floor(Math.random()*10000),
+                    buildingname: newBuilding.value,
+                    year: baujahr.value,
                     isfav: false
                 })
-                buildingName=''
+                newBuilding.value=''
+                baujahr.value=''
+                
             }
         }
-        return{ handleSubmit,buildingName,baujahr }
+        return{ handleSubmit,newBuilding,baujahr }
 
     }
 }
