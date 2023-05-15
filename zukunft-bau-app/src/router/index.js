@@ -1,8 +1,7 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Register from '../views/Register.vue'
-import Koeln from '../views/Koeln.vue'
+
 
 const routes = [
   {
@@ -10,17 +9,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-  },
-  {
-    path: '/koeln',
-    name: 'Koeln',
-    component: Koeln,
-  },
+  }
 ]
 
 const router = createRouter({

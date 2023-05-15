@@ -1,6 +1,4 @@
-{ 
-    "buildings": [
-    {"id":1, "buildingname":"Halle West","year":"1983", "isfav":true},
-    {"id":2, "buildingname":"IWZ","year":"1970", "isfav":false}
-  ]
+
+{
+"backend": "Hier kommt das backend rein, also was Björn/Basics an JSON-Objekten bereitstellt"
 }
