@@ -2,12 +2,26 @@
   "organization": [
     {
       "organizationInformation": {
-        "organizationName": "TH Köln",
+        "organizationName": "TH Köl",
         "country": "Deutschland",
         "city": "Köln",
         "zipcode": 50674,
         "street": "Moltkestraße 97"
       },
+      "sites": [
+        {
+          "siteInformation": {
+            "siteName": "Campus Deutz",
+            "country": "Deutschland",
+            "city": "Köln",
+            "street": "Betzdorfer Straße",
+            "streetNumber": "",
+            "lat": 50.9362534,
+            "lng": 6.989219299999999,
+            "zipcode": "50679"
+          }
+        }
+      ],
       "id": 1
     }
   ]

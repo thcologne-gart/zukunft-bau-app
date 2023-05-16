@@ -1,7 +1,5 @@
 <template>
-    <v-card
-    id="cardOrganizationForm" class="mx-auto my-6" max-width="75%"
-    >
+    <v-container :style="{ width: '80%' }">
         <v-table class="grey lighten-3">
             <thead>
                 <tr>
@@ -21,7 +19,7 @@
             </tbody>
         </v-table>
         <EditOrganizationInformation :orgaInformation="generalStore.loadedOrganizationInformation[0]"/>
-    </v-card>
+    </v-container>
 </template>
 
 <script>

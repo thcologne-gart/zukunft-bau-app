@@ -1,30 +1,31 @@
 <template>
     <div>
-        <v-card-actions>
-            <v-btn
-                color="#5D3FD3"
-                text
-                @click="show = !show"
-            >
-                {{ site[1].value }}
-            </v-btn>
+        <v-container class="no-padding" :style="{ width: '90%' }">
+            <v-card-actions>
+                <v-btn
+                    color="success"
+                    text
+                    @click="show = !show"
+                >
+                    {{ site.siteName }}
+                </v-btn>
 
-            <v-spacer></v-spacer>
-
-            <v-btn
-                icon
-                @click="show = !show"
-            >
-                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-        </v-card-actions>
-
-        <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-                <InformationFromSites :site="site"/>
-            </div>
-        </v-expand-transition>
+                <v-spacer></v-spacer>
+                <!--
+                <v-btn
+                    icon
+                    @click="show = !show"
+                >
+                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                </v-btn>
+            -->
+            </v-card-actions>
+            <v-expand-transition>
+                <div v-show="show">
+                    <InformationFromSites :site="site"/>
+                </div>
+            </v-expand-transition>
+        </v-container>
     </div>
 </template>
 
@@ -43,3 +44,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.no-padding {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+</style>
+

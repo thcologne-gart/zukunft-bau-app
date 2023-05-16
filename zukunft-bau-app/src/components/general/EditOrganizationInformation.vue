@@ -5,14 +5,15 @@
         width="60%">
         <template v-slot:activator="{ props }">
             <!--<v-btn class="ma-3" @click="getData()">Get Data</v-btn>-->
-            <v-btn
+            <v-container class="d-flex justify-center align-center">
+              <v-btn
                 class="ma-1"
-                size="small"
                 v-bind="props"
                 variant="outlined"
                 color = "success"
             >Edit information</v-btn>
-              </template>
+            </v-container>
+          </template>
               <v-card>
                 <v-toolbar
                 color="success"

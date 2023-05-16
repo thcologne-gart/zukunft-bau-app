@@ -1,46 +1,57 @@
 <template>
-      <div v-if="generalStore.loadedSiteInformation.length != 0">
-          <div v-for="site in sites" :key="site[2].value">
-              <ShowSiteInformation :site="site" />
-          </div>
+  <div>
+    <div v-for="site in generalStore.loadedSiteInformation" :key="site">
+      <ShowSiteInformation :site="site"/>
+    </div>
+    <v-divider :thickness="3"></v-divider>
+    <v-container :style="{ width: '90%' }">
+      <v-card-actions>
+        <v-btn
+            color="success"
+            text
+            @click="show = !show"
+        >
+            Hinzufügen Liegenschaft
+        </v-btn>
+
+        <v-spacer></v-spacer>
+    </v-card-actions>
+    <v-expand-transition>
+      <div v-show="show">
+        <v-text-field 
+          v-model='siteName'
+          label="Name der Liegenschaft"
+          required
+        ></v-text-field>
+        <v-text-field 
+            id="map"
+            v-model='currentPlace'
+            label="Standort der Liegenschaft"
+            required
+          ></v-text-field>
+        <vue-google-autocomplete class="autocomplete-container" id="map" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
+        <v-btn class="max-3" type="reset" variant="outlined" color="success" 
+          @click= "currentPlace = '';
+          generalStore.addSiteInformation(
+            country,
+            city,
+            street,
+            streetNumber,
+            lat,
+            lng,
+            zipCode,
+            siteName
+          );
+          siteName = ''">Submit</v-btn>
       </div>
-      <v-dialog 
-        v-model="dialog"
-        width="60%">
-          <template v-slot:activator="{ props }">
-              <v-btn class="mx-auto my-6" v-bind="props" color="success" variant="outlined">
-                  <v-icon>
-                      mdi-plus
-                  </v-icon>
-              </v-btn>
-          </template>
-            <v-card>
-              <v-toolbar
-                color="success"
-                >
-                <v-toolbar-title style="color: white;">Standort hinzufügen</v-toolbar-title>
-              </v-toolbar>
-                <v-container>
-                    <v-form>
-                        <GMapAutocomplete class="introInput" @place_changed='setPlace'>
-                            <v-text-field 
-                            label="Standort der Liegenschaft"
-                            placeholder = ''
-                            ref="input">
-                            </v-text-field>
-                        </GMapAutocomplete>
-                    </v-form>
-                </v-container>
-                <v-card-actions class="justify-end">
-                  <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onCreateSiteAas()">Submit</v-btn>
-                  <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onReset()">Reset</v-btn>
-                </v-card-actions>
-            </v-card>
-      </v-dialog>
+    </v-expand-transition>
+    </v-container>
+  </div>
 </template>
 
 <script>
 import ShowSiteInformation from '@/components/general/ShowSiteInformation.vue'
+import VueGoogleAutocomplete from "vue-google-autocomplete";
 //import { GMapAutocomplete } from 'vue3-google-maps'
 
 import { useGeneralStore } from "@/store/general"
@@ -48,77 +59,59 @@ import { useGeneralStore } from "@/store/general"
 export default {
   data () {
     return {
+      show: false,
+      siteName: '',
       dialog: false,
-      currentPlace: null,
+      currentPlace: '',
       country: '',
       city: '',
       street: '',
       streetNumber: '',
       lat: '',
       lng: '',
+      zipCode: '',
       countries: ['Deutschland', 'Österreich', 'Schweiz', 'Frankreich', 'Italien', 'England']
     }
   },
-  components: { ShowSiteInformation },
+  components: { ShowSiteInformation, VueGoogleAutocomplete },
   computed: {
     generalStore () {
       return useGeneralStore()
     },
-    /*
-    organization () {
-      // console.log(this.$store.getters.loadedOrganizationInformation)
-      return this.$store.getters.loadedOrganizationInformation
-    },
-    sites () {
-      // console.log(this.$store.getters.loadedSiteInformation)
-      return this.$store.getters.loadedSiteInformation
-    },
-    numberOfSites () {
-      // let loadInfos = 0
-      const loadInfos = this.$store.getters.loadedSiteInformation
-      let numberS
-      if (loadInfos === null) {
-        numberS = 1
-      } else {
-        numberS = loadInfos.length + 1
-      }
-      console.log(numberS)
-      let numberSites
-      for (const item in loadInfos) {
-        if (loadInfos[item].idShort === 'NumberOfSites') {
-          numberSites = loadInfos[item].value
-          // console.log(numberSites)
-        }
-      }
-      const numberOfSites = [0]
-      let i
-      for (i = 1; i < numberSites; i++) {
-        numberOfSites.push(i)
-      }
-      // console.log(numberOfSites)
-      return numberS
-    }
-    */
   },
   methods: {
+    /*
+    onPlaceChanged(place) {
+      console.log('Selected place:', place);
+      // Handle the selected place data as needed
+    },
+    */
     setPlace (place) {
-      console.log(place.address_components)
-      this.currentPlace = place
-      const location = place.address_components
-      for (const element in location) {
-        if (location[element].types[0] === 'country') {
-          this.country = location[element].long_name
-        } else if (location[element].types[0] === 'locality') {
-          this.city = location[element].long_name
-        } else if (location[element].types[0] === 'street_number') {
-          this.streetNumber = location[element].long_name
-        } else if (location[element].types[0] === 'route') {
-          this.street = location[element].long_name
+      this.currentPlace = place['route'] + ', ' + place['locality'] + ', '  + place['country']
+      // console.log(place)
+      // this.currentPlace = place
+      // const location = place
+      for (let key in place) {
+        console.log(key, place[key])
+        if (key === 'country') {
+          this.country = place[key]
+        } else if (key === 'locality') {
+          this.city = place[key]
+        } else if (key === 'street_number') {
+          this.streetNumber = place[key]
+        } else if (key === 'route') {
+          this.street = place[key]
+        } else if (key === 'latitude') {
+          this.lat = place[key]
+        } else if (key === 'longitude') {
+          this.lng = place[key]
+        } else if (key === 'postal_code') {
+          this.zipCode = place[key]
         }
       }
-      this.lat = this.currentPlace.geometry.location.lat()
-      this.lng = this.currentPlace.geometry.location.lng()
-      console.log(this.country, this.city, this.street, this.streetNumber)
+      // this.lat = this.currentPlace.geometry.location.lat()
+      // this.lng = this.currentPlace.geometry.location.lng()
+      // console.log(this.country, this.city, this.street, this.streetNumber, this.zipCode, this.lat, this.lng)
     },
     /*
     addMarker () {
@@ -489,5 +482,26 @@ export default {
     font-size: 18px;
     padding-top: 5px;
     padding-bottom: 5px
+}
+.autocomplete-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 300px; /* Set the desired width */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.autocomplete-container {
+  width: 0%;
+  height: 0%;
+  border-style: none;
+}
+#addSiteTitle {
+  color: #bc3384;
+  font-weight: 300;
+  margin-top: 8px;
+  margin-bottom: 12px;
 }
 </style>

@@ -12,11 +12,20 @@ import { createApp } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins';
+import  { Loader } from '@googlemaps/js-api-loader'
 // import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 const app = createApp(App)
 
 registerPlugins(app)
+const loader = new Loader({ 
+    apiKey: 'AIzaSyDrSZaSw1y8mnFuNa_ZYHTd-0kFxd4eCnQ',
+    version: "weekly",
+    libraries: ["places"]})  
+
+loader.load().then(() => {
+    app.mount('#app')
+})
 /*
 app.use(VueGoogleMaps, {
     load: {
@@ -26,4 +35,4 @@ app.use(VueGoogleMaps, {
 })
 */
 
-app.mount('#app')
+// app.mount('#app')
