@@ -61,7 +61,6 @@ export default {
     return {
       show: false,
       siteName: '',
-      dialog: false,
       currentPlace: '',
       country: '',
       city: '',
@@ -70,7 +69,6 @@ export default {
       lat: '',
       lng: '',
       zipCode: '',
-      countries: ['Deutschland', 'Österreich', 'Schweiz', 'Frankreich', 'Italien', 'England']
     }
   },
   components: { ShowSiteInformation, VueGoogleAutocomplete },

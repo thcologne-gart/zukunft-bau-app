@@ -1,23 +1,12 @@
 <template>
-  <v-row>
-    <v-col md = "4">
-        <v-card color="grey lighten-3" class="mx-auto my-6" max-width="90%" min-height="200px">
-        </v-card>
-    </v-col>
-    <v-col md = "8">
-        <v-card id ="cardSiteForm" color="grey lighten-3" max-width="90%" class="mx-auto my-6" min-height="200px">
-            <div v-if="numberOfSites >= 1">
-                <div v-for="site in sites" :key="site[2].value">
-                    <AddBuildingAndShowInformation :site="site" />
-                </div>
-            </div>
-        </v-card>
-    </v-col>
-  </v-row>
+  <div v-for="site in generalStore.loadedSiteInformation" :key="site">
+      <SiteBuildings :site="site" />
+  </div>
 </template>
 
 <script>
-import AddBuildingAndShowInformation from '@/components/general/AddBuildingAndShowInformation.vue'
+import SiteBuildings from '@/components/general/SiteBuildings.vue'
+import { useGeneralStore } from "@/store/general"
 
 export default {
   data () {
@@ -32,7 +21,7 @@ export default {
       countries: ['Deutschland', 'Österreich', 'Schweiz', 'Frankreich', 'Italien', 'England']
     }
   },
-  components: { AddBuildingAndShowInformation },
+  components: { SiteBuildings },
   // props: {
   // site: Number
   // },
@@ -40,6 +29,9 @@ export default {
   // this.showForm()
   // },
   computed: {
+    generalStore () {
+      return useGeneralStore()
+    },
     organization () {
       // console.log(this.$store.getters.loadedOrganizationInformation)
       return this.$store.getters.loadedOrganizationInformation

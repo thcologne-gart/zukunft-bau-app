@@ -2,7 +2,7 @@
   "organization": [
     {
       "organizationInformation": {
-        "organizationName": "TH Köl",
+        "organizationName": "TH Köln",
         "country": "Deutschland",
         "city": "Köln",
         "zipcode": 50674,
@@ -19,7 +19,20 @@
             "lat": 50.9362534,
             "lng": 6.989219299999999,
             "zipcode": "50679"
-          }
+          },
+          "buildings": [
+            {
+              "buildingInformation": {
+                "buildingName": "IWZ",
+                "country": "Deutschland",
+                "city": "Köln",
+                "street": "Betzdorfer Straße",
+                "streetNumber": "2",
+                "lat": 50.93410009999999,
+                "lng": 6.989022500000001
+              }
+            }
+          ]
         }
       ],
       "id": 1

@@ -1,5 +1,23 @@
 <template>
     <div>
+      <v-container class="no-padding" :style="{ width: '90%' }">
+        <v-card-actions>
+            <v-btn
+                color="success"
+                text
+                @click="show = !show;
+                generalStore.getBuildingsFromSite(site)"
+            >
+                {{ site.siteName }}
+            </v-btn>
+        </v-card-actions>
+        <v-expand-transition>
+            <div v-show="show">
+              <InformationFromBuildings :site="site" :buildings="generalStore.loadedSiteBuildingInformation"/>
+              </div>
+        </v-expand-transition>
+    </v-container>
+    <!--
         <v-card-title id="building-register-card-title">{{ site[1].value }}</v-card-title>
         <div v-for="building in buildings" :key="building[6].value">
             <div v-if="building[7].value == site[7].value">
@@ -38,14 +56,13 @@
                               </v-text-field>
                             </template>
                           </GmapAutocomplete>
-                          <!--
+    
                             <v-text-field
                             id="street"
                             v-model="form.street"
                             label="Straße und Hausnummer"
                             required
                             ></v-text-field>
-                          -->
                         </v-form>
                     </v-container>
                     <v-card-actions class="justify-end">
@@ -56,74 +73,14 @@
             </template>
         </v-dialog>
         <v-divider></v-divider>
-        <!-- <v-card-actions>
-            <v-btn
-                color="#5D3FD3"
-                text
-                @click="show = !show"
-            >
-                {{ site[1].value }}
-            </v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn
-                icon
-                @click="show = !show"
-            >
-                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-        </v-card-actions>
-
-        <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-                <InformationFromBuildings :site="site"/>
-                <v-dialog transition="dialog-bottom-transition" max-width="600">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="mx-auto my-6" v-bind="attrs" v-on="on" color="outline-secondary" id= "buttons-card">
-                            <v-icon>
-                                mdi-plus
-                            </v-icon>
-                        </v-btn>
-                    </template>
-                    <template v-slot:default="dialog">
-                        <v-card>
-                            <v-toolbar
-                            color="#5D3FD3"
-                            dark
-                            >Gebäude hinzufügen</v-toolbar>
-                            <v-container>
-                                <v-form>
-                                    <v-text-field
-                                    id="designation"
-                                    v-model="form.designation"
-                                    label="Bezeichnung des Gebäudes"
-                                    required
-                                    ></v-text-field>
-                                    <v-text-field
-                                    id="street"
-                                    v-model="form.street"
-                                    label="Straße und Hausnummer"
-                                    required
-                                    ></v-text-field>
-                                </v-form>
-                            </v-container>
-                            <v-card-actions class="justify-end">
-                            <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onCreateBuildingAas()">Submit</v-btn>
-                            <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onReset()">Reset</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </template>
-                </v-dialog>
-            </div>
-        </v-expand-transition> -->
+        -->
     </div>
 </template>
 
 <script>
 import InformationFromBuildings from '@/components/general/InformationFromBuildings.vue'
 
+import { useGeneralStore } from "@/store/general"
 export default {
   data: () => ({
     show: false,
@@ -144,6 +101,9 @@ export default {
     InformationFromBuildings
   },
   computed: {
+    generalStore () {
+      return useGeneralStore()
+    },
     buildings () {
       // console.log(this.building)
       console.log(this.$store.getters.loadedBuildingInformation)
