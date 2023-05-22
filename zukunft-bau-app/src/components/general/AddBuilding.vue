@@ -19,12 +19,12 @@
             required
             ></v-text-field>
             <v-text-field 
-                :id="'map-' + site.siteName"
+                :id="'map-' + Object.keys(site)[0]"
                 v-model='currentPlace'
                 label="Standort des Gebäudes"
                 required
             ></v-text-field>
-            <vue-google-autocomplete class="autocomplete-container" :id="'map-' + site.siteName" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
+            <vue-google-autocomplete class="autocomplete-container" :id="'map-' + Object.keys(site)[0]" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
             <v-container class="d-flex justify-center align-center">
               <v-btn class="mt-0" variant="outlined" color="success" 
                 @click= "currentPlace = '';
