@@ -25,7 +25,11 @@ export default{
 setup(){
     const generalStore=useGeneralStore()
     const {loadedSiteInformation}=storeToRefs(generalStore)
-    const siteName=loadedSiteInformation
+    const siteName => {
+      const key = Object.keys(this.site)
+      const siteName = key[0]
+      return siteName
+    },
     
     const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"}]
     return{sites, loadedSiteInformation, siteName}}
