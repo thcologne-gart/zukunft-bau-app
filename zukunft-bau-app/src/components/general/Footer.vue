@@ -1,6 +1,6 @@
 <template>
     <v-footer
-      class="text-center d-flex justify-space-between" color="secondary-darken-1"
+      class="text-center d-flex justify-space-between flex-column flex-shrink-0" color="secondary-darken-1"
     >
     <div>   
     </div>

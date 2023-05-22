@@ -3,7 +3,7 @@
     <NavBar />
     <NavigationDrawer />
     <v-main>
-      <router-view />
+      <router-view/>
       <Footer />
     </v-main>
     
@@ -33,5 +33,8 @@ onMounted(() => {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+
 </style>
 
