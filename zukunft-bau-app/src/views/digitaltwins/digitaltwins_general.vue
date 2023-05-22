@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--
         <h1>Digital Twins - General</h1>
         <p> Wähle einen Standort aus, den du sehen möchtest</p>
         <div v-for="site in sites" :key="site.id" >
@@ -7,20 +8,15 @@
             <h2>{{ site.name }}</h2>
         </router-link>  
         </div>
-        <v-card class="mx-auto my-16"
-        max-width="85%">
-            <v-toolbar
-                color="white"
-                >
-                <v-toolbar-title style="color: #bc3384">
-                    <span>Digital Twins - Übersicht</span>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-divider :thickness="4"></v-divider>
-            <div v-for="site in generalStore.loadedSiteInformation" :key="site.siteName">
-                <DigitalTwinOverview :site="site"/>
-            </div>
-        </v-card>
+    -->
+        <v-container>
+            <h2 style="color: #bc3384;">Digital Twins - Übersicht</h2>
+            <v-row>
+                <v-col cols="6" v-for="site in generalStore.loadedSiteInformation" :key="site.siteName">
+                    <DigitalTwinOverview :site="site"/>
+                </v-col>
+            </v-row>
+        </v-container>
     </div>
 </template> 
 

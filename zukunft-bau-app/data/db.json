@@ -69,6 +69,19 @@
               }
             }
           ]
+        },
+        {
+          "siteInformation": {
+            "siteName": "Campus Leverkusen",
+            "country": "Deutschland",
+            "city": "Leverkusen",
+            "street": "Bahnhofstraße",
+            "streetNumber": "",
+            "lat": 51.0666228,
+            "lng": 7.0053638,
+            "zipcode": "51379"
+          },
+          "buildings": []
         }
       ],
       "id": 1
