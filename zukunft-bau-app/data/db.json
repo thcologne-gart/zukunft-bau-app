@@ -24,12 +24,23 @@
             {
               "buildingInformation": {
                 "buildingName": "IWZ",
-                "country": "",
-                "city": "",
-                "street": "",
+                "country": "Deutschland",
+                "city": "Köln",
+                "street": "Betzdorfer Straße",
                 "streetNumber": "",
-                "lat": "",
-                "lng": ""
+                "lat": 50.9362534,
+                "lng": 6.989219299999999
+              }
+            },
+            {
+              "buildingInformation": {
+                "buildingName": "HAlle West",
+                "country": "Deutschland",
+                "city": "Köln",
+                "street": "Betzdorfer Straße",
+                "streetNumber": "",
+                "lat": 50.9362534,
+                "lng": 6.989219299999999
               }
             }
           ]
@@ -45,7 +56,19 @@
             "lng": 6.9742203,
             "zipcode": "50968"
           },
-          "buildings": []
+          "buildings": [
+            {
+              "buildingInformation": {
+                "buildingName": "Verwaltung",
+                "country": "Deutschland",
+                "city": "Köln",
+                "street": "Gustav-Heinemann-Ufer",
+                "streetNumber": "",
+                "lat": 50.9107992,
+                "lng": 6.9742203
+              }
+            }
+          ]
         }
       ],
       "id": 1

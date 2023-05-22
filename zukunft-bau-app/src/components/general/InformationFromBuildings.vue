@@ -32,7 +32,7 @@ export default {
           // console.log(site[building])
             let buildingInformationDict = {}
             let buildingInformation = site[building]['buildingInformation']
-            // console.log(buildingInformation)
+            console.log(buildingInformation)
             for (const element in buildingInformation) {
                 if (element === 'country') {
                     buildingInformationDict['Land'] = buildingInformation[element]
