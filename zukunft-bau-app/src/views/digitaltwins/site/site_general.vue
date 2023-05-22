@@ -14,6 +14,7 @@ export default{
     setup(){
         const route = useRoute()
         const site= route.params.siteid
+        // in deinem store aktuelle site suchen und gebäude etc daraus entnehmen:
         const buildings_hamburg=[ {name:"Hotel",id:"1"},{name:"Schule",id:"2"} ]
         const buildings_köln=[ {name:"Halle West",id:"1"},{name:"IWZ",id:"2"} ]
     return{buildings_hamburg, buildings_köln, site}}

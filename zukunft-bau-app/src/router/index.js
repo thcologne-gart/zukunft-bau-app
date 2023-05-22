@@ -1,30 +1,36 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home/home_general.vue'
+import Home_Site from '../views/home/site/site_general.vue'
+import Home_Site_Building from '../views/home/site/building/building_general.vue'
 import RegisterInfos from '../views/RegisterInfos.vue'
-//import Koeln from '../views/Koeln.vue'
-import DigitalTwins from '../views/digitaltwins/general.vue'
-import Monitoring from '../views/monitoring/general.vue'
-import DigitalTwins_Site from '../views/digitaltwins/site/general.vue'
-import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/general.vue'
+import DigitalTwins from '../views/digitaltwins/digitaltwins_general.vue'
+import Monitoring from '../views/monitoring/monitoring_general.vue'
+import DigitalTwins_Site from '../views/digitaltwins/site/site_general.vue'
+import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/building_general.vue'
 
 const routes = [
   {
-    
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/:siteid',
+    name: 'Home_Site',
+    component: Home_Site,
+  },
+  {
+    path: '/:siteid/:buildingid',
+    name: 'Home_Site_Building',
+    component: Home_Site_Building,
   },
   {
     path: '/register',
     name: 'Register',
     component: RegisterInfos,
   },
-  // {
-  //   path: '/koeln',
-  //   name: 'Koeln',
-  //   component: Koeln,
-  // },
+
   {
     path: '/digitaltwins',
     name: 'DigitalTwins',
