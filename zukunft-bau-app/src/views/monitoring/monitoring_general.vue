@@ -17,9 +17,14 @@
 
 <script>
 import { useGeneralStore } from "@/store/general"
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 export default{
 setup(){
-        const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"}]
+    const generalStore=useGeneralStore()
+    const {loadedSiteInformation}=storeToRefs(generalStore)
+    
+    const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"}]
     return{sites}}
 }
 </script>
@@ -27,3 +32,15 @@ setup(){
 <style>
 @import '../../styles/styles-zukunft-bau.css'
 </style>
+
+
+export default{
+    components:{ BuildingDetails, TestForm2},
+    setup () {
+        const buildingStore= useBuildingStore()
+        const {totalCount,favCount,loading}=storeToRefs(buildingStore)
+        buildingStore.getBuildings()
+        const filter = ref('all')
+        return { buildingStore, filter, totalCount,favCount,loading  }
+    }
+}
