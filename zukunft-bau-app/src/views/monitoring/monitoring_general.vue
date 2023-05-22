@@ -2,11 +2,11 @@
     <v-container fill-height class="mb-3 mx-2" id="maincontents">
         <v-row no-gutters class="flex-nowrap">Monitoring... Welche Gebäude möchtest du sehen?</v-row>
         <v-row>{{ loadedSiteInformation }}</v-row>
-        <v-row>{{ siteName }}</v-row>
+        <v-btn @click="siteName">siteName</v-btn>
         <v-row no-gutters class="flex-nowrap">
-            <v-col class="flex-column mx-2" v-for="site in sites" :key="site.id" >
-                <v-btn class='mt-2' @click="$router.push({name:'Monitoring_Site', params:{siteid:site.name}})">
-                    <h2> Standort  {{ site.name }}</h2>
+            <v-col class="flex-column mx-2" v-for="site,key in loadedSiteInformation" :key="key" >
+                <v-btn class='mt-2' @click="$router.push({name:'Monitoring_Site', params:{siteid:site.siteName}})">
+                    <h2> In {{ Object.values(site)[2] }} Standort {{ Object.values(site)[0] }}</h2>
                 </v-btn>
             </v-col>
         </v-row>
@@ -22,17 +22,12 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
 export default{
-setup(){
-    const generalStore=useGeneralStore()
-    const {loadedSiteInformation}=storeToRefs(generalStore)
-    const siteName => {
-      const key = Object.keys(this.site)
-      const siteName = key[0]
-      return siteName
-    },
-    
-    const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"}]
-    return{sites, loadedSiteInformation, siteName}}
+    setup(){
+        const generalStore=useGeneralStore()
+        const {loadedSiteInformation}=storeToRefs(generalStore)
+
+        return{loadedSiteInformation}},
+   
 }
 </script>
 
