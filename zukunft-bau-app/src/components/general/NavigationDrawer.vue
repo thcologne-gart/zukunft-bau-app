@@ -16,9 +16,11 @@
                     <v-row my-0 py-0>
                         <v-col cols="4" my-0 py-0></v-col>
                             <v-col cols="6" my-0 py-0> 
-                                <!-- <v-list-item 
-                                    prepend-icon="" title="Köln" value="meinehäuserköln" @click="$router.push('/koeln')">
-                                </v-list-item> -->
+                                
+                                 
+                                <v-list-item 
+                                    prepend-icon="" title="Köln" value="meinehäuserköln" @click="$router.push({name:'Home_Site', params:{siteid:sites.name}})">
+                                </v-list-item>
                             </v-col>
                     </v-row>
                     <v-divider color="white"></v-divider>
@@ -49,6 +51,12 @@
     
   </template>
 
-<script setup>
+<script>
+export default{
+    setup(){
+        // das hier dann aus deinem store laden:
+        const sites={name:"Köln",id:"1"}
+    return{sites}}
+}
     
 </script>

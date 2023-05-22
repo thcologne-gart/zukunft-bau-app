@@ -1,6 +1,15 @@
 <template>
     <v-container fill-height class="mb-3 mx-2" >
-  
+    <v-row no-gutters
+      class="flex-nowrap">
+      <div v-for="site in sites" :key="site.id" >
+       <router-link :to="{name:'Home_Site', params:{siteid:site.name}}">
+        <h2>{{ site.name }} </h2>
+       </router-link>  
+    </div>
+    </v-row>
+
+
     <v-row
       no-gutters
       class="flex-nowrap"
@@ -67,6 +76,12 @@
  
 </template>
 
-<script setup>
-  
+<script>
+export default{
+    setup(){
+        // das hier dann aus deinem store laden:
+        const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"} ]
+    return{sites}}
+}
+
 </script>

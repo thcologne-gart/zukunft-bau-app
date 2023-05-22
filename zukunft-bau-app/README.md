@@ -4,14 +4,9 @@
 
 ```
 # yarn
+
 yarn
-
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
+yarn install 
 
 ### Compiles and hot-reloads for development
 
@@ -19,11 +14,6 @@ pnpm install
 # yarn
 yarn dev
 
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
 ```
 
 ### Compiles and minifies for production
@@ -31,12 +21,6 @@ pnpm dev
 ```
 # yarn
 yarn build
-
-# npm
-npm run build
-
-# pnpm
-pnpm build
 ```
 
 ### Lints and fixes files
@@ -45,11 +29,6 @@ pnpm build
 # yarn
 yarn lint
 
-# npm
-npm run lint
-
-# pnpm
-pnpm lint
 ```
 
 ### Customize configuration
