@@ -5,75 +5,17 @@
             <v-btn
                 color="success"
                 text
-                @click="show = !show;
-                generalStore.getBuildingsFromSite(site)"
+                @click="show = !show"
             >
-                {{ site.siteName }}
+            {{ this.siteName }}
             </v-btn>
         </v-card-actions>
         <v-expand-transition>
             <div v-show="show">
-              <InformationFromBuildings :site="site" :buildings="generalStore.loadedSiteBuildingInformation"/>
+              <InformationFromBuildings :site="site"/>
               </div>
         </v-expand-transition>
     </v-container>
-    <!--
-        <v-card-title id="building-register-card-title">{{ site[1].value }}</v-card-title>
-        <div v-for="building in buildings" :key="building[6].value">
-            <div v-if="building[7].value == site[7].value">
-                <InformationFromBuildings :site="site" :building="building"/>
-            </div>
-        </div>
-        <v-dialog transition="dialog-bottom-transition" max-width="600">
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn class="mx-auto my-6" v-bind="attrs" v-on="on" color="outline-secondary" id= "buttons-card">
-                    <v-icon>
-                        mdi-plus
-                    </v-icon>
-                </v-btn>
-            </template>
-            <template v-slot:default="dialog">
-                <v-card>
-                    <v-toolbar
-                    color="#5D3FD3"
-                    dark
-                    >Gebäude hinzufügen</v-toolbar>
-                    <v-container>
-                        <v-form>
-                          <v-text-field
-                            id="designation"
-                            v-model="form.designation"
-                            label="Bezeichnung des Gebäudes"
-                            required
-                            ></v-text-field>
-                          <GmapAutocomplete class="introInput" @place_changed='setPlace'>
-                            <template v-slot:default="slotProps">
-                              <v-text-field label="Standort der Liegenschaft"
-                                            placeholder = ''
-                                            ref="input"
-                                            v-on:listeners="slotProps.listeners"
-                                            v-on:attrs="slotProps.attrs">
-                              </v-text-field>
-                            </template>
-                          </GmapAutocomplete>
-    
-                            <v-text-field
-                            id="street"
-                            v-model="form.street"
-                            label="Straße und Hausnummer"
-                            required
-                            ></v-text-field>
-                        </v-form>
-                    </v-container>
-                    <v-card-actions class="justify-end">
-                    <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onCreateBuildingAas()">Submit</v-btn>
-                    <v-btn id="buttons-card" variant="outline-secondary" @click="dialog.value = false; onReset()">Reset</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </template>
-        </v-dialog>
-        <v-divider></v-divider>
-        -->
     </div>
 </template>
 
@@ -95,7 +37,7 @@ export default {
     lng: ''
   }),
   props: {
-    site: Array
+    site: Object
   },
   components: {
     InformationFromBuildings
@@ -103,6 +45,11 @@ export default {
   computed: {
     generalStore () {
       return useGeneralStore()
+    },
+    siteName () {
+      const key = Object.keys(this.site)
+      const siteName = key[0]
+      return siteName
     },
     buildings () {
       // console.log(this.building)

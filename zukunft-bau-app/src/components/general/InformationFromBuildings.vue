@@ -18,7 +18,6 @@ export default {
   }),
   components: { AddBuilding, ShowBuildingInformation }, 
   props: {
-    buildings: Array,
     site: Array
   },
   computed: {
@@ -27,12 +26,13 @@ export default {
     },
     computedBuildings () {
         const buildings = []
-        console.log(this.buildings)
-
-        for (let building in this.buildings) {
+        const site = Object.values(this.site)[0]
+        // console.log(site)
+        for (let building in site) {
+          // console.log(site[building])
             let buildingInformationDict = {}
-            let buildingInformation = this.buildings[building]['buildingInformation']
-            console.log(this.buildings[building]['buildingInformation'])
+            let buildingInformation = site[building]['buildingInformation']
+            // console.log(buildingInformation)
             for (const element in buildingInformation) {
                 if (element === 'country') {
                     buildingInformationDict['Land'] = buildingInformation[element]
@@ -46,7 +46,7 @@ export default {
             }
             buildings.push(buildingInformationDict)
         }
-        console.log(buildings)
+        // console.log(buildings)
         return buildings
     }
   }

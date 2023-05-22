@@ -1,6 +1,8 @@
 <template>
-  <div v-for="site in generalStore.loadedSiteInformation" :key="site">
-      <SiteBuildings :site="site" />
+  <!--<div v-for="site in generalStore.loadedSiteInformation" :key="site">-->
+  <div v-for="site, key in siteInformation" :key="key">
+    <SiteBuildings :site="site" />
+    <v-divider :thickness="2"></v-divider>
   </div>
 </template>
 
@@ -22,16 +24,16 @@ export default {
     }
   },
   components: { SiteBuildings },
-  // props: {
-  // site: Number
-  // },
-  // mounted () {
-  // this.showForm()
-  // },
   computed: {
     generalStore () {
       return useGeneralStore()
     },
+    siteInformation () {
+      const callBuildingsForEachSite = this.generalStore.getBuildingsForEachSite()
+      const siteInformation = this.generalStore.loadedSiteInformationWithBuildings
+      console.log(siteInformation)
+      return siteInformation
+    }, 
     organization () {
       // console.log(this.$store.getters.loadedOrganizationInformation)
       return this.$store.getters.loadedOrganizationInformation

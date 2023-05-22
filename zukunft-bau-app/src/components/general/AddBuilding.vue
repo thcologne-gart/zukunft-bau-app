@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container class="no-padding">
-        <v-card-actions>
+        <v-card-actions class="d-flex justify-center align-center">
             <v-btn
                 color="success"
                 text
@@ -10,7 +10,6 @@
                 Hinzufügen Gebäude
             </v-btn>
 
-            <v-spacer></v-spacer>
         </v-card-actions>
         <v-expand-transition>
         <div v-show="show">
@@ -26,11 +25,13 @@
                 required
             ></v-text-field>
             <vue-google-autocomplete class="autocomplete-container" :id="'map-' + site.siteName" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
-            <v-btn class="max-3" variant="outlined" color="success" 
+            <v-container class="d-flex justify-center align-center">
+              <v-btn class="mt-0" variant="outlined" color="success" 
                 @click= "currentPlace = '';
                 generalStore.addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode);
                 siteName = ''">Submit
             </v-btn>
+            </v-container>
         </div>
         </v-expand-transition>
         </v-container>

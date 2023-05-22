@@ -24,15 +24,28 @@
             {
               "buildingInformation": {
                 "buildingName": "IWZ",
-                "country": "Deutschland",
-                "city": "Köln",
-                "street": "Betzdorfer Straße",
-                "streetNumber": "2",
-                "lat": 50.93410009999999,
-                "lng": 6.989022500000001
+                "country": "",
+                "city": "",
+                "street": "",
+                "streetNumber": "",
+                "lat": "",
+                "lng": ""
               }
             }
           ]
+        },
+        {
+          "siteInformation": {
+            "siteName": "Campus Südstadt",
+            "country": "Deutschland",
+            "city": "Köln",
+            "street": "Gustav-Heinemann-Ufer",
+            "streetNumber": "",
+            "lat": 50.9107992,
+            "lng": 6.9742203,
+            "zipcode": "50968"
+          },
+          "buildings": []
         }
       ],
       "id": 1

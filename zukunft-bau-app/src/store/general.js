@@ -8,6 +8,7 @@ export const useGeneralStore = defineStore('general', {
     return {
         loading: false,
         loadedSiteInformation: [],
+        loadedSiteInformationWithBuildings: [],
         loadedSiteBuildingInformation: [],
         loadedOrganizationInformation: [],
       // all these properties will have their type inferred automatically
@@ -25,6 +26,7 @@ export const useGeneralStore = defineStore('general', {
         for (let site in dataOrganization[0]['sites']) {
             this.loadedSiteInformation.push(dataOrganization[0]['sites'][site]['siteInformation'])
         }
+        this.loadedSiteInformationWithBuildings
         console.log(this.loadedSiteInformation)
         // this.loading=false
     },
@@ -153,6 +155,25 @@ export const useGeneralStore = defineStore('general', {
         console.log(buildings)
         this.loadedSiteBuildingInformation = buildings
     },
+    async getBuildingsForEachSite() {
+        this.loadedSiteInformationWithBuildings = []
+        const resOrganization = await fetch ('http://localhost:3000/organization')
+        const data = await resOrganization.json()
+        const sites = data[0]['sites']
+        console.log(sites)
+
+        for (let element in sites) {
+            console.log(sites[element])
+            let siteDict = {
+                [sites[element].siteInformation.siteName]: sites[element].buildings
+            }
+            console.log(siteDict)
+            this.loadedSiteInformationWithBuildings.push(siteDict)
+        }
+        console.log(this.loadedSiteInformationWithBuildings)
+
+        return this.loadedSiteInformationWithBuildings
+    },
     async addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode) {
         console.log(country)
         const data =  {
@@ -170,6 +191,8 @@ export const useGeneralStore = defineStore('general', {
     
         console.log(data)
         console.log(site)
+        const key = Object.keys(site)
+        const siteName = key[0]
         
         const resOrganization=await fetch ('http://localhost:3000/organization')
         const siteData =await resOrganization.json()
@@ -178,7 +201,7 @@ export const useGeneralStore = defineStore('general', {
         console.log(sites)
 
         for (let element in sites) {
-            if (sites[element].siteInformation.siteName === site.siteName) {
+            if (sites[element].siteInformation.siteName === siteName) {
                 console.log(sites[element])
                 siteData[0]['sites'][element]['buildings'].push(data)
             }
