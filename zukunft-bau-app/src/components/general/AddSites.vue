@@ -5,7 +5,7 @@
     </div>
     <v-divider :thickness="3"></v-divider>
     <v-container :style="{ width: '90%' }">
-      <v-card-actions>
+      <v-card-actions class="d-flex justify-center align-center">
         <v-btn
             color="success"
             text
@@ -14,7 +14,6 @@
             Hinzufügen Liegenschaft
         </v-btn>
 
-        <v-spacer></v-spacer>
     </v-card-actions>
     <v-expand-transition>
       <div v-show="show">
@@ -30,19 +29,22 @@
             required
           ></v-text-field>
         <vue-google-autocomplete class="autocomplete-container" id="map" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
-        <v-btn class="max-3" type="reset" variant="outlined" color="success" 
-          @click= "currentPlace = '';
-          generalStore.addSiteInformation(
-            country,
-            city,
-            street,
-            streetNumber,
-            lat,
-            lng,
-            zipCode,
-            siteName
-          );
-          siteName = ''">Submit</v-btn>
+        <v-container class="d-flex justify-center align-center">
+          <v-btn class="max-3" type="reset" variant="outlined" color="success" 
+            @click= "currentPlace = '';
+            generalStore.addSiteInformation(
+              country,
+              city,
+              street,
+              streetNumber,
+              lat,
+              lng,
+              zipCode,
+              siteName
+            );
+            siteName = ''">Submit
+          </v-btn>
+        </v-container>
       </div>
     </v-expand-transition>
     </v-container>

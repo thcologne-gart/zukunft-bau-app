@@ -27,6 +27,7 @@ export const useGeneralStore = defineStore('general', {
             this.loadedSiteInformation.push(dataOrganization[0]['sites'][site]['siteInformation'])
         }
         this.loadedSiteInformationWithBuildings
+        this.loadedSiteInformationWithBuildings = this.getBuildingsForEachSite()
         console.log(this.loadedSiteInformation)
         // this.loading=false
     },
@@ -137,6 +138,7 @@ export const useGeneralStore = defineStore('general', {
         }
         this.fetchGeneralInfos()
     },
+    /*
     async getBuildingsFromSite(site) {
         this.loadedSiteBuildingInformation = []
         console.log(site)
@@ -155,12 +157,14 @@ export const useGeneralStore = defineStore('general', {
         console.log(buildings)
         this.loadedSiteBuildingInformation = buildings
     },
+    */
     async getBuildingsForEachSite() {
         this.loadedSiteInformationWithBuildings = []
         const resOrganization = await fetch ('http://localhost:3000/organization')
         const data = await resOrganization.json()
         const sites = data[0]['sites']
         console.log(sites)
+        const buildings = []
 
         for (let element in sites) {
             console.log(sites[element])
@@ -168,11 +172,13 @@ export const useGeneralStore = defineStore('general', {
                 [sites[element].siteInformation.siteName]: sites[element].buildings
             }
             console.log(siteDict)
-            this.loadedSiteInformationWithBuildings.push(siteDict)
+            buildings.push(siteDict)
+            //this.loadedSiteInformationWithBuildings.push(siteDict)
         }
+        this.loadedSiteInformationWithBuildings = buildings
         console.log(this.loadedSiteInformationWithBuildings)
 
-        return this.loadedSiteInformationWithBuildings
+        return buildings
     },
     async addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode) {
         console.log(country)
