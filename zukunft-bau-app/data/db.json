@@ -23,7 +23,7 @@
           "buildings": [
             {
               "buildingInformation": {
-                "buildingName": "IWZ",
+                "buildingName": "Halle West",
                 "country": "Deutschland",
                 "city": "Köln",
                 "street": "Betzdorfer Straße",
@@ -34,7 +34,7 @@
             },
             {
               "buildingInformation": {
-                "buildingName": "HAlle West",
+                "buildingName": "Hallo Ost",
                 "country": "Deutschland",
                 "city": "Köln",
                 "street": "Betzdorfer Straße",
@@ -47,7 +47,7 @@
         },
         {
           "siteInformation": {
-            "siteName": "Campus Südstadt",
+            "siteName": "Campus Süd",
             "country": "Deutschland",
             "city": "Köln",
             "street": "Gustav-Heinemann-Ufer",
@@ -56,19 +56,7 @@
             "lng": 6.9742203,
             "zipcode": "50968"
           },
-          "buildings": [
-            {
-              "buildingInformation": {
-                "buildingName": "Verwaltung",
-                "country": "Deutschland",
-                "city": "Köln",
-                "street": "Gustav-Heinemann-Ufer",
-                "streetNumber": "",
-                "lat": 50.9107992,
-                "lng": 6.9742203
-              }
-            }
-          ]
+          "buildings": []
         }
       ],
       "id": 1
