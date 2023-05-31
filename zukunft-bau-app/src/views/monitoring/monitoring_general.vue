@@ -1,15 +1,23 @@
 <template>
-    <v-container fill-height class="mb-3 mx-2" id="maincontents">
-        <v-row no-gutters class="flex-nowrap">Monitoring... Welche Gebäude möchtest du sehen?</v-row>
-        <v-row>{{ loadedSiteInformation }}</v-row>
-        <v-btn @click="siteName">siteName</v-btn>
-        <v-row no-gutters class="flex-nowrap">
-            <v-col class="flex-column mx-2" v-for="site,key in loadedSiteInformation" :key="key" >
-                <v-btn class='mt-2' @click="$router.push({name:'Monitoring_Site', params:{siteid:site.siteName}})">
-                    <h2> In {{ Object.values(site)[2] }} Standort {{ Object.values(site)[0] }}</h2>
+    <v-container fill-height class="maincontents_monitoring mb-0 mx-2" >
+        <v-row no-gutters class="flex-nowrap mb-0 pb-0" justify="space-around" ><h2>Welche Gebäude möchtest du sehen?</h2>  </v-row>
+        <v-row class="mt-0" justify="space-between">
+            <v-card class="mx-auto" :width="400" :height="350" v-for="site,key in loadedSiteInformation" :key="key" >
+                
+                    <v-row color="#a3a0a0" justify="center">
+                        <v-img :height='200' class='mt-10 ' src="@/assets/Haus_Lupe.svg"></v-img>
+                </v-row>
+                <v-row>
+                    <v-btn color="highlight" class='mt-15 mx-5' @click="$router.push({name:'Monitoring_Site', params:{siteid:site.siteName}})">
+                    <h3 > {{ site.siteName }} Standort {{ site.city }}</h3>
                 </v-btn>
-            </v-col>
+                </v-row>
+                  
+            </v-card>   
         </v-row>
+
+        <v-row class="mt-10"></v-row>
+      
 
 
     </v-container>
@@ -22,11 +30,12 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
 export default{
+   
     setup(){
         const generalStore=useGeneralStore()
         const {loadedSiteInformation}=storeToRefs(generalStore)
-
-        return{loadedSiteInformation}},
+       
+        return{loadedSiteInformation}}
    
 }
 </script>

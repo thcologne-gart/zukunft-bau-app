@@ -1,7 +1,10 @@
-#maincontents {
+.maincontents_monitoring {
     min-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     flex-grow: 1;
-  }
+    background-image: url("@/assets/Monitoring_Header.svg");
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+  };
