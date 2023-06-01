@@ -51,7 +51,9 @@ export default{
   setup () {
       const DataStore=useMonitoringStore()
       DataStore.getData()
+      const vorlauftemperatur= DataStore.vorlauftemperatur
 
+      console.log(vorlauftemperatur)
       const show=ref(false)
       const loaded=true
       const data = {
@@ -68,7 +70,7 @@ export default{
       //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
       //buildingStore.getBuildings()
       //const filter = ref('all')
-      return { show, data, loaded, DataStore}
+      return { vorlauftemperatur,show, data, loaded, DataStore}
   }
 }
 </script>
