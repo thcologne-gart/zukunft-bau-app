@@ -4,7 +4,7 @@
   <v-card-actions>
      <v-spacer></v-spacer>
     <v-btn
-      color="orange-lighten-2"
+      color="highlight"
       variant="text"
     >
       Explore
