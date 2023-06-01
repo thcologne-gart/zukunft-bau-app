@@ -1,13 +1,9 @@
 <template >
     <v-container fill-height class="maincontents_monitoring mb-0 mx-2" >
-        <h2>Deine Häuser</h2>
-        <!-- {{ place(loadedSiteInformationWithBuildings)}} -->
-        <!-- v-for="(value, key, index) in generalStore.loadedOrganizationInformation[0]" :key="key" -->
-
-  <v-div v-for="site in loadedSiteInformationWithBuildings" :key="site.id">
-
-  <v-card v-if="site[thissite]"  v-for="building in site[thissite]" :key="building.id"
-    class="mx-auto"
+  <v-row> <h2>Deine Häuser</h2></v-row>
+  <v-row v-for="site in loadedSiteInformationWithBuildings" :key="site.id" justify="space-around">
+    <v-col v-if="site[thissite]"  v-for="building in site[thissite]" :key="building.id">
+      <v-card class="mx-auto"
     max-width="344"
   >
    <v-img
@@ -26,8 +22,9 @@
 
     <v-card-actions>
       <v-btn
-        color="orange-lighten-2"
+        color="highlight"
         variant="text"
+        @click="$router.push({name:'Monitoring_Site_Building', params:{siteid:thissite,buildingid:building.buildingInformation.buildingName}})"
       >
         Explore
       </v-btn>
@@ -35,7 +32,13 @@
       <v-spacer></v-spacer>
     </v-card-actions>
   </v-card>
-</v-div>
+
+
+
+    </v-col>
+
+
+</v-row>
 
 
         <v-row class="mt-10"></v-row>
