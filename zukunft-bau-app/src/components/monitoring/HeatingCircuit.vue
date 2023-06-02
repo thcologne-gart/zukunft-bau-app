@@ -2,13 +2,13 @@
   <v-card>
   <Line v-if="loaded" :data="data" :options="options" />
   <v-card-actions>
-
      <v-spacer></v-spacer>
     <v-btn
       color="highlight"
       variant="text"
     >
       Explore
+
     </v-btn>
     <v-btn
       :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
@@ -21,6 +21,8 @@
       <v-divider></v-divider>
 
       <v-card-text>
+        {{ DataStore.filterProfile }}
+        {{ DataStore.totalCountValues }}
         Ich bin ein Heizkreis. Du siehst hier meine Vorlauf- und Rücklauftemperatur sowie die Außentemperatur. Den Sollwert meiner Vorlauftemperatur siehst du ebenfalls.
         Auch wann die Pumpe on/off ist kannst du sehen. Dazu klicke einfach auf den Button "Anforderung Wärme?"
       </v-card-text>

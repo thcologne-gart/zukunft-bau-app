@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia'
+import { useRoute } from 'vue-router';
 
   export const useMonitoringStore = defineStore('monitoring', {
+
     state: () => ({
+      building:'',
+      function:'',
       data:[],
       vorlauftemperatur:[],
       vorlauftemperatur_value:[],
@@ -11,7 +15,14 @@ import { defineStore } from 'pinia'
     getters: {
       // ausreißer(){
       //     return this.vorlauftemperatur.filter(t => t.toohigh)
-      totalCountValues:(state) => { return state.vorlauftemperatur.value.length}
+      filterProfile:(state) => {
+        const route= useRoute();
+        state.building= route.params.buildingid;
+        //state.function=route.params.functionid;
+        return state.building, state.function
+      },
+      totalCountValues:(state) => { return state.vorlauftemperatur.length}
+
     },
     actions: {
       async getData (){
