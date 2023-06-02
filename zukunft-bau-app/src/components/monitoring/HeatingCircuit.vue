@@ -2,6 +2,7 @@
   <v-card>
   <Line v-if="loaded" :data="data" :options="options" />
   <v-card-actions>
+
      <v-spacer></v-spacer>
     <v-btn
       color="highlight"
@@ -40,8 +41,10 @@ Tooltip,
 Legend
 } from 'chart.js';
 import { Line } from 'vue-chartjs';
-import { ref } from 'vue';
+import { ref, computed} from 'vue';
 import { useMonitoringStore } from '@/store/monitoring';
+
+
 
 ChartJS.register(CategoryScale,LinearScale,PointElement,
 LineElement,Title,Tooltip,Legend)
@@ -51,26 +54,36 @@ export default{
   setup () {
       const DataStore=useMonitoringStore()
       DataStore.getData()
-      const vorlauftemperatur= DataStore.vorlauftemperatur
 
-      console.log(vorlauftemperatur)
       const show=ref(false)
       const loaded=true
-      const data = {
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                  datasets: [
-                              {
-                              label: 'Data One',
-                              backgroundColor: '#f87979',
-                              data: [40, 39, 10, 40, 39, 80, 40]
-                              }
-                              ]}
+      const data= computed(()=>(
+        console.log('test', DataStore.vorlauftemperatur_timestamp),
+        { labels:DataStore.vorlauftemperatur_timestamp,
+        datasets: [
+                    {
+                    label:'Vorlauftemperatur',
+                    backgroundColor:'#f87979',
+                    data: DataStore.vorlauftemperatur_value
+
+        }]}
+      ))
+      // const data_new = {
+      //             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      //             datasets: [
+      //                         {
+      //                         label: 'Data One',
+      //                         backgroundColor: '#f87979',
+      //                         data: [40, 39, 10, 40, 39, 80, 40]
+      //                         }
+      //                         ]}
       const options={ responsive: true, maintainAspectRatio: false}
+
       //const monitoringStore= useMonitoringStore()
       //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
       //buildingStore.getBuildings()
       //const filter = ref('all')
-      return { vorlauftemperatur,show, data, loaded, DataStore}
+      return { show, data, loaded, DataStore}
   }
 }
 </script>

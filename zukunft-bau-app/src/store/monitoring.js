@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
     state: () => ({
       data:[],
       vorlauftemperatur:[],
+      vorlauftemperatur_value:[],
+      vorlauftemperatur_timestamp:[],
       loading:false
     }),
     getters: {
@@ -21,7 +23,10 @@ import { defineStore } from 'pinia'
         //dann für jede Reihe (json objekt) ein objekt erstellen mit namen = name datenpunkt
         //ein- & ausblendeoption chart
         this.vorlauftemperatur=this.data.filter(data => {return data.name === "Messwert Vorlauftemperatur"})
-        console.log(this.vorlauftemperatur)
+        this.vorlauftemperatur_timestamp=this.vorlauftemperatur[0].timestamp;
+        this.vorlauftemperatur_value= this.vorlauftemperatur[0].value;
+       // this.vorlauftemperatur_messwert= this.vorlauftemperatur.filter (vorlauftemperatur => { return this.vorlauftemperatur.value === [40,39,10,40,39,80,40]});
+       // console.log(this.vorlauftemperatur_value)
 
         this.loading=false
       }
