@@ -13,34 +13,42 @@
 
       <v-row
       >
+      <!-- WENN KLICK AUF EINE DER KOMPONENTEN, DANN SPEZIFISCHE KOMPONENTEN EINLADEN-->
       <v-col
-          md="6"
-          class="flex-column"
+          md="4"
+          class="flex-column" v-for="component in listofgeneralcomponents"
         >
         <component :is ="component" />
-        </v-col>
-
-      <!-- HIER DYNAMISCH GENERAL KOMPONENTEN REINLADEN UND WENN KLICK AUF EINE DER KOMPONENTEN, DANN SPEZIFISCHE KOMPONENTEN EINLADEN-->
-        <v-col
-          md="6"
+      </v-col
+      >
+      <v-col md="4"
           class="flex-column"
-        >
-            <Energieverbrauch />
-        </v-col>
-        <v-col
-          md="4"
-          class="flex-column"
-        >
-            <Ampel />
-        </v-col>
+          >
+        <button class="image-button">
+          <v-img src="@/assets/Luftversorgen.svg"></v-img>
+          <span> Monitoring Luftversorgen</span>
+        </button>
 
 
-        <v-col
-          md="8"
-          class="flex-column"
-        >
-            <Heizkreis />
-        </v-col>
+
+        <v-btn>
+          <v-img cover src="@/assets/Wärmeversorgen.svg"></v-img>
+          Monitoring Wärmeversorgung
+        </v-btn>
+        <v-btn>
+          <v-img cover src="@/assets/Kälteversorgen.svg"></v-img>
+          Monitoring Kälteversorgung
+        </v-btn>
+        <v-btn>
+          <v-img cover src="@/assets/Sichern.svg"></v-img>
+          Monitoring Sichern
+        </v-btn>
+        <v-btn>
+          <v-img cover src="@/assets/Medienversorgen.svg"></v-img>
+          Monitoring Medienversorgung
+        </v-btn>
+      </v-col>
+
       </v-row>
   </v-container>
 
@@ -53,27 +61,27 @@ import Ampel from '@/components/monitoring/general/TrafficLight.vue'
 
 import { useRoute } from 'vue-router';
 export default{
- components:{Heizkreis,Energieverbrauch, Ampel},
+ components:{Ampel, Heizkreis,Energieverbrauch },
  setup () {
-  	   // const bunch = bunchOfComp;
-        //console.log(bunch)
+        const listofgeneralcomponents=['Energieverbrauch', 'Ampel'];
+
         const route= useRoute();
         const building= route.params.buildingid;
-        const component= "Heizkreis";
 
-
+        // for (let i=0; i=)
 
 
      //const monitoringStore= useMonitoringStore()
      //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
      //buildingStore.getBuildings()
      //const filter = ref('all')
-     return { building,component }
+     return { building,listofgeneralcomponents }
  }
 }
 </script>
 
 
-<style scoped>
-@import "../../../../styles/styles-zukunft-bau.css"
+<style>
+@import  "../../../../styles/styles-zukunft-bau.css"
+
 </style>

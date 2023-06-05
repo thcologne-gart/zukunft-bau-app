@@ -8,3 +8,18 @@
     background-repeat: no-repeat;
     background-position-y: bottom;
   };
+  .image-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #124354;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .image-button img {
+    height: 20px;
+    margin-right: 10px;
+  }
