@@ -1,4 +1,7 @@
 {
+  "overallperformance":[
+    {"ampel":"red"}
+  ],
   "heizkreis": [
     {
       "name": "Messwert Vorlauftemperatur",

@@ -6,7 +6,9 @@ import { useRoute } from 'vue-router';
     state: () => ({
       building:'',
       function:'',
-      data:[],
+      dataheating:[],
+      dataoverall:[],
+      ampel:'',
       vorlauftemperatur:[],
       vorlauftemperatur_value:[],
       vorlauftemperatur_timestamp:[],
@@ -29,19 +31,27 @@ import { useRoute } from 'vue-router';
         this.loading=true
         const res=await fetch ('http://localhost:3001/heizkreis')
         const data=await res.json()
-        this.data=data;
+        this.dataheating=data;
         //dynamisches Aufbauen der Lines: Wenn timestamps übereinstimmen von allen Reihen,
         //dann für jede Reihe (json objekt) ein objekt erstellen mit namen = name datenpunkt
         //ein- & ausblendeoption chart
-        this.vorlauftemperatur=this.data.filter(data => {return data.name === "Messwert Vorlauftemperatur"})
+        this.vorlauftemperatur=this.dataheating.filter(dataheating => {return dataheating.name === "Messwert Vorlauftemperatur"})
         this.vorlauftemperatur_timestamp=this.vorlauftemperatur[0].timestamp;
         this.vorlauftemperatur_value= this.vorlauftemperatur[0].value;
+
        // this.vorlauftemperatur_messwert= this.vorlauftemperatur.filter (vorlauftemperatur => { return this.vorlauftemperatur.value === [40,39,10,40,39,80,40]});
        // console.log(this.vorlauftemperatur_value)
 
         this.loading=false
-      }
-    }
-  })
+      },
+      async getDataOverall (){
+        this.loading=true
+        const res=await fetch ('http://localhost:3001/overallperformance')
+        const data=await res.json()
+        this.dataoverall=data;
+        this.loading=false
+        this.ampel=this.dataoverall[0].ampel
+    },
+  }})
 
 

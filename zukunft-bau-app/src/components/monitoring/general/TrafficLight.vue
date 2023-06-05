@@ -97,44 +97,26 @@
 </style>
 
   <script>
-  import { ref} from 'vue';
+  import { computed } from '@vue/reactivity';
+  import { onMounted } from 'vue';
+  import { ref } from 'vue';
+  import { useMonitoringStore } from '@/store/monitoring';
   class State {
-  constructor(name, dur, next){
+  constructor(name){
     this.name = name;
-    this.dur = dur;
-    this.next = next;
   }
 }
-class Constroller {
-  trigger(state, callback){
-    callback(state);
 
-  }
-}
   export default {
-    data:{
-    current: 'red',
-    currentTime: 2,
-    timer: null
-  },
-  mounted(){
-    var constroller = new Constroller();
-
-    var red = new State('red', 15);
-    var yellowR = new State('yellow', 2);
-    var yellowG = new State('yellow', 2);
-    var green = new State('green', 8);
-
-    red.next = yellowR;
-    yellowR.next = green;
-    green.next = yellowG;
-    yellowG.next = red;
-
-    constroller.trigger(red, (state)=>{
-      this.current = state.name;
-    })},
   setup () {
+    const DataStore=useMonitoringStore()
+    DataStore.getDataOverall()
+
+
     const show=ref(false)
-    return {show}
+    const current = DataStore.ampel;
+
+
+    return {current,show}
   }}
  </script>
