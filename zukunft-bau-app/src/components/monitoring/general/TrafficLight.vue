@@ -1,9 +1,9 @@
 <template>
   <v-card>
-    <v-card-title>Verteilung Stromverbrauch</v-card-title>
+    <v-card-title>Gesamt-Peformance meines Gebäudes</v-card-title>
     <v-card-subtitle>Betrachtung der letzten Woche</v-card-subtitle>
     <v-card-text>
-      <div v-if="!DataStore.loading">loading ampel...</div>
+
       <div id="traffic-light">
   <div class="light red" :class="{active: DataStore.ampel=='red'}"></div>
   <div class="light yellow" :class="{active: DataStore.ampel=='yellow'}"></div>
@@ -42,7 +42,9 @@
 #traffic-light {
   width: 100px;
   height: 280px;
-  background:#222;
+  /* background:#222; */
+  border-style: solid;
+  border-color:#6c6c6c;
   border-radius: 8px;
   margin: auto;
   padding: 15px;
@@ -56,7 +58,8 @@
     right: 0;
     left: 0;
     bottom: -100%;
-    background-color: #222;
+    border-style:solid;
+    border-color: #6c6c6c;
     margin: 0 auto;
 }
 .light {
@@ -65,7 +68,7 @@
   width: 70px;
   height: 70px;
   margin-bottom: 8px;
-  opacity: 0.2;
+  opacity: 0.1;
   transition: opacity 0.2s;
   position: relative;
 }
