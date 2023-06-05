@@ -1,5 +1,6 @@
 <template>
     <v-footer
+      id="footer"
       class="text-center d-flex justify-space-between" color="secondary-darken-1"
     >
     <div>   
@@ -49,7 +50,11 @@
   
   <style scoped>
   #footer {
-    padding-top: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    margin-top: 10%;
+    padding-top: 0 ;
     padding-bottom: 0;
   }
   #footer-button {
