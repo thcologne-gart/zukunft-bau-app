@@ -24,30 +24,17 @@
       <v-col md="4"
           class="flex-column"
           >
-        <button class="image-button">
-          <v-img src="@/assets/Luftversorgen.svg"></v-img>
-          <span> Monitoring Luftversorgen</span>
-        </button>
+          <h2 class="mb-3"> Funktioniert mein Gebäude? </h2>
 
+<v-btn v-for="element in grundfunktionen" :key="element" class="my-3 mx-2">
+  <v-avatar size="36px" rounded="0" >
 
+    <v-img height="100%" :src="element[[Object.keys(element)[0]]]"></v-img>
 
-        <v-btn>
-          <v-img cover src="@/assets/Wärmeversorgen.svg"></v-img>
-          Monitoring Wärmeversorgung
-        </v-btn>
-        <v-btn>
-          <v-img cover src="@/assets/Kälteversorgen.svg"></v-img>
-          Monitoring Kälteversorgung
-        </v-btn>
-        <v-btn>
-          <v-img cover src="@/assets/Sichern.svg"></v-img>
-          Monitoring Sichern
-        </v-btn>
-        <v-btn>
-          <v-img cover src="@/assets/Medienversorgen.svg"></v-img>
-          Monitoring Medienversorgung
-        </v-btn>
-      </v-col>
+  </v-avatar>
+  <span class="ml-5">{{ Object.keys(element)[0] }}</span>
+</v-btn>
+        </v-col>
 
       </v-row>
   </v-container>
@@ -60,22 +47,34 @@ import Energieverbrauch from '@/components/monitoring/general/Energy.vue'
 import Ampel from '@/components/monitoring/general/TrafficLight.vue'
 
 import { useRoute } from 'vue-router';
+import { ref,computed } from 'vue';
 export default{
  components:{Ampel, Heizkreis,Energieverbrauch },
  setup () {
         const listofgeneralcomponents=['Energieverbrauch', 'Ampel'];
+        //Grundfunktionen sind später auch User-abhängig/Gebäudespezifisch --> Pinia
+
+        // const images = import.meta.glob('@/assets/*.svg', {as:'url', eager:true})
+        // const values= Object.values(images);
+        // const firstElement=values[0];
+        // console.log(firstElement)
+        const grundfunktionen=[
+          {'Wärmeversorgen': Object.values(import.meta.glob('@/assets/Wärmeversorgen.svg', {as:'url', eager:true}))[0]},
+          {'Kälteversorgen': Object.values(import.meta.glob('@/assets/Kälteversorgen.svg', {as:'url', eager:true}))[0]},
+          {'Luftversorgen': Object.values(import.meta.glob('@/assets/Kälteversorgen.svg', {as:'url', eager:true}))[0]},
+          {'Medienversorgen': Object.values(import.meta.glob('@/assets/Medienversorgen.svg', {as:'url', eager:true}))[0]},
+          {'Sichern': Object.values(import.meta.glob('@/assets/Sichern.svg', {as:'url', eager:true}))[0]},
+          {'Stromversorgen': Object.values(import.meta.glob('@/assets/Stromversorgen.svg', {as:'url', eager:true}))[0]},
+      ]
+
+
+
 
         const route= useRoute();
+
         const building= route.params.buildingid;
 
-        // for (let i=0; i=)
-
-
-     //const monitoringStore= useMonitoringStore()
-     //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
-     //buildingStore.getBuildings()
-     //const filter = ref('all')
-     return { building,listofgeneralcomponents }
+     return { listofgeneralcomponents, grundfunktionen,building}
  }
 }
 </script>
