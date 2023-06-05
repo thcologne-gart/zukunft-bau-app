@@ -47,10 +47,12 @@ import { useRoute } from 'vue-router';
       async getDataOverall (){
         this.loading=true
         const res=await fetch ('http://localhost:3001/overallperformance')
-        const data=await res.json()
-        this.dataoverall=data;
-        this.loading=false
+        const dataoverall=await res.json()
+        this.dataoverall=dataoverall;
         this.ampel=this.dataoverall[0].ampel
+        console.log(this.ampel)
+        console.log(this.loading)
+        this.loading=false
     },
   }})
 

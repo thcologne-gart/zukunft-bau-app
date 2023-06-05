@@ -60,7 +60,7 @@ export default{
       const show=ref(false)
       const loaded=true
       const data= computed(()=>(
-        console.log('test', DataStore.vorlauftemperatur_timestamp),
+        //console.log('test', DataStore.vorlauftemperatur_timestamp),
         { labels:DataStore.vorlauftemperatur_timestamp,
         datasets: [
                     {

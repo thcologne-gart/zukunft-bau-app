@@ -22,11 +22,15 @@
             <Energieverbrauch />
         </v-col>
         <v-col
-          cols="4"
+          cols="6"
           class="flex-column"
         >
             <Ampel />
         </v-col>
+      </v-row>
+        <v-row
+        class="flex-nowrap"
+      >
         <v-col
           cols="8"
           class="flex-column"

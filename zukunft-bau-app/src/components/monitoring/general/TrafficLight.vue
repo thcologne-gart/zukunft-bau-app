@@ -2,11 +2,16 @@
   <v-card>
     <v-card-title>Verteilung Stromverbrauch</v-card-title>
     <v-card-subtitle>Betrachtung der letzten Woche</v-card-subtitle>
-    <div id="traffic-light">
-  <div class="light red" :class="{active: current=='red'}"></div>
-  <div class="light yellow" :class="{active: current=='yellow'}"></div>
-  <div class="light green" :class="{active: current=='green'}"></div>
+    <v-card-text>
+      <div v-if="!DataStore.loading">loading ampel...</div>
+      <div id="traffic-light">
+  <div class="light red" :class="{active: DataStore.ampel=='red'}"></div>
+  <div class="light yellow" :class="{active: DataStore.ampel=='yellow'}"></div>
+  <div class="light green" :class="{active: DataStore.ampel=='green'}"></div>
 </div>
+
+    </v-card-text>
+
 <v-card-actions>
      <v-spacer></v-spacer>
     <v-btn
@@ -35,9 +40,9 @@
 
 <style>
 #traffic-light {
-  width: 80px;
-  height: 200px;
-  background: #222;
+  width: 100px;
+  height: 280px;
+  background:#222;
   border-radius: 8px;
   margin: auto;
   padding: 15px;
@@ -64,23 +69,7 @@
   transition: opacity 0.2s;
   position: relative;
 }
-.light span {
-    transition: opacity 0.2s;
-    color: #fff;
-    font-size: 33px;
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-}
-.light.active span {
-  opacity: 1;
-  visibility: visible;
-}
+
 .active {
   opacity: 1;
 }
@@ -97,26 +86,18 @@
 </style>
 
   <script>
-  import { computed } from '@vue/reactivity';
-  import { onMounted } from 'vue';
+
   import { ref } from 'vue';
   import { useMonitoringStore } from '@/store/monitoring';
-  class State {
-  constructor(name){
-    this.name = name;
-  }
-}
+import { onMounted } from 'vue';
+
 
   export default {
   setup () {
     const DataStore=useMonitoringStore()
-    DataStore.getDataOverall()
-
-
+    DataStore.getDataOverall();
     const show=ref(false)
-    const current = DataStore.ampel;
 
-
-    return {current,show}
+    return {DataStore, show}
   }}
  </script>
