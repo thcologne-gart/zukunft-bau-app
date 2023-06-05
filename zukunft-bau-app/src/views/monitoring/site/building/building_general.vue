@@ -22,6 +22,12 @@
             <Energieverbrauch />
         </v-col>
         <v-col
+          cols="4"
+          class="flex-column"
+        >
+            <Ampel />
+        </v-col>
+        <v-col
           cols="8"
           class="flex-column"
         >
@@ -35,9 +41,10 @@
 <script>
 import Heizkreis from '@/components/monitoring/heating/HeatingCircuit.vue'
 import Energieverbrauch from '@/components/monitoring/general/Energy.vue'
+import Ampel from '@/components/monitoring/general/TrafficLight.vue'
 import { useRoute } from 'vue-router';
 export default{
- components:{ Energieverbrauch, Heizkreis },
+ components:{ Energieverbrauch, Heizkreis, Ampel },
  setup () {
         const route= useRoute();
         const building= route.params.buildingid;

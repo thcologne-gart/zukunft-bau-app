@@ -1,5 +1,7 @@
 <template>
 <v-card>
+  <v-card-title>Verteilung Stromverbrauch</v-card-title>
+  <v-card-subtitle>Betrachtung der letzten Woche</v-card-subtitle>
   <Doughnut v-if="loaded" :data="data" :options="options" />
   <v-card-actions>
      <v-spacer></v-spacer>
@@ -46,7 +48,7 @@ export default {
     const show=ref(false)
     const loaded=true
     const data={
-  labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+  labels: ['Heizung', 'Kälte', 'Lüftung','Haushaltsstrom'],
   datasets: [
     {
       backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
