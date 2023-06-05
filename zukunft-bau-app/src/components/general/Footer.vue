@@ -2,7 +2,7 @@
     <v-footer
       class="text-center d-flex justify-space-between flex-column flex-shrink-0" color="secondary-darken-1"
     >
-    <div>   
+    <div>
     </div>
 
     <div>
@@ -23,7 +23,7 @@
         <p>Institut für Technische Gebäudeausrüstung</p>
       </div>
     </div>
-      
+
       <div >
       <v-avatar size="150px" rounded="0">
               <v-img src="@/assets/logo_TH.png">
@@ -33,7 +33,7 @@
      </div>
     </v-footer>
   </template>
-  
+
   <script>
   export default {
     data: () => ({
@@ -46,10 +46,14 @@
     }),
   }
   </script>
-  
+
   <style scoped>
   #footer {
-    padding-top: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    margin-top: 10%;
+    padding-top: 0 ;
     padding-bottom: 0;
   }
   #footer-button {
@@ -59,4 +63,3 @@
     padding: 0;
   }
   </style>
-  

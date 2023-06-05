@@ -13,16 +13,14 @@
           </v-list>
           <v-divider></v-divider>
                 <v-list density="compact" nav>
-                    <v-row my-0 py-0>
-                        <v-col cols="4" my-0 py-0></v-col>
-                            <v-col cols="6" my-0 py-0> 
-                                
-                                 
-                                <v-list-item 
-                                    prepend-icon="" title="Köln" value="meinehäuserköln" @click="$router.push({name:'Home_Site', params:{siteid:sites.name}})">
+                    <!--<v-row my-0 py-0>
+                        <v-col cols="2" my-0 py-0></v-col>
+                            <v-col cols="10" my-0 py-0> -->
+                                <v-list-item v-for="site in generalStore.loadedSiteInformation" :key="site.siteName"
+                                    prepend-icon="mdi-menu-right" :title="site.siteName" :value="site.siteName" @click="$router.push({name:'Home_Site', params:{siteid:site.siteName}})">
                                 </v-list-item>
-                            </v-col>
-                    </v-row>
+                            <!--</v-col>
+                    </v-row>-->
                     <v-divider color="white"></v-divider>
                     <v-row my-0 py-0>
                         <v-col cols="4"></v-col>
@@ -52,11 +50,15 @@
   </template>
 
 <script>
+import { useGeneralStore } from "@/store/general"
+
 export default{
-    setup(){
-        // das hier dann aus deinem store laden:
-        const sites={name:"Köln",id:"1"}
-    return{sites}}
+    computed: {
+        generalStore () {
+            return useGeneralStore()
+        }
+    }
+
 }
     
 </script>
