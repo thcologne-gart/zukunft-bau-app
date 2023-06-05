@@ -12,27 +12,31 @@
      </v-row>
 
       <v-row
-        class="flex-nowrap"
       >
+      <v-col
+          md="6"
+          class="flex-column"
+        >
+        <component :is ="component" />
+        </v-col>
+
       <!-- HIER DYNAMISCH GENERAL KOMPONENTEN REINLADEN UND WENN KLICK AUF EINE DER KOMPONENTEN, DANN SPEZIFISCHE KOMPONENTEN EINLADEN-->
         <v-col
-          cols="4"
+          md="6"
           class="flex-column"
         >
             <Energieverbrauch />
         </v-col>
         <v-col
-          cols="6"
+          md="4"
           class="flex-column"
         >
             <Ampel />
         </v-col>
-      </v-row>
-        <v-row
-        class="flex-nowrap"
-      >
+
+
         <v-col
-          cols="8"
+          md="8"
           class="flex-column"
         >
             <Heizkreis />
@@ -46,17 +50,25 @@
 import Heizkreis from '@/components/monitoring/heating/HeatingCircuit.vue'
 import Energieverbrauch from '@/components/monitoring/general/Energy.vue'
 import Ampel from '@/components/monitoring/general/TrafficLight.vue'
+
 import { useRoute } from 'vue-router';
 export default{
- components:{ Energieverbrauch, Heizkreis, Ampel },
+ components:{Heizkreis,Energieverbrauch, Ampel},
  setup () {
+  	   // const bunch = bunchOfComp;
+        //console.log(bunch)
         const route= useRoute();
         const building= route.params.buildingid;
+        const component= "Heizkreis";
+
+
+
+
      //const monitoringStore= useMonitoringStore()
      //const {totalCount,favCount,loading}=storeToRefs(buildingStore)
      //buildingStore.getBuildings()
      //const filter = ref('all')
-     return { building }
+     return { building,component }
  }
 }
 </script>
