@@ -1,9 +1,10 @@
 <template>
     <div v-for="img in energyUseGroup" :key="img.name">
         <div>{{ img.name }}</div>
-        <img class="mx-auto" max-width="60" href="#" contain :src= img.pic>
+        <v-img class="mx-auto" max-width="60" href="#" contain :src= img.pic></v-img>
     </div>
-    <div>{{ numberOfGrundfunktionen }}</div>
+    <!--<div>{{ numberOfGrundfunktionen }}</div>-->
+    <div>{{ numberGrundfunktionen }}</div>
 </template>
 
 <script>
@@ -12,17 +13,44 @@ import { useDigitalTwinsStore } from "@/store/digitaltwins"
 export default{
     data() {
         return {
-        energyUseGroup: [
-            {
-                name: 'Wärme versorgen',
-                pic: import('@/assets/Wärmeversorgen.svg').then((image) => image.default)
-            },
-            {
-                name: 'Kälte versorgen',
-                pic: import('@/assets/Kälteversorgen.svg').then((image) => image.default)
-            }
-        ]
+            numberGrundfunktionen: [],        
+            energyUseGroup: [
+                {
+                    name: 'Wärme versorgen',
+                    pic: import('@/assets/Wärmeversorgen.svg').then((image) => image.default)
+                },
+                {
+                    name: 'Luft versorgen',
+                    pic: import('@/assets/Luftversorgen.svg').then((image) => image.default)
+                },
+                {
+                    name: 'Kälte versorgen',
+                    pic: import('@/assets/Kälteversorgen.svg').then((image) => image.default)
+                },
+                {
+                    name: 'Medien versorgen',
+                    pic: import('@/assets/Medienversorgen.svg').then((image) => image.default)
+                },
+                {
+                    name: 'Strom versorgen',
+                    pic: import('@/assets/Stromversorgen.svg').then((image) => image.default)
+                },
+                {
+                    name: 'Sichern',
+                    pic: import('@/assets/Sichern.svg').then((image) => image.default)
+                },
+            ]
         };
+    },
+    created() {
+         // const site_id = this.$route.params.siteid
+        // const building_id = this.$route.params.buildingid
+
+
+        // In zukunft die beiden const site_id und building_id verwenden und an den basyx
+        // aufrug übergeben. solange aber noch keine individuellen np_submodels ist das egal
+        // da die ID Test AAS ist
+        this.getNlpSubmodel('TestAAS')
     },
     computed: {
         digitalTwinStore () {
@@ -41,45 +69,27 @@ export default{
             const nlpSubmodel = this.getNlpSubmodel(aas_id)
             // const nlp_submodel = this.digitalTwinStore.nlpSubmodel
             return nlpSubmodel
-        },
-        
-        numberOfGrundfunktionen () {
-            // const site_id = this.$route.params.siteid
-            // const building_id = this.$route.params.buildingid
-
-
-            // In zukunft die beiden const site_id und building_id verwenden und an den basyx
-            // aufrug übergeben. solange aber noch keine individuellen np_submodels ist das egal
-            // da die ID Test AAS ist
+        }
+    },
+    methods: {
+        async getNlpSubmodel (aas_id) {
+            const ready = await this.digitalTwinStore.getBasyxNlpSubmodel(aas_id)
+            console.log(ready)
+            const submodelElements = this.digitalTwinStore.allNlpSubmodelElements
             
             const grundfunktionen = []
-            const nlpSubmodel = this.digitalTwinStore.getBasyxNlpSubmodel('TestAAS')
-            // console.log(this.$store.getters.loadedBACnet)
-            console.log(nlpSubmodel)
-            for (const [key, data] in this.nlpSubmodel) {
-                const keys = Object.keys(this.nlpSubmodel)
-                keys.forEach(key => {
-                    const value = this.nlpSubmodel[key]
-                    console.log(key, value)
-                })
-
-                console.log(this.nlpSubmodel[key])
-                let grundfunktionValue = this.nlpSubmodel[data]['GrundfunktionValue']
+            for (const data in submodelElements) {
+                let grundfunktionValue = submodelElements[data]['GrundfunktionValue']
                 if (grundfunktionen.includes(grundfunktionValue)) {
                     continue
                 } else {
                     grundfunktionen.push(grundfunktionValue)
                 }
             }
-            return grundfunktionen
+            this.numberGrundfunktionen = grundfunktionen
         }
     },
-    methods: {
-        getNlpSubmodel (aas_id) {
-            const ready = this.digitalTwinStore.getBasyxNlpSubmodel(aas_id)
-            return ready
-        }
-    },
+    /*
     created () {
         const imgWärme = import('@/assets/Wärmeversorgen.svg')
         const imgKälte = import('@/assets/Kälteversorgen.svg')
@@ -94,5 +104,6 @@ export default{
             //{ name: 'Andere Anlagen', pic: require('@/assets/andere_anlagen.svg') }
         ]
     }
+    */
 }
 </script>

@@ -5,7 +5,8 @@ import axios from 'axios'
 export const useDigitalTwinsStore = defineStore('digitalTwins', {
     state: () => {
       return {
-        nlpSubmodel: []          
+        nlpSubmodel: [],
+        allNlpSubmodelElements: []          
         // all these properties will have their type inferred automatically
       }
     },
@@ -69,6 +70,9 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     }
                     allSubmodelElements.push(submodelElementInfo)
                 }
+                console.log(allSubmodelElements)
+                this.allNlpSubmodelElements = allSubmodelElements
+
                 return allSubmodelElements
 
             } catch (error) {
