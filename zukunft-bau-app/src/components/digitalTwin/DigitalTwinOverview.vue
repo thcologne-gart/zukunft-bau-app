@@ -14,7 +14,7 @@
                         </v-card-actions>
                     </v-col>
                 </v-row>
-                <v-divider :thickness="3"></v-divider>
+                <v-divider class="mx-4" :thickness="3"></v-divider>
                 <v-row v-for="building in Object.values(site)[0]" :key="building">
                     <v-col>
                         <v-card-item>{{ Object.values(building)[0]["buildingName"] }}</v-card-item>
