@@ -6,14 +6,48 @@
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
                 <v-col v-if="Object.values(funktion).length !== 0" cols = '12'>
                     <v-card max-width="70%" class="mx-auto my-8" elevation="2">
-                        <v-card-title  class="text-center">{{ key }}</v-card-title>
+                        <v-toolbar
+                        color="success"
+                        >
+                            <v-toolbar-title class="text-center" style="color: white; font-size: 22px">{{ key }}</v-toolbar-title>
+                        </v-toolbar>
                         <v-divider class="mx-4" :thickness="3"></v-divider>
-                        <div v-for="komponente in Object.values(funktion)" :key="komponente[0]['KomponentenEbeneValue']">
+                        <div v-for="(komponente, key) in Object.values(funktion)" :key="key">
                             <v-expansion-panels>
-                                <v-expansion-panel>
-                                    <v-expansion-panel-title>
-                                        {{ komponente[0]['KomponentenEbeneValue'] }}
-                                    </v-expansion-panel-title>
+                                <v-expansion-panel elevation="1" rounded="0">
+                                    <v-expansion-panel-title style="font-size: 20px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <div v-for="datenpunkt in komponente" :key="datenpunkt['DatenpunktEbeneValue']">
+                                            <v-expansion-panels>
+                                                <v-expansion-panel elevation="1" rounded="0">
+                                                    <v-row>
+                                                        <v-col>
+                                                            <v-expansion-panel-title style="font-size: 18px;" color="#fcf0f7">
+                                                                {{ datenpunkt['DatenpunktEbeneValue'] }}
+                                                            </v-expansion-panel-title>
+                                                            <v-expansion-panel-text>
+                                                                <v-row>
+                                                                    <v-col cols="8">
+                                                                        <p class="my-4">Score Datenpunkt: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>
+                                                                    </v-col>
+                                                                    <v-col cols="4">
+                                                                        <EditBacnetProperties :datenpunkt="datenpunkt"/>
+                                                                    </v-col>
+                                                                </v-row>
+                                                                <v-divider></v-divider>
+                                                                <p class="my-4">BACnet Object Name: {{ datenpunkt['ObjectName'] }}</p>
+                                                                <v-divider></v-divider>
+                                                                <p class="my-4">BACnet Description: {{ datenpunkt['Description'] }}</p>
+                                                                <v-divider></v-divider>
+                                                                <p class="my-4">BACnet Object Type: {{ datenpunkt['ObjectType'] }}</p>
+                                                                <v-divider class="border-opacity-75"></v-divider>
+                                                            </v-expansion-panel-text>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-expansion-panel>
+                                            </v-expansion-panels>
+                                        </div>
+                                    </v-expansion-panel-text>
                                 </v-expansion-panel>
                             </v-expansion-panels>
                         </div>
@@ -27,6 +61,7 @@
 
 <script>
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
+import EditBacnetProperties from "@/components/digitalTwin/EditBacnetProperties.vue"
 
 export default{
     data() {
@@ -38,6 +73,9 @@ export default{
             zweiteGrundfunktion: [],
             title: ''
         }
+    },
+    components: {
+        EditBacnetProperties
     },
     created() {
         const site_id = this.$route.params.siteid

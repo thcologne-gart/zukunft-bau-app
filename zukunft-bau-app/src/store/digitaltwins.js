@@ -71,6 +71,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 })
                 const nlpSubmodel = response.data
                 const submodelElements = nlpSubmodel['submodelElements']
+                console.log(submodelElements)
                 const allSubmodelElements = []
                 const wärmeVersorgen = []
                 const luftVersorgen = []
@@ -81,7 +82,9 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 const wärmeVersorgenZweite = {
                     'Verteilen': {
                         'Pumpe': [],
-                        'Heizkreis allgemein': []
+                        'Heizkreis allgemein': [],
+                        'Vorlauf': [],
+                        'Rücklauf': []
                     },
                     'Erzeugen': {
                         'BHKW': [],
@@ -96,11 +99,13 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         'Volumenstromregler Zuluft': []
                     },
                     'Bereitstellen': {
-                        'Zuluftventilator': []
+                        'Zuluftventilator': [],
+                        'Abluftfilter': []
                     }
                 }
 
                 for (let submodelElement in submodelElements) {
+                    console.log(submodelElement)
                     // let idShort = submodelElements[submodelElement]['idShort']
                     let grundfunktionValue = submodelElements[submodelElement]['value'][0]['value'][0]['value'][0]['value']
                     let grundfunktionScore = submodelElements[submodelElement]['value'][0]['value'][0]['value'][1]['value']
@@ -110,19 +115,28 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     let komponentenEbeneScore = submodelElements[submodelElement]['value'][2]['value'][0]['value'][1]['value']
                     let datenpunktEbeneValue = submodelElements[submodelElement]['value'][3]['value'][0]['value'][0]['value']
                     let datenpunktEbeneScore = submodelElements[submodelElement]['value'][3]['value'][0]['value'][1]['value']
+                    // console.log(typeof datenpunktEbeneScore)
+                    let roundedDatenpunktScore = parseFloat(datenpunktEbeneScore)
+                    let roundedGrundfunktionScore = parseFloat(grundfunktionScore)
+                    let roundedZweiteEbeneScore = parseFloat(zweiteEbeneScore)
+                    let roundedKomponentenEbeneScore = parseFloat(komponentenEbeneScore)
                     let nlpInput = submodelElements[submodelElement]['value'][4]['value']
-                    let bacnetId = submodelElements[submodelElement]['value'][6]['value']
+                    let objectName = submodelElements[submodelElement]['value'][6]['value']
+                    let objectType = submodelElements[submodelElement]['value'][7]['value']
+                    let description = submodelElements[submodelElement]['value'][8]['value']
                     let submodelElementInfo = {
                         'GrundfunktionValue': grundfunktionValue,
-                        'GrundfunktionScore': grundfunktionScore,
+                        'GrundfunktionScore': roundedGrundfunktionScore,
                         'ZweiteEbeneValue': zweiteEbeneValue,
-                        'ZweiteEbeneScore': zweiteEbeneScore,
+                        'ZweiteEbeneScore': roundedZweiteEbeneScore,
                         'KomponentenEbeneValue': komponentenEbeneValue,
-                        'KomponentenEbeneScore': komponentenEbeneScore,
+                        'KomponentenEbeneScore': roundedKomponentenEbeneScore,
                         'DatenpunktEbeneValue': datenpunktEbeneValue,
-                        'DatenpunktEbeneScore': datenpunktEbeneScore,
+                        'DatenpunktEbeneScore': roundedDatenpunktScore,
                         'NLPInput': nlpInput,
-                        'BacnetId': bacnetId
+                        'ObjectName': objectName,
+                        'ObjectType': objectType,
+                        'Description': description
                     }
                     console.log(submodelElementInfo)
                     allSubmodelElements.push(submodelElementInfo)
@@ -132,6 +146,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                             wärmeVersorgenZweite['Verteilen']['Heizkreis allgemein'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Pumpe') {
                             wärmeVersorgenZweite['Verteilen']['Pumpe'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Vorlauf') {
+                            wärmeVersorgenZweite['Verteilen']['Vorlauf'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Ruecklauf') {
+                            wärmeVersorgenZweite['Verteilen']['Rücklauf'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'WaermeversorgerAllgemein') {
                             console.log(wärmeVersorgenZweite['Erzeugen']['Wärmeerzeuger allgemein'])
                             wärmeVersorgenZweite['Erzeugen']['Wärmeerzeuger allgemein'].push(submodelElementInfo)
@@ -148,6 +166,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                             luftVersorgenZweite['Verteilen']['Volumenstromregler Zuluft'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Zuluftventilator') {
                             luftVersorgenZweite['Bereitstellen']['Zuluftventilator'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Abluftfilter') {
+                            luftVersorgenZweite['Bereitstellen']['Abluftfilter'].push(submodelElementInfo)
                         }
                     } else if (grundfunktionValue == 'MedienVersorgen') {
                         medienVersorgen.push(submodelElementInfo)
