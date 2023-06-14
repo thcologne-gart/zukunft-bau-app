@@ -1,6 +1,5 @@
 <template>
     <h1>Digital Twins - Liegenschaft {{ site }}</h1>
-    <p>Wähle ein Gebäude aus, das du sehen möchtest:</p>
     <div v-for="building in buildings_hamburg" :key="building.id" >
        <router-link :to="{name:'DigitalTwins_Site_Building', params:{buildingid:building.name}}">
         <h2>{{ building.name }}</h2>

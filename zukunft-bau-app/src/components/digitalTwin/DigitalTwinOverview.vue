@@ -2,26 +2,32 @@
     <div>
         <v-container>
             <v-card class="mx-auto" elevation="1" rounded="0">
-                <v-card-item :title="site.siteName"></v-card-item>
-                <v-divider :thickness="2"></v-divider>
-                <v-card-actions>
-                    <v-btn class="mt-0" variant="outlined" color="success" 
-                        @click="$router.push({name:'DigitalTwins_Site', params:{siteid:site.siteName}})">GO
-                    </v-btn>
-                    <v-file-input
-                        v-model="file"
-                        variant="underlined"
-                        chips
-                        accept=".json"
-                        label="Select an AAS file (as JSON)"
-                        :style="{ 'max-width': '30%' }"
-                    ></v-file-input>
-                    <v-btn 
-                        class="ma-3" 
-                        variant="outlined"
-                        color = "#063970" 
-                        @click="digitalTwinStore.startNlp(file)">Upload AAS</v-btn>
-                </v-card-actions>
+                <v-row>
+                    <v-col>
+                        <v-card-item :title="Object.keys(site)[0]"></v-card-item>
+                    </v-col>
+                    <v-col>
+                        <v-card-actions class="justify-end">
+                            <v-btn class="mt-0" variant="outlined" color="success" 
+                                @click="$router.push({name:'DigitalTwins_Site', params:{siteid:Object.keys(site)[0]}})">Information
+                            </v-btn>
+                        </v-card-actions>
+                    </v-col>
+                </v-row>
+                <v-divider class="mx-4" :thickness="3"></v-divider>
+                <v-row v-for="building in Object.values(site)[0]" :key="building">
+                    <v-col>
+                        <v-card-item>{{ Object.values(building)[0]["buildingName"] }}</v-card-item>
+                    </v-col>
+                    <v-col>
+                        <v-card-actions class="justify-end">
+                            <v-btn class="mt-0" variant="outlined" color="success" size="small"
+                            @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:getBuildingId(Object.values(building)[0]), siteid:Object.keys(site)[0]}})">
+                            Information
+                            </v-btn>
+                        </v-card-actions>
+                    </v-col>
+                </v-row>
             </v-card>
         </v-container>
     </div>
@@ -42,6 +48,12 @@ export default{
     computed: {
         digitalTwinStore () {
         return useDigitalTwinsStore()
+        }
+    },
+    methods: {
+        getBuildingId (building) {
+            const buildingId = building['buildingName']
+            return buildingId
         }
     }
 }

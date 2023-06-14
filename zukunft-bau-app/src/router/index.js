@@ -8,6 +8,7 @@ import DigitalTwins from '../views/digitaltwins/digitaltwins_general.vue'
 import Monitoring from '../views/monitoring/monitoring_general.vue'
 import DigitalTwins_Site from '../views/digitaltwins/site/site_general.vue'
 import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/building_general.vue'
+import DigitalTwins_Site_Building_Grundfunktion from '../views/digitaltwins/site/building/GrundfunktionTga.vue'
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     path: '/digitaltwins/:siteid/:buildingid',
     name: 'DigitalTwins_Site_Building',
     component: DigitalTwins_Site_Building,
+  },
+  {
+    path: '/digitaltwins/:siteid/:buildingid/:grundfunktion',
+    name: 'DigitalTwins_Site_Building_Grundfunktion',
+    component: DigitalTwins_Site_Building_Grundfunktion,
   },
   {
     path: '/monitoring',
