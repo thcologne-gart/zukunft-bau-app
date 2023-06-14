@@ -62,7 +62,7 @@
                             v-bind="props"
                             variant="outlined"
                             color = "success"
-                            @click="digitalTwinStore.editDatenpunktGrundfunktion(datenpunkt, predictedGrundfunktion)">
+                            @click="editZweiteEbene()">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -92,7 +92,7 @@
                             v-bind="props"
                             variant="outlined"
                             color = "success"
-                            @click="digitalTwinStore.editDatenpunktZweiteEbene(datenpunkt, predictedGrundfunktion, predictedZweiteEbene)">
+                            @click ="editKomponente()">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -122,7 +122,7 @@
                             v-bind="props"
                             variant="outlined"
                             color = "success"
-                            @click="digitalTwinStore.editDatenpunktKomponente(datenpunkt, predictedGrundfunktion, predictedZweiteEbene, predictedKomponente)">
+                            @click ="editDatenpunkt()">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -370,6 +370,21 @@ export default {
         },
         changeDatenpunkt () {
             this.predictedDatenpunktScore = 1.0
+        },
+        async editZweiteEbene () {
+            const result = await this.digitalTwinStore.editDatenpunktGrundfunktion(this.datenpunkt, this.predictedGrundfunktion)
+            console.log(result)
+            this.$emit('editNlp')
+        },
+        async editKomponente () {
+            const result = await this.digitalTwinStore.editDatenpunktZweiteEbene(this.datenpunkt, this.predictedGrundfunktion, this.predictedZweiteEbene)
+            console.log(result)
+            this.$emit('editNlp')
+        },
+        async editDatenpunkt () {
+            const result = await this.digitalTwinStore.editDatenpunktKomponente(this.datenpunkt, this.predictedGrundfunktion, this.predictedZweiteEbene, this.predictedKomponente)
+            console.log(result)
+            this.$emit('editNlp')
         }
     },    
     computed: {

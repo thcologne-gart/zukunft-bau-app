@@ -71,7 +71,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 startPrediction: startPrediction,
                 correctedLabel: predictedGrundfunktion,
                 nlpInput: datenpunkt['NLPInput'],
-                idShort: datenpunkt['IdShort']
+                idShort: datenpunkt['IdShort'],
+                aasId: this.aasId
             }
             console.log(datapointInformation)
             //let formData = new FormData()
@@ -119,7 +120,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 labelGrundfunktion: predictedGrundfunktion,
                 labelZweiteEbene: predictedZweiteEbene,                
                 nlpInput: datenpunkt['NLPInput'],
-                idShort: datenpunkt['IdShort']
+                idShort: datenpunkt['IdShort'],
+                aasId: this.aasId
             }
             console.log(datapointInformation)
             //let formData = new FormData()
@@ -193,7 +195,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 labelZweiteEbene: predictedZweiteEbene,  
                 labelKomponente: predictedKomponente,              
                 nlpInput: datenpunkt['NLPInput'],
-                idShort: datenpunkt['IdShort']
+                idShort: datenpunkt['IdShort'],
+                aasId: this.aasId
             }
             console.log(datapointInformation)
             //let formData = new FormData()
@@ -208,19 +211,13 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     }
                 });
                 console.log(response.data)
-                editingReady = this.editBasyxNlpSubmodel(response.data, datapointInformation)
             } catch (error) {
                 console.error(error)
             }
 
+            //this.getBasyxNlpSubmodel(this.aasId)
+
             return editingReady
-
-        },
-        async editBasyxNlpSubmodel() {
-            //const aasBasyxServer = "http://3.83.126.51:4001/aasServer/shells"
-            //const uriAas = aasBasyxServer + '/' + this.aasId + '/aas'
-            //const uriSubmodel = uriAas + '/submodels/NLPClassificationResult/submodel'
-
         },
         async getBasyxNlpSubmodel(aas_id) {
             this.aasId = aas_id
@@ -236,7 +233,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 })
                 const nlpSubmodel = response.data
                 const submodelElements = nlpSubmodel['submodelElements']
-                //console.log(submodelElements)
+                console.log(submodelElements)
                 const allSubmodelElements = []
                 const wärmeVersorgen = []
                 const luftVersorgen = []
@@ -261,7 +258,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 }
                 const luftVersorgenZweite = {
                     'Verteilen': {
-                        'Volumenstromregler Zuluft': []
+                        'Volumenstromregler Zuluft': [],
+                        'Volumenstromregler Abluft': []
                     },
                     'Bereitstellen': {
                         'Zuluftventilator': [],
@@ -330,6 +328,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         luftVersorgen.push(submodelElementInfo)
                         if (zweiteEbeneValue == 'LuftVerteilen' && komponentenEbeneValue == 'VolumenstromreglerZuluft') {
                             luftVersorgenZweite['Verteilen']['Volumenstromregler Zuluft'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftVerteilen' && komponentenEbeneValue == 'VolumenstromreglerAbluft') {
+                            luftVersorgenZweite['Verteilen']['Volumenstromregler Abluft'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Zuluftventilator') {
                             luftVersorgenZweite['Bereitstellen']['Zuluftventilator'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Abluftfilter') {
