@@ -28,9 +28,7 @@
 
 <v-btn v-for="element in grundfunktionen" :key="element" class="my-3 mx-2">
   <v-avatar size="36px" rounded="0" >
-
     <v-img height="100%" :src="element[[Object.keys(element)[0]]]"></v-img>
-
   </v-avatar>
   <span class="ml-5">{{ Object.keys(element)[0] }}</span>
 </v-btn>
@@ -61,7 +59,7 @@ export default{
         const grundfunktionen=[
           {'Wärmeversorgen': Object.values(import.meta.glob('@/assets/Wärmeversorgen.svg', {as:'url', eager:true}))[0]},
           {'Kälteversorgen': Object.values(import.meta.glob('@/assets/Kälteversorgen.svg', {as:'url', eager:true}))[0]},
-          {'Luftversorgen': Object.values(import.meta.glob('@/assets/Kälteversorgen.svg', {as:'url', eager:true}))[0]},
+          {'Luftversorgen': Object.values(import.meta.glob('@/assets/Luftversorgen.svg', {as:'url', eager:true}))[0]},
           {'Medienversorgen': Object.values(import.meta.glob('@/assets/Medienversorgen.svg', {as:'url', eager:true}))[0]},
           {'Sichern': Object.values(import.meta.glob('@/assets/Sichern.svg', {as:'url', eager:true}))[0]},
           {'Stromversorgen': Object.values(import.meta.glob('@/assets/Stromversorgen.svg', {as:'url', eager:true}))[0]},
