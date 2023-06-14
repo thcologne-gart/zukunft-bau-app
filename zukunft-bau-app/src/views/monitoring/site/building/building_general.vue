@@ -26,10 +26,9 @@
         <h2 class="mb-3"> Funktioniert mein Gebäude?  </h2>
         <v-row>
           <v-col md="6"
-          class="flex-column" > <v-img :width="600"
+          class="flex-column" > <v-img :width="800" :height="600"
             aspect-ratio="16/9"
-            cover
-            src="@/assets/Wärme_Haus.svg">
+           :src="pictureStatic">
         </v-img>
 
           </v-col>
@@ -60,8 +59,17 @@ import { useRoute } from 'vue-router';
 import { ref,computed } from 'vue';
 export default{
  components:{Ampel, Heizkreis,Energieverbrauch },
+
+  // data () {
+  //   return {
+  //     pictureStatic: require("@/assets/Haus-0.svg")
+  //   }
+  // }, https://dev.to/chadriae/change-picture-on-hover-with-vue-25lb --> combine data mit setup!! notwendig!!!
+
  setup () {
         const listofgeneralcomponents=['Energieverbrauch', 'Ampel'];
+
+
         //Grundfunktionen sind später auch User-abhängig/Gebäudespezifisch --> Pinia
 
         // const images = import.meta.glob('@/assets/*.svg', {as:'url', eager:true})
@@ -84,7 +92,7 @@ export default{
 
         const building= route.params.buildingid;
 
-     return { listofgeneralcomponents, grundfunktionen,building}
+     return { listofgeneralcomponents, grundfunktionen,building,pictureStatic}
  }
 }
 </script>
