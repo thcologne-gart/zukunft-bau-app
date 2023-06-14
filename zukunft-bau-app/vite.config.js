@@ -48,6 +48,11 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       */
+      '/nlpEndpoints': {
+        target: 'http://139.6.140.196:8003/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nlpEndpoints/, ''),
+      },
       '/startNlp': {
         target: 'http://localhost:8003',
         changeOrigin: true,

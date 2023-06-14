@@ -5,7 +5,7 @@
             <h3 style="color: #bc3384;">{{ title  }}</h3>
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
                 <v-col v-if="Object.values(funktion).length !== 0" cols = '12'>
-                    <v-card max-width="70%" class="mx-auto my-8" elevation="2">
+                    <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
                         <v-toolbar
                         color="success"
                         >
@@ -14,12 +14,12 @@
                         <v-divider class="mx-4" :thickness="3"></v-divider>
                         <div v-for="(komponente, key) in Object.values(funktion)" :key="key">
                             <v-expansion-panels>
-                                <v-expansion-panel elevation="1" rounded="0">
+                                <v-expansion-panel elevation="0" rounded="0">
                                     <v-expansion-panel-title style="font-size: 20px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
                                     <v-expansion-panel-text>
                                         <div v-for="datenpunkt in komponente" :key="datenpunkt['DatenpunktEbeneValue']">
                                             <v-expansion-panels>
-                                                <v-expansion-panel elevation="1" rounded="0">
+                                                <v-expansion-panel elevation="0" rounded="0">
                                                     <v-row>
                                                         <v-col>
                                                             <v-expansion-panel-title style="font-size: 18px;" color="#fcf0f7">
@@ -107,7 +107,7 @@ export default{
                 this.title = 'Luft versorgen'
                 this.grundfunktion = this.digitalTwinStore.luftVersorgen
                 this.zweiteGrundfunktion = this.digitalTwinStore.luftVersorgenZweite
-                console.log(this.zweiteGrundfunktion.length)
+                // console.log(this.zweiteGrundfunktion.length)
             }
         }
     }

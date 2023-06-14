@@ -13,6 +13,7 @@
                 v-bind="props"
                 variant="outlined"
                 color = "success"
+                size="small"
             >Edit Datenpunkt</v-btn>
             </v-container>
           </template>
@@ -55,12 +56,13 @@
                             @update:model-value="changeGrundfunktion"
                             />
                         </v-col>
-                        <v-col cols="4">
+                        <v-col cols="4" class="d-flex justify-center align-center">
                             <v-btn
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success">
+                            color = "success"
+                            @click="digitalTwinStore.editDatenpunktGrundfunktion(datenpunkt, predictedGrundfunktion)">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -84,12 +86,13 @@
                                 />
                             </div>
                         </v-col>
-                        <v-col cols="4">
+                        <v-col cols="4" class="d-flex justify-center align-center">
                             <v-btn
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success">
+                            color = "success"
+                            @click="digitalTwinStore.editDatenpunktZweiteEbene(datenpunkt, predictedGrundfunktion, predictedZweiteEbene)">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -113,12 +116,13 @@
                             @update:model-value="changeKomponente"
                             />
                         </v-col>
-                        <v-col cols="4">
+                        <v-col cols="4" class="d-flex justify-center align-center">
                             <v-btn
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success">
+                            color = "success"
+                            @click="digitalTwinStore.editDatenpunktKomponente(datenpunkt, predictedGrundfunktion, predictedZweiteEbene, predictedKomponente)">
                             Neue Vorhersage
                             </v-btn>
                         </v-col>
@@ -142,6 +146,15 @@
                             @update:model-value="changeDatenpunkt"
                             />
                         </v-col>
+                        <v-col cols="4" class="d-flex justify-center align-center">
+                            <v-btn
+                            class="ma-1"
+                            v-bind="props"
+                            variant="outlined"
+                            color = "success">
+                            Submit
+                            </v-btn>
+                        </v-col>
                     </v-row>
                         <div class="d-flex flex-column align-center">
                             <v-card-actions>
@@ -161,7 +174,7 @@
 </template>
 
 <script>
-import { useGeneralStore } from "@/store/general"
+import { useDigitalTwinsStore } from "@/store/digitaltwins"
 
 export default {
 
@@ -192,10 +205,10 @@ export default {
             'Beziehen': ['Fernwärme'],
             'Wärme speichern': ['Speicher'],
             'Speichern': ['Speicher'],
-            'Luft bereitstellen': ['Abluf allgemein', 'Abluftfilter','Abluftklappe', 'Ablufventilator', 'Außenluftfilter', 
+            'Luft bereitstellen': ['Abluft allgemein', 'Abluftfilter','Abluftklappe', 'Ablufventilator', 'Außenluftfilter', 
             'Außenluftklappe','Befeuchter', 'Erhitzer', 'Filter', 'Fortluftklappe', 'Gerät allgemein', 'Kühler', 'Ventilator', 'Wärmerückgewinnung', 'Zuluft allgemein',
             'Zuluftventilator', 'Zuluftfilter', 'Zuluftklappe'],
-            'LuftBereitstellen': ['Abluf allgemein', 'Abluftfilter','Abluftklappe', 'Ablufventilator', 'Außenluftfilter', 
+            'LuftBereitstellen': ['Abluft allgemein', 'Abluftfilter','Abluftklappe', 'Ablufventilator', 'Außenluftfilter', 
             'Außenluftklappe','Befeuchter', 'Erhitzer', 'Filter', 'Fortluftklappe', 'Gerät allgemein', 'Kühler', 'Ventilator', 'Wärmerückgewinnung', 'Zuluft allgemein',
             'Zuluftventilator', 'Zuluftfilter', 'Zuluftklappe'],
             'Luft verteilen': ['Auslass', 'Raum', 'Volumenstromregler Abluft', 'Volumenstromregler Raum', 'Volumenstromregler Zuluft'],
@@ -311,6 +324,9 @@ export default {
             'VolumenstromreglerRaum': ['Schaltbefehl', 'Rückmeldung Stellsignal', 'Stellbefehl', 'Rückmeldung Handschaltung'],
             'Volumenstromregler Raum': ['Schaltbefehl', 'Rückmeldung Stellsignal', 'Stellbefehl', 'Rückmeldung Handschaltung'],
 
+            'Gerät allgemein': ['Alarmmeldung', 'Anforderung Tableau', 'Messwert Außentemperatur', 'Sollwert Kühlbedarf', 'Schaltbefehl Anlage', 'Übersteuert', 'Rückmeldung Anfahrbetrieb', 'Rückmeldung Batterie', 'Rückmeldung Betrieb', 'Rückmeldung Handschaltung', 'Rückmeldung Quittierung', 'Rückmeldung Freie Nachtkühlung', 'Rückmeldung Ferienprogramm', 'Rückmeldung Nutzzeitverlängerung', 'Rückmeldung Restlaufzeit Nutzzeitverlängerung', 'Rückmeldung Spülen', 'Schaltbefehl Nachtkühlung', 'Schaltbefehl Optimierte Luftqualität', 'Schaltbefehl Tagesprogramm', 'Schaltbefehl Nutzzeitverlängerung', 'Sollwert Feuchte', 'Sollwert Spülzeit', 'Sollwert Freie-Nachtkühlung', 'Sollwert Nutzzeitverlängerung', 'Sollwert Wärmebedarf', 'Sollwert Maximale Einschaltverzögerung', 'Störmeldung', 'Rückmeldung Anlage Fern', 'Schaltbefehl Anlage Fern'],
+            'GeraetAllgemein': ['Alarmmeldung', 'Anforderung Tableau', 'Messwert Außentemperatur', 'Sollwert Kühlbedarf', 'Schaltbefehl Anlage', 'Übersteuert', 'Rückmeldung Anfahrbetrieb', 'Rückmeldung Batterie', 'Rückmeldung Betrieb', 'Rückmeldung Handschaltung', 'Rückmeldung Quittierung', 'Rückmeldung Freie Nachtkühlung', 'Rückmeldung Ferienprogramm', 'Rückmeldung Nutzzeitverlängerung', 'Rückmeldung Restlaufzeit Nutzzeitverlängerung', 'Rückmeldung Spülen', 'Schaltbefehl Nachtkühlung', 'Schaltbefehl Optimierte Luftqualität', 'Schaltbefehl Tagesprogramm', 'Schaltbefehl Nutzzeitverlängerung', 'Sollwert Feuchte', 'Sollwert Spülzeit', 'Sollwert Freie-Nachtkühlung', 'Sollwert Nutzzeitverlängerung', 'Sollwert Wärmebedarf', 'Sollwert Maximale Einschaltverzögerung', 'Störmeldung', 'Rückmeldung Anlage Fern', 'Schaltbefehl Anlage Fern'],
+
             'Waermerueckgewinnung': ['Alarmmeldung', 'Messwert Temperatur Austritt Zuluft', 'Messwert Temperatur Eintritt Zuluft', 'Messwert Temperatur Eintritt Abluft', 'Messwert Temperatur Austritt Abluft', 'Messwert Vorlauftemperatur', 'Pumpe', 'Rückmeldung Betrieb', 'Rückmeldung Handschaltung', 'Rückmeldung Stellsignal', 'Schaltbefehl', 'Sollwert Frostschutz', 'Sollwert Stellsignal', 'Sollwert Stellsignal Min', 'Sollwert Stellsignal Max', 'Stellbefehl', 'Stellbefehl WRG Bypass', 'Störmeldung'],
             'Wärmerückgewinnung': ['Alarmmeldung', 'Messwert Temperatur Austritt Zuluft', 'Messwert Temperatur Eintritt Zuluft', 'Messwert Temperatur Eintritt Abluft', 'Messwert Temperatur Austritt Abluft', 'Messwert Vorlauftemperatur', 'Pumpe', 'Rückmeldung Betrieb', 'Rückmeldung Handschaltung', 'Rückmeldung Stellsignal', 'Schaltbefehl', 'Sollwert Frostschutz', 'Sollwert Stellsignal', 'Sollwert Stellsignal Min', 'Sollwert Stellsignal Max', 'Stellbefehl', 'Stellbefehl WRG Bypass', 'Störmeldung'],
         },
@@ -357,8 +373,8 @@ export default {
         }
     },    
     computed: {
-        generalStore () {
-          return useGeneralStore()
+        digitalTwinStore () {
+        return useDigitalTwinsStore()
         }
     }
 }

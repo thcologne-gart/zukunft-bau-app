@@ -5,6 +5,7 @@ import axios from 'axios'
 export const useDigitalTwinsStore = defineStore('digitalTwins', {
     state: () => {
       return {
+        aasId: '',
         nlpSubmodel: [],
         allNlpSubmodelElements: [],
         wärmeVersorgen: [],  
@@ -43,10 +44,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             let formData = new FormData()
             // formData.append("aas", this.file[0])
             formData.append("aas", bacnetAas[0])
-            console.log(formData)
-            console.log('Start NLP')
+            // console.log(formData)
+            // console.log('Start NLP')
             try {
-                const response = await axios.post('/startNlp/startNLPPipeline', formData, {
+                const response = await axios.post('/nlpEndpoints/startNLPPipeline', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -58,7 +59,171 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             const aas_id = '/TestAAS'
             this.getBasyxNlpSubmodel(aas_id)
         },
+        async editDatenpunktGrundfunktion (datenpunkt, predictedGrundfunktion) {
+            const startPrediction = 'Grundfunktion'
+            if (predictedGrundfunktion == 'Wärme versorgen') {
+                predictedGrundfunktion = 'WaermeVersorgen'
+            } else if (predictedGrundfunktion == 'Luft versorgen') {
+                predictedGrundfunktion = 'LuftVersorgen'
+            }
+
+            const datapointInformation = {
+                startPrediction: startPrediction,
+                correctedLabel: predictedGrundfunktion,
+                nlpInput: datenpunkt['NLPInput'],
+                idShort: datenpunkt['IdShort']
+            }
+            console.log(datapointInformation)
+            //let formData = new FormData()
+            // formData.append('datapointInformation', datapointInformation)
+            //formData.append('correctedLabel', predictedGrundfunktion)
+            // formData.append('datapoint', datenpunkt)
+
+            try {
+                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
+                console.log(response.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async editDatenpunktZweiteEbene (datenpunkt, predictedGrundfunktion, predictedZweiteEbene) {
+            console.log(predictedZweiteEbene)
+            const startPrediction = 'ZweiteEbene'
+
+            if (predictedGrundfunktion == 'Wärme versorgen') {
+                predictedGrundfunktion = 'WaermeVersorgen'
+            } else if (predictedGrundfunktion == 'Luft versorgen') {
+                predictedGrundfunktion = 'LuftVersorgen'
+            }
+
+            if (predictedZweiteEbene == 'Wärme verteilen') {
+                predictedZweiteEbene = 'Verteilen'
+            } else if (predictedZweiteEbene == 'Wärme erzeugen') {
+                predictedZweiteEbene = 'Erzeugen'
+            } else if (predictedZweiteEbene == 'Wärme beziehen') {
+                predictedZweiteEbene = 'Beziehen'
+            } else if (predictedZweiteEbene == 'Wärme speichern') {
+                predictedZweiteEbene = 'Speichern'
+            } else if (predictedZweiteEbene == 'Luft verteilen') {
+                predictedZweiteEbene = 'LuftVerteilen'
+            } else if (predictedZweiteEbene == 'Luft bereitstellen') {
+                predictedZweiteEbene = 'LuftBereitstellen'
+            }
+
+            const datapointInformation = {
+                startPrediction: startPrediction,
+                labelGrundfunktion: predictedGrundfunktion,
+                labelZweiteEbene: predictedZweiteEbene,                
+                nlpInput: datenpunkt['NLPInput'],
+                idShort: datenpunkt['IdShort']
+            }
+            console.log(datapointInformation)
+            //let formData = new FormData()
+            // formData.append('datapointInformation', datapointInformation)
+            //formData.append('correctedLabel', predictedGrundfunktion)
+            // formData.append('datapoint', datenpunkt)
+
+            try {
+                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
+                console.log(response.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async editDatenpunktKomponente (datenpunkt, predictedGrundfunktion, predictedZweiteEbene, predictedKomponente) {
+            const startPrediction = 'Komponente'
+
+            if (predictedGrundfunktion == 'Wärme versorgen') {
+                predictedGrundfunktion = 'WaermeVersorgen'
+            } else if (predictedGrundfunktion == 'Luft versorgen') {
+                predictedGrundfunktion = 'LuftVersorgen'
+            } 
+            
+            if (predictedZweiteEbene == 'Wärme verteilen') {
+                predictedZweiteEbene = 'Verteilen'
+            } else if (predictedZweiteEbene == 'Wärme erzeugen') {
+                predictedZweiteEbene = 'Erzeugen'
+            } else if (predictedZweiteEbene == 'Wärme beziehen') {
+                predictedZweiteEbene = 'Beziehen'
+            } else if (predictedZweiteEbene == 'Wärme speichern') {
+                predictedZweiteEbene = 'Speichern'
+            } else if (predictedZweiteEbene == 'Luft verteilen') {
+                predictedZweiteEbene = 'LuftVerteilen'
+            } else if (predictedZweiteEbene == 'Luft bereitstellen') {
+                predictedZweiteEbene = 'LuftBereitstellen'
+            } 
+            
+            if (predictedKomponente == 'Fernwärme') {
+                predictedKomponente = 'Fernwaerme'
+            } else if (predictedKomponente == 'Wärmepumpe') {
+                predictedKomponente = 'Waermepumpe'
+            } else if (predictedKomponente == 'Rücklauf') {
+                predictedKomponente = 'Ruecklauf'
+            } else if (predictedKomponente == 'Heizkreis allgemein') {
+                predictedKomponente = 'HeizkreisAllgemein'
+            } else if (predictedKomponente == 'Abluft allgemein') {
+                predictedKomponente = 'AbluftAllgemein'
+            } else if (predictedKomponente == 'Zuluft allgemein') {
+                predictedKomponente = 'ZuluftAllgemein'
+            } else if (predictedKomponente == 'Kühler') {
+                predictedKomponente = 'Kuehler'
+            } else if (predictedKomponente == 'Volumenstromregler Abluft') {
+                predictedKomponente = 'VolumenstromreglerAbluft'
+            } else if (predictedKomponente == 'Volumenstromregler Zuluft') {
+                predictedKomponente = 'VolumenstromreglerZuluft'
+            } else if (predictedKomponente == 'Volumenstromregler Raum') {
+                predictedKomponente = 'VolumenstromreglerRaum'
+            } else if (predictedKomponente == 'Wärmerückgewinnung') {
+                predictedKomponente = 'Waermerueckgewinnung'
+            } else if (predictedZweiteEbene == 'Gerät allgemein') {
+                predictedZweiteEbene = 'GeraetAllgemein'
+            }
+
+            const datapointInformation = {
+                startPrediction: startPrediction,
+                labelGrundfunktion: predictedGrundfunktion,
+                labelZweiteEbene: predictedZweiteEbene,  
+                labelKomponente: predictedKomponente,              
+                nlpInput: datenpunkt['NLPInput'],
+                idShort: datenpunkt['IdShort']
+            }
+            console.log(datapointInformation)
+            //let formData = new FormData()
+            // formData.append('datapointInformation', datapointInformation)
+            //formData.append('correctedLabel', predictedGrundfunktion)
+            // formData.append('datapoint', datenpunkt)
+            let editingReady = ''
+            try {
+                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
+                console.log(response.data)
+                editingReady = this.editBasyxNlpSubmodel(response.data, datapointInformation)
+            } catch (error) {
+                console.error(error)
+            }
+
+            return editingReady
+
+        },
+        async editBasyxNlpSubmodel() {
+            //const aasBasyxServer = "http://3.83.126.51:4001/aasServer/shells"
+            //const uriAas = aasBasyxServer + '/' + this.aasId + '/aas'
+            //const uriSubmodel = uriAas + '/submodels/NLPClassificationResult/submodel'
+
+        },
         async getBasyxNlpSubmodel(aas_id) {
+            this.aasId = aas_id
             const aasBasyxServer = "http://3.83.126.51:4001/aasServer/shells"
             const uriAas = aasBasyxServer + '/' + aas_id + '/aas'
             const uriSubmodel = uriAas + '/submodels/NLPClassificationResult/submodel'
@@ -71,7 +236,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 })
                 const nlpSubmodel = response.data
                 const submodelElements = nlpSubmodel['submodelElements']
-                console.log(submodelElements)
+                //console.log(submodelElements)
                 const allSubmodelElements = []
                 const wärmeVersorgen = []
                 const luftVersorgen = []
@@ -105,8 +270,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 }
 
                 for (let submodelElement in submodelElements) {
-                    console.log(submodelElement)
-                    // let idShort = submodelElements[submodelElement]['idShort']
+                    // console.log(submodelElement)
+                    let idShort = submodelElements[submodelElement]['idShort']
                     let grundfunktionValue = submodelElements[submodelElement]['value'][0]['value'][0]['value'][0]['value']
                     let grundfunktionScore = submodelElements[submodelElement]['value'][0]['value'][0]['value'][1]['value']
                     let zweiteEbeneValue = submodelElements[submodelElement]['value'][1]['value'][0]['value'][0]['value']
@@ -136,9 +301,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         'NLPInput': nlpInput,
                         'ObjectName': objectName,
                         'ObjectType': objectType,
-                        'Description': description
+                        'Description': description,
+                        'IdShort': idShort
                     }
-                    console.log(submodelElementInfo)
+                    //console.log(submodelElementInfo)
                     allSubmodelElements.push(submodelElementInfo)
                     if (grundfunktionValue == 'WaermeVersorgen') {
                         wärmeVersorgen.push(submodelElementInfo)
@@ -179,7 +345,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         stromVersorgen.push(submodelElementInfo)
                     }
                 }
-                console.log(wärmeVersorgenZweite)
+                //console.log(wärmeVersorgenZweite)
                 for (const key1 in wärmeVersorgenZweite) {
                     if (Object.prototype.hasOwnProperty.call(wärmeVersorgenZweite, key1)) {
                       const innerObj = wärmeVersorgenZweite[key1];
@@ -194,10 +360,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     }
                 }
 
-                console.log(wärmeVersorgenZweite)
+                // console.log(wärmeVersorgenZweite)
 
 
-                console.log(allSubmodelElements)
+                // console.log(allSubmodelElements)
                 this.wärmeVersorgen = wärmeVersorgen
                 this.wärmeVersorgenZweite = wärmeVersorgenZweite
 
