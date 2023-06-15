@@ -50,9 +50,7 @@
   
   <style scoped>
   #footer {
-    position: absolute;
     width: 100%;
-    bottom: 0;
     margin-top: 10%;
     padding-top: 0 ;
     padding-bottom: 0;

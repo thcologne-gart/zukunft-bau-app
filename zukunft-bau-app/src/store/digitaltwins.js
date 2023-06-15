@@ -5,32 +5,15 @@ import axios from 'axios'
 export const useDigitalTwinsStore = defineStore('digitalTwins', {
     state: () => {
       return {
+        showProgressUploadAas: false,
+        showProgressEditDatenpunkt: false,
         aasId: '',
         nlpSubmodel: [],
         allNlpSubmodelElements: [],
         wärmeVersorgen: [],  
-        wärmeVersorgenZweite: {
-            'Verteilen': {
-                'Pumpe': [],
-                'Heizkreis allgemein': []
-            },
-            'Erzeugen': {
-                'BHKW': [],
-                'Wärmeerzeuger allgemein': [],
-                'Wärmepumpe': [],
-            },
-            'Beziehen': {},
-            'Speichern': {}
-        },
+        wärmeVersorgenZweite: {},
         luftVersorgen: [],
-        luftVersorgenZweite: {
-            'Verteilen': {
-                'Volumenstromregler Zuluft': []
-            },
-            'Bereitstellen': {
-                'Zuluftventilator': []
-            }
-        }
+        luftVersorgenZweite: {}
         ,
         kälteVersorgen: [],
         stromVersorgen: [],
@@ -41,6 +24,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
     },
     actions: {
         async startNlp(bacnetAas) {
+            this.showProgressUploadAas = true
             let formData = new FormData()
             // formData.append("aas", this.file[0])
             formData.append("aas", bacnetAas[0])
@@ -58,8 +42,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             }
             const aas_id = '/TestAAS'
             this.getBasyxNlpSubmodel(aas_id)
+            this.showProgressUploadAas = false
         },
         async editDatenpunktGrundfunktion (datenpunkt, predictedGrundfunktion) {
+            this.showProgressEditDatenpunkt = true
             const startPrediction = 'Grundfunktion'
             if (predictedGrundfunktion == 'Wärme versorgen') {
                 predictedGrundfunktion = 'WaermeVersorgen'
@@ -90,8 +76,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             } catch (error) {
                 console.error(error)
             }
+            this.showProgressEditDatenpunkt = false
         },
         async editDatenpunktZweiteEbene (datenpunkt, predictedGrundfunktion, predictedZweiteEbene) {
+            this.showProgressEditDatenpunkt = true            
             console.log(predictedZweiteEbene)
             const startPrediction = 'ZweiteEbene'
 
@@ -139,8 +127,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             } catch (error) {
                 console.error(error)
             }
+            this.showProgressEditDatenpunkt = false
         },
         async editDatenpunktKomponente (datenpunkt, predictedGrundfunktion, predictedZweiteEbene, predictedKomponente) {
+            this.showProgressEditDatenpunkt = true
             const startPrediction = 'Komponente'
 
             if (predictedGrundfunktion == 'Wärme versorgen') {
@@ -216,8 +206,36 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             }
 
             //this.getBasyxNlpSubmodel(this.aasId)
+            this.showProgressEditDatenpunkt = false
 
             return editingReady
+        },
+        async editDatenpunkt (datenpunkt, predictedGrundfunktion, predictedZweiteEbene, predictedKomponente, predictedDatenpunkt) {
+            
+            this.showProgressEditDatenpunkt = true
+            const startPrediction = 'Datenpunkt'
+            const datapointInformation = {
+                startPrediction: startPrediction,
+                labelGrundfunktion: predictedGrundfunktion,
+                labelZweiteEbene: predictedZweiteEbene,  
+                labelKomponente: predictedKomponente,   
+                labelDatenpunkt: predictedDatenpunkt,           
+                nlpInput: datenpunkt['NLPInput'],
+                idShort: datenpunkt['IdShort'],
+                aasId: this.aasId
+            }
+            try {
+                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
+                console.log(response.data)
+            } catch (error) {
+                console.error(error)
+            }
+            this.showProgressEditDatenpunkt = false
+
         },
         async getBasyxNlpSubmodel(aas_id) {
             this.aasId = aas_id
@@ -245,6 +263,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     'Verteilen': {
                         'Pumpe': [],
                         'Heizkreis allgemein': [],
+                        'Ventil': [],
+                        'Raum': [],
                         'Vorlauf': [],
                         'Rücklauf': []
                     },
@@ -252,18 +272,41 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         'BHKW': [],
                         'Wärmeerzeuger allgemein': [],
                         'Wärmepumpe': [],
+                        'Kessel': [],
+                        'Pelletkessel': []
                     },
-                    'Beziehen': {},
-                    'Speichern': {}
+                    'Beziehen': {
+                        'Fernwärme': [],
+                    },
+                    'Speichern': {
+                        'Speicher': []
+                    }
                 }
                 const luftVersorgenZweite = {
                     'Verteilen': {
                         'Volumenstromregler Zuluft': [],
-                        'Volumenstromregler Abluft': []
+                        'Volumenstromregler Abluft': [],
+                        'Volumenstromregler Raum': [],
+                        'Raum': [],
                     },
                     'Bereitstellen': {
                         'Zuluftventilator': [],
-                        'Abluftfilter': []
+                        'Abluft allgemein': [],
+                        'Zuluft allgemein': [],
+                        'Abluftventilator': [],
+                        'Fortluftklappe': [],
+                        'Abluftklappe': [],
+                        'Zuluftklappe': [],
+                        'Außenluftklappe': [],
+                        'Befeuchter': [],
+                        'Erhitzer': [],
+                        'Abluftfilter': [],
+                        'Zuluftfilter': [],
+                        'Filter': [],
+                        'Außenluftfilter': [],
+                        'Gerät allgemein': [],
+                        'Kühler': [],
+                        'Wärmerückgewinnung': [],
                     }
                 }
 
@@ -314,15 +357,23 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                             wärmeVersorgenZweite['Verteilen']['Vorlauf'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Ruecklauf') {
                             wärmeVersorgenZweite['Verteilen']['Rücklauf'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Ventil') {
+                            wärmeVersorgenZweite['Verteilen']['Ventil'].push(submodelElementInfo)
+
                         } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'WaermeversorgerAllgemein') {
-                            console.log(wärmeVersorgenZweite['Erzeugen']['Wärmeerzeuger allgemein'])
                             wärmeVersorgenZweite['Erzeugen']['Wärmeerzeuger allgemein'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Kessel') {
+                            wärmeVersorgenZweite['Erzeugen']['Kessel'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Pelletkessel') {
+                            wärmeVersorgenZweite['Erzeugen']['Pelletkessel'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Waermepumpe') {
+                            wärmeVersorgenZweite['Erzeugen']['Waermepumpe'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'BHKW') {
                             wärmeVersorgenZweite['Erzeugen']['BHKW'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Beziehen') {
-                            wärmeVersorgenZweite['Beziehen'].push(submodelElementInfo)
+                            wärmeVersorgenZweite['Beziehen']['Fernwärme'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'Speichern') {
-                            wärmeVersorgenZweite['Speichern'].push(submodelElementInfo)
+                            wärmeVersorgenZweite['Speichern']['Speicher'].push(submodelElementInfo)
                         }
                     } else if (grundfunktionValue == 'LuftVersorgen') {
                         luftVersorgen.push(submodelElementInfo)
@@ -330,8 +381,40 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                             luftVersorgenZweite['Verteilen']['Volumenstromregler Zuluft'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftVerteilen' && komponentenEbeneValue == 'VolumenstromreglerAbluft') {
                             luftVersorgenZweite['Verteilen']['Volumenstromregler Abluft'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftVerteilen' && komponentenEbeneValue == 'VolumenstromreglerRaum') {
+                            luftVersorgenZweite['Verteilen']['Volumenstromregler Raum'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftVerteilen' && komponentenEbeneValue == 'Raum') {
+                            luftVersorgenZweite['Verteilen']['Raum'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Zuluftventilator') {
                             luftVersorgenZweite['Bereitstellen']['Zuluftventilator'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'AbluftAllgemein') {
+                            luftVersorgenZweite['Bereitstellen']['Abluft allgemein'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'ZuluftAllgemein') {
+                            luftVersorgenZweite['Bereitstellen']['Zuluft allgemein'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Abluftventilator') {
+                            luftVersorgenZweite['Bereitstellen']['Abluftventilator'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Fortluftklappe') {
+                            luftVersorgenZweite['Bereitstellen']['Fortluftklappe'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Abluftklappe') {
+                            luftVersorgenZweite['Bereitstellen']['Abluftklappe'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Zuluftklappe') {
+                            luftVersorgenZweite['Bereitstellen']['Zuluftklappe'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Außenluftklappe') {
+                            luftVersorgenZweite['Bereitstellen']['Außenluftklappe'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Befeuchter') {
+                            luftVersorgenZweite['Bereitstellen']['Befeuchter'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Erhitzer') {
+                            luftVersorgenZweite['Bereitstellen']['Erhitzer'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Zuluftfilter') {
+                            luftVersorgenZweite['Bereitstellen']['Zuluftfilter'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Außenluftfilter') {
+                            luftVersorgenZweite['Bereitstellen']['Außenluftfilter'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'GerätAllgemein') {
+                            luftVersorgenZweite['Bereitstellen']['Gerät allgemein'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Kühler') {
+                            luftVersorgenZweite['Bereitstellen']['Kühler'].push(submodelElementInfo)
+                        } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Wärmerückgewinnung') {
+                            luftVersorgenZweite['Bereitstellen']['Wärmerückgewinnung'].push(submodelElementInfo)
                         } else if (zweiteEbeneValue == 'LuftBereitstellen' && komponentenEbeneValue == 'Abluftfilter') {
                             luftVersorgenZweite['Bereitstellen']['Abluftfilter'].push(submodelElementInfo)
                         }
@@ -349,6 +432,20 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 for (const key1 in wärmeVersorgenZweite) {
                     if (Object.prototype.hasOwnProperty.call(wärmeVersorgenZweite, key1)) {
                       const innerObj = wärmeVersorgenZweite[key1];
+                      for (const key2 in innerObj) {
+                        if (Object.prototype.hasOwnProperty.call(innerObj, key2)) {
+                          const arr = innerObj[key2];
+                          if (Array.isArray(arr) && arr.length === 0) {
+                            delete innerObj[key2];
+                          }
+                        }
+                      }
+                    }
+                }
+
+                for (const key1 in luftVersorgenZweite) {
+                    if (Object.prototype.hasOwnProperty.call(luftVersorgenZweite, key1)) {
+                      const innerObj = luftVersorgenZweite[key1];
                       for (const key2 in innerObj) {
                         if (Object.prototype.hasOwnProperty.call(innerObj, key2)) {
                           const arr = innerObj[key2];

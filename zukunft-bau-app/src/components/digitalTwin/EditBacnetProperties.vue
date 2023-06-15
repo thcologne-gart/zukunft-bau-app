@@ -151,22 +151,31 @@
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success">
+                            color = "success"
+                            @click ="updataDatenpunktBasyx()">
                             Submit
                             </v-btn>
                         </v-col>
                     </v-row>
-                        <div class="d-flex flex-column align-center">
-                            <v-card-actions>
-                                <v-btn
-                                    variant="outlined"
-                                    color = "success"
-                                    @click="dialog = false"
-                                >
-                                    Close
-                                </v-btn>
-                            </v-card-actions>
+                    <div class="d-flex flex-column align-center">
+                        <v-card-actions>
+                            <v-btn
+                                variant="outlined"
+                                color = "success"
+                                @click="dialog = false"
+                            >
+                                Close
+                            </v-btn>
+                        </v-card-actions>
+                    </div>
+                    <v-container>
+                        <div v-if="digitalTwinStore.showProgressEditDatenpunkt === true">
+                            <v-progress-linear
+                            indeterminate
+                            color="success"
+                            ></v-progress-linear>
                         </div>
+                    </v-container>
                 </v-container>
         </v-card>
     </v-dialog>
@@ -383,6 +392,11 @@ export default {
         },
         async editDatenpunkt () {
             const result = await this.digitalTwinStore.editDatenpunktKomponente(this.datenpunkt, this.predictedGrundfunktion, this.predictedZweiteEbene, this.predictedKomponente)
+            console.log(result)
+            this.$emit('editNlp')
+        },
+        async updataDatenpunktBasyx () {
+            const result = await this.digitalTwinStore.editDatenpunkt(this.datenpunkt, this.predictedGrundfunktion, this.predictedZweiteEbene, this.predictedKomponente, this.predictedDatenpunkt)
             console.log(result)
             this.$emit('editNlp')
         }
