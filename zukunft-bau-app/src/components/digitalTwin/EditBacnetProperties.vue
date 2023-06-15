@@ -9,7 +9,6 @@
             <!--<v-btn class="ma-3" @click="getData()">Get Data</v-btn>-->
             <v-container class="d-flex justify-center align-center">
               <v-btn
-                class="ma-1"
                 v-bind="props"
                 variant="outlined"
                 color = "success"
@@ -63,7 +62,7 @@
                             variant="outlined"
                             color = "success"
                             @click="editZweiteEbene()">
-                            Neue Vorhersage
+                            New Prediction
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -93,7 +92,7 @@
                             variant="outlined"
                             color = "success"
                             @click ="editKomponente()">
-                            Neue Vorhersage
+                            New Prediction
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -123,7 +122,7 @@
                             variant="outlined"
                             color = "success"
                             @click ="editDatenpunkt()">
-                            Neue Vorhersage
+                            New Prediction
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -346,9 +345,62 @@ export default {
     },
     
     created() {
-        this.predictedGrundfunktion = this.datenpunkt['GrundfunktionValue']
-        this.predictedZweiteEbene = this.datenpunkt['ZweiteEbeneValue']
-        this.predictedKomponente = this.datenpunkt['KomponentenEbeneValue']
+
+        if (this.datenpunkt['GrundfunktionValue'] == 'WaermeVersorgen') {
+            this.predictedGrundfunktion = 'Wärme versorgen'
+        } else if (this.datenpunkt['GrundfunktionValue'] == 'LuftVersorgen') {
+            this.predictedGrundfunktion = 'Luft versorgen'
+        } else {
+            this.predictedGrundfunktion = this.datenpunkt['GrundfunktionValue']
+        }
+        
+        if (this.datenpunkt['ZweiteEbeneValue'] == 'Verteilen') {
+            this.predictedZweiteEbene = 'Wärme verteilen'
+        } else if (this.datenpunkt['ZweiteEbeneValue'] == 'Erzeugen') {
+            this.predictedZweiteEbene = 'Wärme erzeugen'
+        } else if (this.datenpunkt['ZweiteEbeneValue'] == 'Beziehen') {
+            this.predictedZweiteEbene = 'Wärme beziehen'
+        } else if (this.datenpunkt['ZweiteEbeneValue'] == 'Speichern') {
+            this.predictedZweiteEbene = 'Wärme speichern'
+        } else if (this.datenpunkt['ZweiteEbeneValue'] == 'LuftVerteilen') {
+            this.predictedZweiteEbene = 'Luft verteilen'
+        } else if (this.datenpunkt['ZweiteEbeneValue'] == 'LuftBereitstellen') {
+            this.predictedZweiteEbene = 'Luft bereitstellen'
+        } else {
+            this.predictedZweiteEbene = this.datenpunkt['ZweiteEbeneValue']
+        }
+        
+        if (this.datenpunkt['KomponentenEbeneValue'] == 'Fernwaerme') {
+            this.predictedKomponente = 'Fernwärme'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'Waermepumpe') {
+            this.predictedKomponente = 'Wärmepumpe'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'Ruecklauf') {
+            this.predictedKomponente = 'Rücklauf'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'HeizkreisAllgemein') {
+            this.predictedKomponente = 'Heizkreis allgemein'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'AbluftAllgemein') {
+            this.predictedKomponente = 'Abluft allgemein'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'ZuluftAllgemein') {
+            this.predictedKomponente = 'Zuluft allgemein'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'Kuehler') {
+            this.predictedKomponente = 'Kühler'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'VolumenstromreglerAbluft') {
+            this.predictedKomponente = 'Volumenstromregler Abluft'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'VolumenstromreglerZuluft') {
+            this.predictedKomponente = 'Volumenstromregler Zuluft'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'VolumenstromreglerRaum') {
+            this.predictedKomponente = 'Volumenstromregler Raum'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'Waermerueckgewinnung') {
+            this.predictedKomponente = 'Wärmeräckgewinnung'
+        } else if (this.datenpunkt['KomponentenEbeneValue'] == 'GeraetAllgemein') {
+            this.predictedKomponente = 'Gerät allgemein'
+        } else {
+            this.predictedKomponente = this.datenpunkt['KomponentenEbeneValue']
+        }
+
+        //this.predictedGrundfunktion = this.datenpunkt['GrundfunktionValue']
+        //this.predictedZweiteEbene = this.datenpunkt['ZweiteEbeneValue']
+        // this.predictedKomponente = this.datenpunkt['KomponentenEbeneValue']
         this.predictedDatenpunkt = this.datenpunkt['DatenpunktEbeneValue']
         this.predictedGrundfunktionScore = this.datenpunkt['GrundfunktionScore']
         this.predictedZweiteEbeneScore = this.datenpunkt['ZweiteEbeneScore']

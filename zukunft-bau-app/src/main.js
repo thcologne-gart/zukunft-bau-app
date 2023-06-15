@@ -5,6 +5,11 @@
  */
 
 // Components
+
+
+/* eslint-disable no-undef */
+
+
 import App from './App.vue'
 
 // Composables
@@ -18,6 +23,7 @@ import  { Loader } from '@googlemaps/js-api-loader'
 const app = createApp(App)
 
 registerPlugins(app)
+
 const loader = new Loader({ 
     apiKey: 'AIzaSyDrSZaSw1y8mnFuNa_ZYHTd-0kFxd4eCnQ',
     version: "weekly",

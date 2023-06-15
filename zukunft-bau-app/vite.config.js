@@ -48,6 +48,11 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       */
+      '/awsNlpEndpoints': {
+        target: 'http://3.95.230.131:8003/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/awsNlpEndpoints/, ''),
+      },
       '/nlpEndpoints': {
         target: 'http://139.6.140.196:8003/',
         changeOrigin: true,
