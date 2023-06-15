@@ -16,6 +16,14 @@
                     color="success"
                     @click="digitalTwinStore.startNlp(file)">Upload AAS
                 </v-btn>
+                <v-container>
+                    <div v-if="digitalTwinStore.showProgressUploadAas === true">
+                        <v-progress-linear
+                        indeterminate
+                        color="success"
+                        ></v-progress-linear>
+                    </div>
+                </v-container>
                 <NlpResults />                
         </v-container>
     </div>

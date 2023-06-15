@@ -13,7 +13,7 @@
                         </v-toolbar>
                         <v-divider class="mx-4" :thickness="3"></v-divider>
                         <div v-for="(komponente, key) in Object.values(funktion)" :key="key">
-                            <v-expansion-panels>
+                            <v-expansion-panels v-if="komponente.length !== 0">
                                 <v-expansion-panel elevation="0" rounded="0">
                                     <v-expansion-panel-title style="font-size: 20px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
                                     <v-expansion-panel-text>
@@ -31,7 +31,7 @@
                                                                         <p class="my-4">Score Datenpunkt: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>
                                                                     </v-col>
                                                                     <v-col cols="4">
-                                                                        <EditBacnetProperties :datenpunkt="datenpunkt"/>
+                                                                        <EditBacnetProperties @editNlp="getNlpSubmodel('TestAAS')" :datenpunkt="datenpunkt"/>
                                                                     </v-col>
                                                                 </v-row>
                                                                 <v-divider></v-divider>
