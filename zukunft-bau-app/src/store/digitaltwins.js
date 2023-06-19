@@ -229,8 +229,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 aasId: this.aasId
             }
             try {
-                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
-                //const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
+                //const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -245,7 +245,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
         async getBasyxNlpSubmodel(aas_id) {
             this.aasId = aas_id
             const aasBasyxServer = "http://3.83.126.51:4001/aasServer/shells"
-            //const aasBasyxServer = 'http://54.164.108.185:4003/aasServer/shells'
+            //const aasBasyxServer = 'http://52.23.209.38:4003/aasServer/shells'
             const uriAas = aasBasyxServer + '/' + aas_id + '/aas'
             const uriSubmodel = uriAas + '/submodels/NLPClassificationResult/submodel'
 
@@ -478,6 +478,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 this.kälteVersorgen = kälteVersorgen
                 this.stromVersorgen = stromVersorgen
                 this.allNlpSubmodelElements = allSubmodelElements
+
+                console.log(allSubmodelElements)
 
                 return allSubmodelElements
 

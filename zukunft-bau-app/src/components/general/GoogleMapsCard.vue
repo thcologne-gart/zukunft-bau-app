@@ -1,21 +1,71 @@
 <template>
-  <div class="google-map-card">
-    <v-btn
-    @click="initMap()">
-
-    </v-btn>
-    <div id="map"></div>
+  <div>
+    <v-container>
+        <div class="google-map-card">
+          <div id="map"></div>
+        </div>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
+import { useGeneralStore } from "@/store/general"
 
 export default {
+  data () {
+      return {
+        siteId: '',
+        siteCoordinates: []
+      }
+  },
+  mounted () {
+    this.initMap()
+  },
+  created() {
+        const site_id = this.$route.params.siteid
+        this.siteId = site_id
+    },
+    computed: {
+        generalStore () {
+        return useGeneralStore()
+        }
+    },
     methods: {
-        async initMap() {
+        initMap() {
             /* eslint-disable no-undef */
-            const uluru = { lat: -25.344, lng: 131.031 };
+            for (let site in this.generalStore.loadedSiteInformation) {
+              if (this.siteId === this.generalStore.loadedSiteInformation[site]['siteName']) {
+                console.log('heureka')
+                this.siteCoordinates.push({ 
+                  'lat': this.generalStore.loadedSiteInformation[site]['lat'],
+                  'lng': this.generalStore.loadedSiteInformation[site]['lng']
+                })
+                //this.siteCoordinates['lat'] = this.generalStore.loadedSiteInformation[site]['lat']
+                //this.siteCoordinates['lng'] = this.generalStore.loadedSiteInformation[site]['lng']
+              }
+            }
+            /*
+            for (let element in this.generalStore.loadedSiteInformationWithBuildings) {
+              //console.log(Object.values(this.generalStore.loadedSiteInformationWithBuildings)[element])
+              let site = Object.values(this.generalStore.loadedSiteInformationWithBuildings)[element]
+              let siteName = Object.keys(site)
+              console.log(siteName[0])
+              if (this.siteId === siteName[0]) {
+                let buildings = Object.values(site)
+                console.log(buildings)
+                for (let building in buildings[0]) {
+                  console.log(buildings[0][building])
+                  this.siteCoordinates.push({ 
+                    'lat': buildings[0][building]['buildingInformation']['lat'],
+                    'lng': buildings[0][building]['buildingInformation']['lng']
+                  })
+                }
+              }
+            }
+            */
+            console.log(this.siteCoordinates)
+            //const uluru = { lat: -25.344, lng: 131.031 };
 
             const loader = new Loader({
                 apiKey: 'AIzaSyDrSZaSw1y8mnFuNa_ZYHTd-0kFxd4eCnQ',
@@ -23,15 +73,16 @@ export default {
                 libraries: ['places']
             });
             console.log(loader)
+            let map
 
             loader.load().then(() => {
-                const map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 4,
-                    center: uluru
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 10,
+                    center: this.siteCoordinates[0]
                 });
                 console.log(map)
                 const marker = new google.maps.Marker({
-                    position: uluru,
+                    position: this.siteCoordinates[0],
                     map: map
                 });
                 console.log(marker)
@@ -43,12 +94,15 @@ export default {
 
 <style scoped>
 .google-map-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 400px;
 }
 
-.map {
-  width: 100%;
-  height: 100%;
+#map {
+  width: 80%;
+  height:100%;
 }
 </style>

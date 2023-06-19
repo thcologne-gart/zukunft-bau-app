@@ -3,9 +3,6 @@
         <v-container>
             <h2 style="color: #bc3384;">Digital Twins - {{ $route.params.siteid }}</h2>
             <GoogleMapsCard />
-            <v-card>
-                Test
-            </v-card>
         </v-container>
     </div>
 </template> 

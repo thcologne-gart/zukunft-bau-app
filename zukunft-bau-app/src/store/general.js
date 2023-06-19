@@ -9,7 +9,7 @@ export const useGeneralStore = defineStore('general', {
         loading: false,
         loadedSiteInformation: [],
         loadedSiteInformationWithBuildings: [],
-        loadedSiteBuildingInformation: [],
+        //loadedSiteBuildingInformation: [],
         loadedOrganizationInformation: [],
       // all these properties will have their type inferred automatically
     }
