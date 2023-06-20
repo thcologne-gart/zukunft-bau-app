@@ -48,13 +48,22 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       */
+     '/awsBackend': {
+        target: 'http://backend1-env.eba-qq8c86yd.us-east-1.elasticbeanstalk.com',
+        //target: 'http://139.6.140.49:5000/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/awsBackend/, ''),
+     }, 
       '/awsNlpEndpoints': {
         target: 'http://3.95.230.131:8003/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/awsNlpEndpoints/, ''),
       },
       '/nlpEndpoints': {
-        target: 'http://139.6.140.196:8003/',
+        // TH
+        //target: 'http://139.6.140.196:8003/',
+        // Zu Hause
+        target: 'http://192.168.178.49:8003/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/nlpEndpoints/, ''),
       },

@@ -5,85 +5,10 @@
         "organizationName": "TH Köln",
         "country": "Deutschland",
         "city": "Köln",
-        "zipcode": 50674,
-        "street": "Moltkestraße 97"
+        "zipcode": "50672",
+        "street": "Gustav Heinemann Ufer 54"
       },
-      "sites": [
-        {
-          "siteInformation": {
-            "siteName": "Campus Deutz",
-            "country": "Deutschland",
-            "city": "Köln",
-            "street": "Betzdorfer Straße",
-            "streetNumber": "",
-            "lat": 50.9362534,
-            "lng": 6.989219299999999,
-            "zipcode": "50679"
-          },
-          "buildings": [
-            {
-              "buildingInformation": {
-                "buildingName": "IWZ",
-                "country": "Deutschland",
-                "city": "Köln",
-                "street": "Betzdorfer Straße",
-                "streetNumber": "",
-                "lat": 50.9362534,
-                "lng": 6.989219299999999
-              }
-            },
-            {
-              "buildingInformation": {
-                "buildingName": "HAlle West",
-                "country": "Deutschland",
-                "city": "Köln",
-                "street": "Betzdorfer Straße",
-                "streetNumber": "",
-                "lat": 50.9362534,
-                "lng": 6.989219299999999
-              }
-            }
-          ]
-        },
-        {
-          "siteInformation": {
-            "siteName": "Campus Südstadt",
-            "country": "Deutschland",
-            "city": "Köln",
-            "street": "Gustav-Heinemann-Ufer",
-            "streetNumber": "",
-            "lat": 50.9107992,
-            "lng": 6.9742203,
-            "zipcode": "50968"
-          },
-          "buildings": [
-            {
-              "buildingInformation": {
-                "buildingName": "Verwaltung",
-                "country": "Deutschland",
-                "city": "Köln",
-                "street": "Gustav-Heinemann-Ufer",
-                "streetNumber": "",
-                "lat": 50.9107992,
-                "lng": 6.9742203
-              }
-            }
-          ]
-        },
-        {
-          "siteInformation": {
-            "siteName": "Campus Leverkusen",
-            "country": "Deutschland",
-            "city": "Leverkusen",
-            "street": "Bahnhofstraße",
-            "streetNumber": "",
-            "lat": 51.0666228,
-            "lng": 7.0053638,
-            "zipcode": "51379"
-          },
-          "buildings": []
-        }
-      ],
+      "sites": [],
       "id": 1
     }
   ]

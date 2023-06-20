@@ -29,7 +29,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             // formData.append("aas", this.file[0])
             formData.append("aas", bacnetAas[0])
             // console.log(formData)
-            // console.log('Start NLP')
+            console.log('Start NLP')
             try {
                 const response = await axios.post('/nlpEndpoints/startNLPPipeline', formData, {
                 //const response = await axios.post('/awsNlpEndpoints/startNLPPipeline', formData, {
