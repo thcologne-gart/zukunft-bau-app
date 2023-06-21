@@ -47,8 +47,8 @@ export default {
       return useGeneralStore()
     },
     siteName () {
-      const key = Object.keys(this.site)
-      const siteName = key[0]
+      // const key = Object.keys(this.site)
+      const siteName = this.site['siteName']
       return siteName
     },
     buildings () {

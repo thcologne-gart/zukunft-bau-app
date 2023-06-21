@@ -26,12 +26,12 @@ export default {
     },
     computedBuildings () {
         const buildings = []
-        const site = Object.values(this.site)[0]
+        // const site = Object.values(this.site)[0]
         // console.log(site)
-        for (let building in site) {
+        for (let building in this.site['buildings']) {
           // console.log(site[building])
             let buildingInformationDict = {}
-            let buildingInformation = site[building]['buildingInformation']
+            let buildingInformation = this.site['buildings'][building]
             console.log(buildingInformation)
             for (const element in buildingInformation) {
                 if (element === 'country') {
@@ -46,7 +46,7 @@ export default {
             }
             buildings.push(buildingInformationDict)
         }
-        // console.log(buildings)
+        console.log(buildings)
         return buildings
     }
   }
