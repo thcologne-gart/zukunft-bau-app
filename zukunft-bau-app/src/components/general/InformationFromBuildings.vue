@@ -32,21 +32,21 @@ export default {
           // console.log(site[building])
             let buildingInformationDict = {}
             let buildingInformation = this.site['buildings'][building]
-            console.log(buildingInformation)
+            //console.log(buildingInformation)
             for (const element in buildingInformation) {
                 if (element === 'country') {
                     buildingInformationDict['Land'] = buildingInformation[element]
                 } else if (element === 'city') {
                     buildingInformationDict['Stadt'] =  buildingInformation[element]
                 } else if (element === 'street') {
-                    buildingInformationDict['Straße'] = buildingInformation[element] + ' ' + buildingInformation['streetNumber']
+                    buildingInformationDict['Straße'] = buildingInformation[element]
                 } else if (element === 'buildingName') {
                     buildingInformationDict['Name Gebäude'] = buildingInformation[element] 
                 }
             }
             buildings.push(buildingInformationDict)
         }
-        console.log(buildings)
+        //console.log(buildings)
         return buildings
     }
   }

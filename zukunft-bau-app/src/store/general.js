@@ -137,9 +137,6 @@ export const useGeneralStore = defineStore('general', {
             })
 
             console.log(response.data)
-            const data = response.data
-            console.log('----------------')
-            console.log(data)
             childAasIds = response.data
         } catch (error) {
             console.log(error)
@@ -151,7 +148,7 @@ export const useGeneralStore = defineStore('general', {
         const url = '/awsBackend/' + getAasByType
         let aasIds = ''
         try {
-            console.log(url)
+            //console.log(url)
             const response = await axios.post(url, {
                 userId: 10002,
                 semanticIdAasType: semanticId
@@ -298,7 +295,7 @@ export const useGeneralStore = defineStore('general', {
                 this.loadedSiteInformation.push(siteInformation)  
             }
         }
-        console.log(this.loadedSiteInformation)
+        //console.log(this.loadedSiteInformation)
 
         this.loadedSiteInformationWithBuildings = this.getBuildingsForEachSite()
         // this.loading=false
@@ -339,7 +336,7 @@ export const useGeneralStore = defineStore('general', {
             zipcode: ['Address', 'Zipcode'],
             street: ['Address', 'Street'],
         }
-        console.log(organizationInformation)
+        //console.log(organizationInformation)
         
         const semanticIdAasType = 'https://th-koeln.de/gart/CompanyAAS/1/0'        
         const aasIds = await this.getAasByType(semanticIdAasType)
@@ -445,7 +442,7 @@ export const useGeneralStore = defineStore('general', {
                 buildingInformationDict[buildingAasId] = buildingInformation
                 buildings.push(buildingInformation)
             }
-            console.log(buildingInformationDict)
+            //console.log(buildingInformationDict)
             let siteDict = {
                 siteName: siteName['siteName'],
                 siteAasId: siteAasIds[siteId],
@@ -456,31 +453,11 @@ export const useGeneralStore = defineStore('general', {
 
         this.loadedSiteInformationWithBuildings = allSitesWithBuildings
 
-        /*
-        const resOrganization = await fetch ('http://localhost:3000/organization')
-        const data = await resOrganization.json()
-        const sites = data[0]['sites']
-        console.log(sites)
-        //const buildings = []
-
-        for (let element in sites) {
-            console.log(sites[element])
-            let siteDict = {
-                [sites[element].siteInformation.siteName]: sites[element].buildings
-            }
-            console.log(siteDict)
-            buildings.push(siteDict)
-            //this.loadedSiteInformationWithBuildings.push(siteDict)
-        }
-        this.loadedSiteInformationWithBuildings = buildings
-        console.log(this.loadedSiteInformationWithBuildings)
-        */
-
         return allSitesWithBuildings
     },
     async addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode) {
-        console.log(site)
-        console.log(buildingName)
+        //console.log(site)
+        //console.log(buildingName)
         const siteAasId = site['siteAasId']
 
         const semanticIdBuildingAasType = 'https://th-koeln.de/gart/BuildingAAS/1/0'
@@ -499,7 +476,7 @@ export const useGeneralStore = defineStore('general', {
                 Longitude: lng
             }
         }
-        console.log(submodelElementValues)
+        //console.log(submodelElementValues)
 
         await this.addSubmodelElements(buildingAasId, submodelIdShort, semanticIdSubmodel, submodelElementValues)
 
@@ -507,59 +484,6 @@ export const useGeneralStore = defineStore('general', {
         await this.inititalPostBomIsPartOf(siteAasId, buildingAasId)
 
         this.fetchGeneralInfos()
-
-        /*
-        const data =  {
-            buildingInformation: {
-                buildingName: buildingName,
-                country: country,
-                city: city, 
-                street: street,
-                streetNumber: streetNumber,
-                lat: lat,
-                lng: lng,
-                zipcode: zipcode
-            }
-        }
-        console.log(data)
-        console.log(site)
-        const key = Object.keys(site)
-        const siteName = key[0]
-        
-        const resOrganization=await fetch ('http://localhost:3000/organization')
-        const siteData =await resOrganization.json()
-        
-        const sites = siteData[0]['sites']
-        console.log(sites)
-
-        for (let element in sites) {
-            if (sites[element].siteInformation.siteName === siteName) {
-                console.log(sites[element])
-                siteData[0]['sites'][element]['buildings'].push(data)
-            }
-        }
-
-        try {
-            const response = await fetch('http://localhost:3000/organization/1', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(siteData[0])
-            })
-            console.log(response)
-            if (response.ok) {
-                const responseData = await response.json();
-                console.log('POST request succeeded:', responseData);
-            } else {
-                console.log('POST request failed:', response.status);
-            }
-    
-        } catch (error) {
-            console.log(error)
-        }
-        this.fetchGeneralInfos()
-        */
     }
   }
 })

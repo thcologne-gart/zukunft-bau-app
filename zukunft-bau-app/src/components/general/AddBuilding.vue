@@ -72,7 +72,7 @@ export default {
     setPlace (place) {
       this.currentPlace = place['route'] + ', ' + place['locality'] + ', '  + place['country']
       for (let key in place) {
-        console.log(key, place[key])
+        //console.log(key, place[key])
         if (key === 'country') {
           this.country = place[key]
         } else if (key === 'locality') {
@@ -80,7 +80,7 @@ export default {
         } else if (key === 'street_number') {
           this.streetNumber = place[key]
         } else if (key === 'route') {
-          this.street = place[key]
+          this.street = place[key] + ' ' + this.streetNumber
         } else if (key === 'latitude') {
           this.lat = place[key]
         } else if (key === 'longitude') {
@@ -89,7 +89,7 @@ export default {
           this.zipCode = place[key]
         }
       }
-      console.log(this.country, this.city, this.street, this.streetNumber, this.zipCode, this.lat, this.lng)
+      //console.log(this.country, this.city, this.street, this.streetNumber, this.zipCode, this.lat, this.lng)
     }
 }
 }
