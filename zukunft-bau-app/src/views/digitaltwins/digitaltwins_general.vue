@@ -11,6 +11,9 @@
     -->
         <v-container>
             <h2 style="color: #bc3384;">Digital Twins - Übersicht</h2>
+            <div>{{ generalStore.loadedBacnetInformation }}</div>
+            <v-btn
+            @click="generalStore.addBacnetDevice()">Create Bacnet</v-btn>
             <v-row>
                 <v-col cols="6" v-for="site in generalStore.loadedSiteInformationWithBuildings" :key="Object.keys(site)[0]">
                     <DigitalTwinOverview :site="site"/>

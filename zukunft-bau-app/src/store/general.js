@@ -12,6 +12,7 @@ export const useGeneralStore = defineStore('general', {
         loadedSiteInformationWithBuildings: [],
         //loadedSiteBuildingInformation: [],
         loadedOrganizationInformation: [],
+        loadedBacnetInformationDigitalNameplate: [],
       // all these properties will have their type inferred automatically
     }
   },
@@ -181,6 +182,7 @@ export const useGeneralStore = defineStore('general', {
                     })
                     
                     if (response.data !== '') {
+                        console.log(response.data)
                         allSeInformations[element] = response.data
                     } 
                 } catch (error) {
@@ -247,6 +249,31 @@ export const useGeneralStore = defineStore('general', {
             }
         }
     },
+    /*
+    async getSubmodel (aasId, submodelIdShort) {
+        const  = 'api/v1/Submodel/getSubmodel'
+        const url = '/awsBackend' + editSeValue
+    },
+    */
+    async loadBacnetInformation(aasBacnetIds) {
+
+        const digitalNameplateIdShortPaths = {
+            manufacturerName: ['ManufacturerName'],
+            serialNumber: ['SerialNumber'],
+        }
+        const digitalNameplate = 'Nameplate'
+        // const semanticIdNameplate = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate'
+
+        for (let bacnetDevice in aasBacnetIds) {
+            let aasId = aasBacnetIds[bacnetDevice]
+            
+            console.log(aasId)
+            let nameplateSeInformation = {}
+            nameplateSeInformation = await this.getSeValue(aasId, digitalNameplate, digitalNameplateIdShortPaths)
+            console.log(nameplateSeInformation)            
+        }
+    },
+    
     async fetchGeneralInfos() {
 
         // this.loading=true
@@ -272,6 +299,12 @@ export const useGeneralStore = defineStore('general', {
         const semanticIdAasType = 'https://th-koeln.de/gart/CompanyAAS/1/0'        
         const aasIds = await this.getAasByType(semanticIdAasType)
         const companyAasId = aasIds[0]
+
+        const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'        
+        const aasBacnetIds = await this.getAasByType(semanticIdAasTypeBacnet)
+
+        this.loadedBacnetInformation = aasBacnetIds
+        await this.loadBacnetInformation(aasBacnetIds)
         
         const companySubmodelId = 'CompanyInformation'
         const organizationInformation =  await this.getSeValue (companyAasId, companySubmodelId, companyIdShortPaths)
@@ -299,6 +332,20 @@ export const useGeneralStore = defineStore('general', {
 
         this.loadedSiteInformationWithBuildings = this.getBuildingsForEachSite()
         // this.loading=false
+    },
+
+    async addBacnetDevice() {
+        const bacnetName = 'BACnetAsset2'
+        const semanticIdType = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'
+        const bacnetAasId = await this.createAas(semanticIdType, bacnetName)
+
+        const submodelIdShort = "Nameplate"
+        const semanticIdSubmodel = "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
+        const submodelElementValues = {
+            ManufacturerName:'TH Köln',
+            SerialNumber: '123456'
+        }
+        await this.addSubmodelElements(bacnetAasId, submodelIdShort, semanticIdSubmodel, submodelElementValues)
     },
     async addOrganizationInformation(organizationName, country, city, zipcode, street) {
         

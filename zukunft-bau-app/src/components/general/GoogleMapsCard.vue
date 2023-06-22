@@ -36,10 +36,11 @@ export default {
             /* eslint-disable no-undef */
             for (let site in this.generalStore.loadedSiteInformation) {
               if (this.siteId === this.generalStore.loadedSiteInformation[site]['siteName']) {
-                console.log('heureka')
+                const lat = parseFloat(this.generalStore.loadedSiteInformation[site]['lat'])
+                const lng = parseFloat(this.generalStore.loadedSiteInformation[site]['lng'])
                 this.siteCoordinates.push({ 
-                  'lat': this.generalStore.loadedSiteInformation[site]['lat'],
-                  'lng': this.generalStore.loadedSiteInformation[site]['lng']
+                  'lat': lat,
+                  'lng': lng
                 })
                 //this.siteCoordinates['lat'] = this.generalStore.loadedSiteInformation[site]['lat']
                 //this.siteCoordinates['lng'] = this.generalStore.loadedSiteInformation[site]['lng']
