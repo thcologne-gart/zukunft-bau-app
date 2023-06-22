@@ -29,9 +29,10 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             // formData.append("aas", this.file[0])
             formData.append("aas", bacnetAas[0])
             // console.log(formData)
-            // console.log('Start NLP')
+            console.log('Start NLP')
             try {
                 const response = await axios.post('/nlpEndpoints/startNLPPipeline', formData, {
+                //const response = await axios.post('/awsNlpEndpoints/startNLPPipeline', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -68,6 +69,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
 
             try {
                 const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                //const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -119,6 +121,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
 
             try {
                 const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                //const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -196,6 +199,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             let editingReady = ''
             try {
                 const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                //const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -225,7 +229,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 aasId: this.aasId
             }
             try {
-                const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                //const response = await axios.post('/nlpEndpoints/editDatapoint', datapointInformation, {
+                const response = await axios.post('/awsNlpEndpoints/editDatapoint', datapointInformation, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -240,6 +245,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
         async getBasyxNlpSubmodel(aas_id) {
             this.aasId = aas_id
             const aasBasyxServer = "http://3.83.126.51:4001/aasServer/shells"
+            //const aasBasyxServer = 'http://52.23.209.38:4003/aasServer/shells'
             const uriAas = aasBasyxServer + '/' + aas_id + '/aas'
             const uriSubmodel = uriAas + '/submodels/NLPClassificationResult/submodel'
 
@@ -472,6 +478,8 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 this.kälteVersorgen = kälteVersorgen
                 this.stromVersorgen = stromVersorgen
                 this.allNlpSubmodelElements = allSubmodelElements
+
+                console.log(allSubmodelElements)
 
                 return allSubmodelElements
 

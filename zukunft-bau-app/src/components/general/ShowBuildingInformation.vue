@@ -2,7 +2,8 @@
     <div>
         <v-card-actions>
             <v-btn
-                text
+                variant="outlined"
+                color = "success"
                 @click="show = !show"
             >
                 {{ building['Name Gebäude'] }}

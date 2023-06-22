@@ -21,7 +21,7 @@ import { useGeneralStore } from "@/store/general"
 
 const store = useGeneralStore()
 
-onMounted(() => {
+onMounted( () => {
   store.fetchGeneralInfos()
 })
 </script>

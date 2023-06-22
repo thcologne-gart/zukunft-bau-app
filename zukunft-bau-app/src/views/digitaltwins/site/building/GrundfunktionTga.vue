@@ -9,20 +9,20 @@
                         <v-toolbar
                         color="success"
                         >
-                            <v-toolbar-title class="text-center" style="color: white; font-size: 22px">{{ key }}</v-toolbar-title>
+                            <v-toolbar-title class="text-center" style="color: white; font-size: 20px">{{ key }}</v-toolbar-title>
                         </v-toolbar>
                         <v-divider class="mx-4" :thickness="3"></v-divider>
                         <div v-for="(komponente, key) in Object.values(funktion)" :key="key">
                             <v-expansion-panels v-if="komponente.length !== 0">
                                 <v-expansion-panel elevation="0" rounded="0">
-                                    <v-expansion-panel-title style="font-size: 20px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
+                                    <v-expansion-panel-title style="font-size: 18px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
                                     <v-expansion-panel-text>
                                         <div v-for="datenpunkt in komponente" :key="datenpunkt['DatenpunktEbeneValue']">
                                             <v-expansion-panels>
                                                 <v-expansion-panel elevation="0" rounded="0">
                                                     <v-row>
                                                         <v-col>
-                                                            <v-expansion-panel-title style="font-size: 18px;" color="#fcf0f7">
+                                                            <v-expansion-panel-title style="font-size: 16px;" color="#fcf0f7">
                                                                 {{ datenpunkt['DatenpunktEbeneValue'] }}
                                                             </v-expansion-panel-title>
                                                             <v-expansion-panel-text>

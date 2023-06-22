@@ -19,17 +19,17 @@
             required
             ></v-text-field>
             <v-text-field 
-                :id="'map-' + Object.keys(site)[0]"
+                :id="'map-' + site['siteName']"
                 v-model='currentPlace'
                 label="Standort des Gebäudes"
                 required
             ></v-text-field>
-            <vue-google-autocomplete class="autocomplete-container" :id="'map-' + Object.keys(site)[0]" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
+            <vue-google-autocomplete class="autocomplete-container" :id="'map-' + site['siteName']" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
             <v-container class="d-flex justify-center align-center">
               <v-btn class="mt-0" variant="outlined" color="success" 
                 @click= "currentPlace = '';
                 generalStore.addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode);
-                siteName = ''">Submit
+                buildingName = ''">Submit
             </v-btn>
             </v-container>
         </div>
@@ -54,7 +54,7 @@ export default {
       streetNumber: '',
       lat: '',
       lng: '',
-      zipCode: '',
+      zipcode: '',
     }
   },
     components: {
@@ -72,7 +72,7 @@ export default {
     setPlace (place) {
       this.currentPlace = place['route'] + ', ' + place['locality'] + ', '  + place['country']
       for (let key in place) {
-        console.log(key, place[key])
+        //console.log(key, place[key])
         if (key === 'country') {
           this.country = place[key]
         } else if (key === 'locality') {
@@ -80,7 +80,7 @@ export default {
         } else if (key === 'street_number') {
           this.streetNumber = place[key]
         } else if (key === 'route') {
-          this.street = place[key]
+          this.street = place[key] + ' ' + this.streetNumber
         } else if (key === 'latitude') {
           this.lat = place[key]
         } else if (key === 'longitude') {
@@ -89,7 +89,7 @@ export default {
           this.zipCode = place[key]
         }
       }
-      console.log(this.country, this.city, this.street, this.streetNumber, this.zipCode, this.lat, this.lng)
+      //console.log(this.country, this.city, this.street, this.streetNumber, this.zipCode, this.lat, this.lng)
     }
 }
 }

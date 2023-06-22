@@ -39,10 +39,10 @@ export default {
         } else if (element === 'city') {
           siteInformation['Stadt'] =  this.site[element]
         } else if (element === 'street') {
-          siteInformation['Straße'] = this.site[element] + ' ' + this.site['streetNumber']
+          siteInformation['Straße'] = this.site[element]
         }
       }
-      console.log(siteInformation)
+      //console.log(siteInformation)
       return siteInformation
     }
   }
