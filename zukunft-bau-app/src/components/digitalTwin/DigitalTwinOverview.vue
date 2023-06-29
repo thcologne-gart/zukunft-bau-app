@@ -15,7 +15,7 @@
                     </v-col>
                 </v-row>
                 <v-divider class="mx-4" :thickness="3"></v-divider>
-                <v-row v-for="building in site['buildings']" :key="building['buildingName']">
+                <v-row v-for="building in site['buildings'][0]" :key="building['buildingName']">
                     <v-col>
                         <v-card-item>{{ building["buildingName"] }}</v-card-item>
                     </v-col>

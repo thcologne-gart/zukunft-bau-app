@@ -12,7 +12,8 @@ export const useGeneralStore = defineStore('general', {
         loadedSiteInformationWithBuildings: [],
         //loadedSiteBuildingInformation: [],
         loadedOrganizationInformation: [],
-        loadedBacnetInformation: [],
+        loadedBacnetInformationNotAssigned: [],
+        loadedBacnetInformationAssigned: []
         //buildingIdsArray: []
       // all these properties will have their type inferred automatically
     }
@@ -144,6 +145,24 @@ export const useGeneralStore = defineStore('general', {
             console.log(error)
         }
         return childAasIds
+    },
+    async getBomParent(aasId) {
+        const bomParent = 'api/v1/Submodel/BOM/getParents'
+        const urlBomParent = '/awsBackend/' + bomParent
+        let parentAasId = []
+        try {
+            const response = await axios.post(urlBomParent, {
+                userId: 10002,
+                aasIdentifier: aasId,
+                submodelIdShort: 'HierarchicalStructures'
+            })
+
+            console.log(response.data)
+            parentAasId = response.data
+        } catch (error) {
+            console.log(error)
+        }
+        return parentAasId
     },
     async getAasByType (semanticId) {
         const getAasByType = 'api/v1/AAS/getAllAasIdentifierByAasType'
@@ -279,31 +298,55 @@ export const useGeneralStore = defineStore('general', {
         }
         const digitalNameplate = 'Nameplate'
         // const semanticIdNameplate = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate'
-        const allBacnetGatewayInformation = []
+        const allBacnetGatewayInformationNotAssigned = []
+        const allBacnetGatewayInformationAssigned = []
 
         for (let bacnetDevice in aasBacnetIds) {
             let aasId = aasBacnetIds[bacnetDevice]
             //let bacnetGatewayInformation = []
-            console.log(aasId)
-            let aasIdShort = await this.getAasIdShortByIdentifier(aasId)
-            let nameplateSeInformationAll = await this.getSeValue(aasId, digitalNameplate, digitalNameplateIdShortPaths)
-            let manufacturerName = nameplateSeInformationAll['manufacturerName'][0]['text']
-            let bacnetNameplateInformation = {
-                'Digital Nameplate': {
-                    'Herstellername': manufacturerName,
-                    'Seriennummer': nameplateSeInformationAll['serialNumber']
-                },
-                'AAS ID Short': aasIdShort,
-                'AAS ID': aasId
-            }
-            console.log(bacnetNameplateInformation)   
-            //let aasIdDict = {aasId: aasId}
+            //console.log(aasId)
+            let parent = await this.getBomParent(aasId)
+            if (parent.length === 0) {
+                let aasIdShort = await this.getAasIdShortByIdentifier(aasId)
+                let nameplateSeInformationAll = await this.getSeValue(aasId, digitalNameplate, digitalNameplateIdShortPaths)
+                let manufacturerName = nameplateSeInformationAll['manufacturerName'][0]['text']
+                let bacnetNameplateInformation = {
+                    'Digital Nameplate': {
+                        'Herstellername': manufacturerName,
+                        'Seriennummer': nameplateSeInformationAll['serialNumber']
+                    },
+                    'AAS ID Short': aasIdShort,
+                    'AAS ID': aasId
+                }
+                console.log(bacnetNameplateInformation)   
+                //let aasIdDict = {aasId: aasId}
 
-            //bacnetGatewayInformation.push(aasIdDict) 
-            // bacnetGatewayInformation.push(bacnetNameplateInformation)        
-            allBacnetGatewayInformation.push(bacnetNameplateInformation)
-        }
-        this.loadedBacnetInformation = allBacnetGatewayInformation
+                //bacnetGatewayInformation.push(aasIdDict) 
+                // bacnetGatewayInformation.push(bacnetNameplateInformation)        
+                allBacnetGatewayInformationNotAssigned.push(bacnetNameplateInformation)
+            } else {
+                let aasIdShort = await this.getAasIdShortByIdentifier(aasId)
+                let nameplateSeInformationAll = await this.getSeValue(aasId, digitalNameplate, digitalNameplateIdShortPaths)
+                let manufacturerName = nameplateSeInformationAll['manufacturerName'][0]['text']
+                let bacnetNameplateInformation = {
+                    'Digital Nameplate': {
+                        'Herstellername': manufacturerName,
+                        'Seriennummer': nameplateSeInformationAll['serialNumber']
+                    },
+                    'AAS ID Short': aasIdShort,
+                    'AAS ID': aasId,
+                    'ParentAasId': parent
+                }
+                console.log(bacnetNameplateInformation)   
+                //let aasIdDict = {aasId: aasId}
+
+                //bacnetGatewayInformation.push(aasIdDict) 
+                // bacnetGatewayInformation.push(bacnetNameplateInformation)        
+                allBacnetGatewayInformationAssigned.push(bacnetNameplateInformation)
+            }
+            this.loadedBacnetInformationNotAssigned = allBacnetGatewayInformationNotAssigned
+            this.loadedBacnetInformationAssigned = allBacnetGatewayInformationAssigned
+            }
     },
     
     async fetchGeneralInfos() {
@@ -383,6 +426,20 @@ export const useGeneralStore = defineStore('general', {
             SerialNumber: '123456'
         }
         await this.addSubmodelElements(bacnetAasId, submodelIdShort, semanticIdSubmodel, submodelElementValues)
+    },
+    async addGatewayToBuilding(gateway, choosedBuilding, buildingsIdsWithSelectName) {
+
+        const gatewayAasId = gateway['AAS ID']
+
+        for (let buildingAasId in buildingsIdsWithSelectName) {
+            if (buildingsIdsWithSelectName[buildingAasId] === choosedBuilding) {
+
+                await this.addHasPart(buildingAasId, gatewayAasId)
+                await this.inititalPostBomIsPartOf(buildingAasId, gatewayAasId)
+            }
+        }
+        this.fetchGeneralInfos()
+
     },
     async addOrganizationInformation(organizationName, country, city, zipcode, street) {
         
