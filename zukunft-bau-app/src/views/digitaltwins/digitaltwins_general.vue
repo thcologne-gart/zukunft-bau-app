@@ -11,7 +11,6 @@
     -->
         <v-container>
             <h2 style="color: #bc3384;">Digital Twins - Übersicht</h2>
-            <GatewayInformation />
             <!--
             <v-btn
             @click="generalStore.addBacnetDevice()">Create Bacnet
@@ -22,6 +21,7 @@
                     <DigitalTwinOverview :site="site"/>
                 </v-col>
             </v-row>
+            <GatewayInformation />
         </v-container>
     </div>
 </template> 

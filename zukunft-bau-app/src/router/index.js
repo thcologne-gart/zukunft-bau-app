@@ -48,7 +48,7 @@ const routes = [
     component: DigitalTwins_Site_Building,
   },
   {
-    path: '/digitaltwins/:siteid/:buildingid/:grundfunktion',
+    path: '/digitaltwins/:siteid/:buildingid/:bacnetid/:grundfunktion',
     name: 'DigitalTwins_Site_Building_Grundfunktion',
     component: DigitalTwins_Site_Building_Grundfunktion,
   },

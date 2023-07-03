@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col cols="6" v-for="gateway in generalStore.loadedBacnetInformationNotAssigned" :key="gateway['AAS ID']">
+        <v-row v-for="gateway in generalStore.loadedBacnetInformationAssigned" :key="gateway['AAS ID']">
+            <v-col v-if="gateway['ParentAasIdShort'][0] == buildingId">
                 <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
                     <v-toolbar color="success">
                         <v-toolbar-title class="text-center" style="color: white; font-size: 20px">
@@ -26,21 +26,21 @@
                             </v-expansion-panel-text>
                         </v-expansion-panel>
                     </v-expansion-panels>
-                    <v-row class="ma-1">
-                        <v-col>
-                            <v-select 
-                            :items="buildingsList" 
-                            v-model="choosedBuilding" 
-                            label= 'Zugehöriges Gebäude' 
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-card-actions class="d-flex justify-center align-center">
-                        <v-btn class="mt-0" variant="outlined" color="success" 
-                            @click= "generalStore.addGatewayToBuilding(gateway, choosedBuilding, buildingsIdsWithSelectName);
-                            buildingName = ''">Submit
+                    <v-divider></v-divider>
+                    <v-card-actions v-if="gateway['NlpDone'] == false" class="d-flex justify-center align-center">
+                        <v-btn class="max-3 mb-4"  variant="outlined" color="success" 
+                            @click= "digitalTwinStore.startNlp(gateway['AAS ID'], gateway['AAS ID Short']);
+                            buildingName = ''">Classify Datapoints
                         </v-btn>
                     </v-card-actions>
+                    <v-expansion-panels v-else-if ="gateway['NlpDone'] == true">
+                        <v-expansion-panel @click="this.digitalTwinStore.getBasyxNlpSubmodel(gateway['AAS ID'], gateway['AAS ID Short'])" elevation="0" rounded="0">
+                            <v-expansion-panel-title style="font-size: 18px;" >NLP Results</v-expansion-panel-title>
+                            <v-expansion-panel-text>
+                                <NlpResults />
+                            </v-expansion-panel-text>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
                 </v-card>
             </v-col>
         </v-row>
@@ -50,20 +50,27 @@
 
 <script>
 import { useGeneralStore } from "@/store/general"
+import { useDigitalTwinsStore } from "@/store/digitaltwins"
+import NlpResults from "@/components/Nlp/NlpResults.vue"
 
 export default{
     data () {
       return {
-        choosedBuilding: '',
-        buildingsIdsWithSelectName: {},
-        buildingsList: []
+        datapointsClassified: false
       }
     },    
     mounted() {
         this.loadBuildingInformation()
     },
+    props: {
+        buildingId: String
+    },
+    components: {
+        NlpResults
+    },
     methods: {
         loadBuildingInformation() {
+            this.digitalTwinStore.getSubmodel()
             let buildingsIdsWithSelectName = {}
             let buildingsList = []
             for (let site in this.generalStore.loadedSiteInformationWithBuildings) {
@@ -92,31 +99,9 @@ export default{
         generalStore () {
             return useGeneralStore()
         },
-        /*
-        buildingsList () {
-            //let buildingsIdsWithSelectName = {}
-            let buildingsList = []
-            for (let site in this.generalStore.loadedSiteInformationWithBuildings) {
-                let siteInformation = this.generalStore.loadedSiteInformationWithBuildings[site]
-                let siteName = siteInformation['siteName']
-                console.log(siteInformation['buildings'])
-                for (let building in siteInformation['buildings'][0]) {
-                    console.log(building)
-                    let buildingInformation = siteInformation['buildings'][0][building]
-                    console.log(buildingInformation)
-                    let buildingName = buildingInformation['buildingName']
-                    console.log(buildingName)
-                    let siteBuildingName = buildingName + ', ' + siteName
-                    buildingsList.push(siteBuildingName)
-                    //this.$set(this.myObject, 'newKey', 'New Value')
-                    //buildingsIdsWithSelectName.$set(building, siteBuildingName)
-                }
-
-                //buildingsList.push(buildingName)
-            }
-            return buildingsList
+        digitalTwinStore () {
+            return useDigitalTwinsStore()
         }
-        */
     }
 }
 

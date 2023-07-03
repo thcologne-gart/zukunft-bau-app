@@ -2,6 +2,7 @@
     <div>
         <v-container>
             <h2 style="color: #bc3384;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
+            <!--
                 <v-file-input
                     v-model="file"
                     variant="underlined"
@@ -16,6 +17,7 @@
                     color="success"
                     @click="digitalTwinStore.startNlp(file)">Upload AAS
                 </v-btn>
+            -->
                 <v-container>
                     <div v-if="digitalTwinStore.showProgressUploadAas === true">
                         <v-progress-linear
@@ -24,7 +26,7 @@
                         ></v-progress-linear>
                     </div>
                 </v-container>
-                <NlpResults />                
+                <GatewayInformationSelected :buildingId="$route.params.buildingid"/>            
         </v-container>
     </div>
     
@@ -32,7 +34,8 @@
 
 <script>
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
-import NlpResults from "@/components/Nlp/NlpResults.vue"
+import { useGeneralStore } from "@/store/general"
+import GatewayInformationSelected from "@/components/digitalTwin/GatewayInformationSelected.vue"
 
 export default{
     data () {
@@ -41,11 +44,14 @@ export default{
         }
     },
     components: {
-        NlpResults
+        GatewayInformationSelected
     },
     computed: {
         digitalTwinStore () {
         return useDigitalTwinsStore()
+        },
+        generalStore () {
+            return useGeneralStore()
         }
     }
 }

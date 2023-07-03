@@ -26,21 +26,7 @@
                             </v-expansion-panel-text>
                         </v-expansion-panel>
                     </v-expansion-panels>
-                    <v-row class="ma-1">
-                        <v-col>
-                            <v-select 
-                            :items="buildingsList" 
-                            v-model="choosedBuilding" 
-                            label= 'Zugehöriges Gebäude' 
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-card-actions class="d-flex justify-center align-center">
-                        <v-btn class="mt-0" variant="outlined" color="success" 
-                            @click= "generalStore.addGatewayToBuilding(gateway, choosedBuilding, buildingsIdsWithSelectName);
-                            buildingName = ''">Submit
-                        </v-btn>
-                    </v-card-actions>
+                    <BuildingForGateway :buildingsList="buildingsList" :gateway="gateway" :buildingsIdsWithSelectName="buildingsIdsWithSelectName"/>
                 </v-card>
             </v-col>
         </v-row>
@@ -50,22 +36,31 @@
 
 <script>
 import { useGeneralStore } from "@/store/general"
+import BuildingForGateway from "@/components/digitalTwin/BuildingForGateway.vue"
 
 export default{
     data () {
       return {
-        choosedBuilding: '',
-        buildingsIdsWithSelectName: {},
-        buildingsList: []
+        // choosedBuilding: '',
+        // buildingsIdsWithSelectName: {},
+        // buildingsList: []
       }
     },    
+    components: {
+        BuildingForGateway
+    },
+    /*
     mounted() {
         this.loadBuildingInformation()
     },
     methods: {
-        loadBuildingInformation() {
+        async loadBuildingInformation() {
             let buildingsIdsWithSelectName = {}
             let buildingsList = []
+            const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'    
+            const aasBacnetIds = await this.generalStore.getAasByType(semanticIdAasTypeBacnet)
+            await this.generalStore.loadBacnetInformation(aasBacnetIds)
+
             for (let site in this.generalStore.loadedSiteInformationWithBuildings) {
                 let siteInformation = this.generalStore.loadedSiteInformationWithBuildings[site]
                 let siteName = siteInformation['siteName']
@@ -88,10 +83,19 @@ export default{
             this.buildingsIdsWithSelectName = buildingsIdsWithSelectName
         }
     },
+    */
     computed: {
         generalStore () {
             return useGeneralStore()
         },
+        buildingsIdsWithSelectName () {
+            const buildingsIds = this.generalStore.buildingsIdsWithSelectName
+            return buildingsIds
+        },
+        buildingsList () {
+            const buildingsList = this.generalStore.buildingsList
+            return buildingsList
+        }
         /*
         buildingsList () {
             //let buildingsIdsWithSelectName = {}

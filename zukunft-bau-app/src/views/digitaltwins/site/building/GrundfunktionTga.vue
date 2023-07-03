@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <h2 style="color: #bc3384;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
-            <h3 style="color: #bc3384;">{{ title  }}</h3>
+            <h3 style="color: #bc3384;">{{ this.digitalTwinStore.aasIdShort }} - {{ title  }}</h3>
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
                 <v-col v-if="Object.values(funktion).length !== 0" cols = '12'>
                     <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
@@ -71,7 +71,7 @@ export default{
             grundfunktionId: '',
             grundfunktion: [],
             zweiteGrundfunktion: [],
-            title: ''
+            title: '',
         }
     },
     components: {
@@ -88,17 +88,19 @@ export default{
         // In zukunft die beiden const site_id und building_id verwenden und an den basyx
         // aufrug übergeben. solange aber noch keine individuellen np_submodels ist das egal
         // da die ID Test AAS ist
-        this.getNlpSubmodel('TestAAS')
+        //this.getNlpSubmodel('TestAAS')
+        this.getZweiteGrundfunktion()
     },
     computed: {
         digitalTwinStore () {
         return useDigitalTwinsStore()
-        }
+        },
     },
     methods: {
         async getNlpSubmodel (aas_id) {
             const ready = await this.digitalTwinStore.getBasyxNlpSubmodel(aas_id)
             console.log(ready)
+            /*
             if (this.grundfunktionId == 'WaermeVersorgen') {
                 this.title = 'Wärme versorgen'
                 this.grundfunktion = this.digitalTwinStore.wärmeVersorgen
@@ -108,6 +110,18 @@ export default{
                 this.grundfunktion = this.digitalTwinStore.luftVersorgen
                 this.zweiteGrundfunktion = this.digitalTwinStore.luftVersorgenZweite
                 // console.log(this.zweiteGrundfunktion.length)
+            }
+            */
+        },
+        getZweiteGrundfunktion () {
+            if (this.grundfunktionId == 'WaermeVersorgen') {
+                this.title = 'Wärme versorgen'
+                this.grundfunktion = this.digitalTwinStore.wärmeVersorgen
+                this.zweiteGrundfunktion = this.digitalTwinStore.wärmeVersorgenZweite
+            } else if (this.grundfunktionId == 'LuftVersorgen') {
+                this.title = 'Luft versorgen'
+                this.grundfunktion = this.digitalTwinStore.luftVersorgen
+                this.zweiteGrundfunktion = this.digitalTwinStore.luftVersorgenZweite
             }
         }
     }
