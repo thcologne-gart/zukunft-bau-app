@@ -17,8 +17,8 @@
                 {{ solution.title }}
               </v-btn>
             </div>
-            <v-btn id="user" icon>
-                <v-icon>mdi-account</v-icon>
+            <v-btn @click="auth.signOut">
+                Sign out
             </v-btn>
 
             <!-- <v-menu left bottom>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { useAuthenticator } from '@aws-amplify/ui-vue'
 
 export default {
   data: () => ({
@@ -78,6 +79,10 @@ export default {
     }
   },
   computed: {
+    auth () {
+      const auth = useAuthenticator()
+      return auth
+    },
     solutions () {
       const solutions = [
         { icon: '', title: 'Home', link: '/' },

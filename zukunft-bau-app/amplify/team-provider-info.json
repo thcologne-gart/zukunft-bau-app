@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-zukunftbauapp-dev-170325-authRole",
+      "UnauthRoleArn": "arn:aws:iam::331025072115:role/amplify-zukunftbauapp-dev-170325-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::331025072115:role/amplify-zukunftbauapp-dev-170325-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-zukunftbauapp-dev-170325-deployment",
+      "UnauthRoleName": "amplify-zukunftbauapp-dev-170325-unauthRole",
+      "StackName": "amplify-zukunftbauapp-dev-170325",
+      "StackId": "arn:aws:cloudformation:eu-central-1:331025072115:stack/amplify-zukunftbauapp-dev-170325/edee96c0-1a7b-11ee-93ef-0a9120a5a920",
+      "AmplifyAppId": "d2231n2fdjjhx7"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2231n2fdjjhx7",
+          "type": "manual"
+        }
+      },
+      "auth": {
+        "zukunftbauapp51707ce0": {}
+      }
+    }
+  }
+}

@@ -26,6 +26,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
     },
     actions: {
         async startNlp(aasId, aasIdShort) {
+            console.log(aasId)
             console.log(aasIdShort)
             this.showProgressUploadAas = true
             const startNlp = 'api/v1/AI/startNLPPipeline'
@@ -39,7 +40,9 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     userId: 10002,
                     aasIdentifier: aasId,
                     idShort :'BACnetDatapointsInformation'
-                })
+                }, {
+                    timeout: 600000
+                  })
                 responseBasyx = response.data
             } catch (error) {
                 console.log(error)

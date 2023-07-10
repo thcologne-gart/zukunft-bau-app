@@ -453,7 +453,7 @@ export const useGeneralStore = defineStore('general', {
         await this.loadBacnetInformation(aasBacnetIds)
         // this.loading=false
     },
-
+    /*
     async addBacnetDevice() {
         const bacnetName = 'BACnetAsset2'
         const semanticIdType = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'
@@ -472,23 +472,58 @@ export const useGeneralStore = defineStore('general', {
         }
         await this.addSubmodelElements(bacnetAasId, submodelIdShort, semanticIdSubmodel, submodelElementValues)
     },
+    */
     async addGatewayToBuilding(gateway, choosedBuilding, buildingsIdsWithSelectName) {
         
         this.loadingBacnetAdding = true
         const gatewayAasId = gateway['AAS ID']
+        let parentId = ''
 
         for (let buildingAasId in buildingsIdsWithSelectName) {
             if (buildingsIdsWithSelectName[buildingAasId] === choosedBuilding) {
-
+                
+                parentId = buildingAasId
                 await this.addHasPart(buildingAasId, gatewayAasId)
                 await this.inititalPostBomIsPartOf(buildingAasId, gatewayAasId)
             }
         }
         //this.fetchGeneralInfos()
-        const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'    
-        const aasBacnetIds = await this.getAasByType(semanticIdAasTypeBacnet)
-        await this.loadBacnetInformation(aasBacnetIds)
-        
+        // const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0'   
+
+        //const aasBacnetIds = await this.getAasByType(semanticIdAasTypeBacnet)
+   
+        const digitalNameplateIdShortPaths = {
+            manufacturerName: ['ManufacturerName'],
+            serialNumber: ['SerialNumber'],
+        }
+        const digitalNameplate = 'Nameplate'
+
+
+        let aasIdShort = await this.getAasIdShortByIdentifier(gatewayAasId)
+        let parentAasIdShort = await this.getAasIdShortByIdentifier(parentId)
+        let nameplateSeInformationAll = await this.getSeValue(gatewayAasId, digitalNameplate, digitalNameplateIdShortPaths)
+        let manufacturerName = nameplateSeInformationAll['manufacturerName'][0]['text']
+        let basyxNlpResult = await this.getSubmodel(gatewayAasId, 'NLPClassificationResult')
+        let nlpDone
+        if (basyxNlpResult === '') {
+            nlpDone = false
+        } else {
+            nlpDone = true
+        }
+        let bacnetNameplateInformation = {
+            'Digital Nameplate': {
+                'Herstellername': manufacturerName,
+                'Seriennummer': nameplateSeInformationAll['serialNumber']
+            },
+            'AAS ID Short': aasIdShort,
+            'AAS ID': gatewayAasId,
+            'ParentAasId': parentId,
+            'ParentAasIdShort': parentAasIdShort,
+            'NlpDone': nlpDone
+        }  
+        this.loadedBacnetInformationAssigned.push(bacnetNameplateInformation)
+
+        // await this.loadBacnetInformation(aasBacnetIds)     
         this.loadingBacnetAdding = false
     },
     async addOrganizationInformation(organizationName, country, city, zipcode, street) {
@@ -575,24 +610,25 @@ export const useGeneralStore = defineStore('general', {
         }
         await this.inititalPostBomIsPartOf(companyAasId, siteAasId)
 
-        this.fetchGeneralInfos()
-    },
-    /*
-    async getBuildingsFromSite(site) {
-        this.loadedSiteBuildingInformation = []
-        const resOrganization = await fetch ('http://localhost:3000/organization')
-        const data = await resOrganization.json()
-        const sites = data[0]['sites']
-
-        let buildings
-        for (let element in sites) {
-            if (sites[element].siteInformation.siteName === site.siteName) {
-                buildings = sites[element].buildings
-            }
+        const siteIdShortPaths = {
+            siteName: ['SiteName'],
+            country: ['Address', 'NationalCode'],
+            city: ['Address', 'CityTown'],
+            zipcode: ['Address', 'Zipcode'],
+            lat: ['Address', 'Lattitude'],
+            lng: ['Address', 'Longitude'],
+            street: ['Address', 'Street'],
         }
-        this.loadedSiteBuildingInformation = buildings
+        
+        const siteInformation = await this.getSeValue (siteAasId, submodelIdShort, siteIdShortPaths)
+
+        this.loadedSiteInformation.push(siteInformation)  
+
+        this.loadedSiteInformationWithBuildings = this.getBuildingsForEachSite()
+
+        //this.fetchGeneralInfos()
     },
-    */
+
     async getBuildingsForEachSite() {
         const buildingIdShortPaths = {
             buildingName: ['BuildingName'],
@@ -678,7 +714,9 @@ export const useGeneralStore = defineStore('general', {
         await this.addHasPart(siteAasId, buildingAasId)
         await this.inititalPostBomIsPartOf(siteAasId, buildingAasId)
 
-        this.fetchGeneralInfos()
+        await this.getBuildingsForEachSite()
+
+        //this.fetchGeneralInfos()
     }
   }
 })
