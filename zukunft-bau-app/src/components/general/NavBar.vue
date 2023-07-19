@@ -86,7 +86,8 @@ export default {
     solutions () {
       const solutions = [
         { icon: '', title: 'Home', link: '/' },
-        { icon: '', title: 'Digitale Zwillinge', link: '/digitaltwins' },
+        //{ icon: '', title: 'Digitale Zwillinge', link: '/digitaltwins' },
+        { icon: '', title: 'Digital Twins', link: '/digitaltwins' },
         { icon: '', title: 'Monitoring', link: '/monitoring' }, //vorher link:buildingperformance
       ]
       return solutions

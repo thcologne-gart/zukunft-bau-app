@@ -13,6 +13,8 @@
         <NavBar />
         <NavigationDrawer />
         <v-main>
+          <!-- AWS USER ID von Cognito -->
+          <!--<div>{{ auth.user.signInUserSession.idToken.payload.sub }}</div>-->
           <router-view />
           <Footer />
         </v-main>

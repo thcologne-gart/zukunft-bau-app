@@ -346,6 +346,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             const medienVersorgen = []
             const sichern = []
             const stromVersorgen = []
+            
             const wärmeVersorgenZweite = {
                 'Verteilen': {
                     'Pumpe': [],
@@ -369,6 +370,31 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                     'Speicher': []
                 }
             }
+            /*
+            const wärmeVersorgenZweite = {
+                'Distribution': {
+                    'Pump': [],
+                    'Heating circuit': [],
+                    'Valve': [],
+                    'Room': [],
+                    'Supply': [],
+                    'Return': []
+                },
+                'Generation': {
+                    'CHP': [],
+                    'Heat generator general': [],
+                    'Wärmepumpe': [],
+                    'Kessel': [],
+                    'Pelletkessel': []
+                },
+                'Beziehen': {
+                    'Fernwärme': [],
+                },
+                'Speichern': {
+                    'Speicher': []
+                }
+            }
+            */
             const luftVersorgenZweite = {
                 'Verteilen': {
                     'Volumenstromregler Zuluft': [],
@@ -436,6 +462,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                 allSubmodelElements.push(submodelElementInfo)
                 if (grundfunktionValue == 'WaermeVersorgen') {
                     wärmeVersorgen.push(submodelElementInfo)
+                    
                     if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'HeizkreisAllgemein') {
                         wärmeVersorgenZweite['Verteilen']['Heizkreis allgemein'].push(submodelElementInfo)
                     } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Pumpe') {
@@ -457,6 +484,29 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
                         wärmeVersorgenZweite['Erzeugen']['Waermepumpe'].push(submodelElementInfo)
                     } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'BHKW') {
                         wärmeVersorgenZweite['Erzeugen']['BHKW'].push(submodelElementInfo)
+                    /*
+                    if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'HeizkreisAllgemein') {
+                        wärmeVersorgenZweite['Distribution']['Heating circuit'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Pumpe') {
+                        wärmeVersorgenZweite['Distribution']['Pump'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Vorlauf') {
+                        wärmeVersorgenZweite['Distribution']['Supply'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Ruecklauf') {
+                        wärmeVersorgenZweite['Distribution']['Return'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Verteilen' && komponentenEbeneValue == 'Ventil') {
+                        wärmeVersorgenZweite['Distribution']['Valve'].push(submodelElementInfo)
+
+                    } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'WaermeversorgerAllgemein') {
+                        wärmeVersorgenZweite['Generation']['Heat generator general'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Kessel') {
+                        wärmeVersorgenZweite['Erzeugen']['Kessel'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Pelletkessel') {
+                        wärmeVersorgenZweite['Erzeugen']['Pelletkessel'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'Waermepumpe') {
+                        wärmeVersorgenZweite['Erzeugen']['Waermepumpe'].push(submodelElementInfo)
+                    } else if (zweiteEbeneValue == 'Erzeugen' && komponentenEbeneValue == 'BHKW') {
+                        wärmeVersorgenZweite['Generation']['CHP'].push(submodelElementInfo)
+                    */
                     } else if (zweiteEbeneValue == 'Beziehen') {
                         wärmeVersorgenZweite['Beziehen']['Fernwärme'].push(submodelElementInfo)
                     } else if (zweiteEbeneValue == 'Speichern') {

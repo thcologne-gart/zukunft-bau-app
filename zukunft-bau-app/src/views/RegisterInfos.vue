@@ -86,7 +86,8 @@ export default {
     computed: {
         currentTitle () {
             switch (this.step) {
-            case 1: return 'Registrierung Unternehmen'
+            //case 1: return 'Registrierung Unternehmen'
+            case 1: return 'Company Registration'
             case 2: return 'Registrierung Liegenschaften'
             default: return 'Registrierung Gebäude'
             }

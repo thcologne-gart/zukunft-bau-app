@@ -1,6 +1,7 @@
 <template>
     <div>
         <v-container>
+            <!--<h2 style="color: #bc3384;">Digital Twins - Building {{ $route.params.buildingid  }}</h2>-->
             <h2 style="color: #bc3384;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
             <h3 style="color: #bc3384;">{{ this.digitalTwinStore.aasIdShort }} - {{ title  }}</h3>
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
@@ -28,6 +29,7 @@
                                                             <v-expansion-panel-text>
                                                                 <v-row>
                                                                     <v-col cols="8">
+                                                                        <!--<p class="my-4">Score Datapoint: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>-->
                                                                         <p class="my-4">Score Datenpunkt: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>
                                                                     </v-col>
                                                                     <v-col cols="4">

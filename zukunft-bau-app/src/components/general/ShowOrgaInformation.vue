@@ -36,6 +36,13 @@ export default {
                 'Sitz des Unternehmens (Stadt)',
                 'Sitz des Unternehmens (Postleitzahl)',
                 'Straße und Hausnummer'
+               /*
+               'Company name',
+               'Head office (Country)',
+               'Head office (City)',
+               'Head office (Postal code)',
+               'Street'
+               */
             ]
         }
     },
