@@ -7,6 +7,7 @@ export const useGeneralStore = defineStore('general', {
   // arrow function recommended for full type inference
   state: () => {
     return {
+        aasServer: 'https://svmiv1rcci.execute-api.us-east-1.amazonaws.com/dev/v1/',
         loading: false,
         loadedSiteInformation: [],
         loadedSiteInformationWithBuildings: [],
@@ -25,8 +26,8 @@ export const useGeneralStore = defineStore('general', {
     async createAas(semanticIdType, aasIdShort) {
         let aasId = ''
         try {
-            const createAas = 'api/v1/AAS/createAasByAasType'
-            const url = '/awsBackend/' + createAas
+            const createAas = 'aas/createaasbyaastype'
+            const url = this.aasServer + createAas
             const response = await axios.post(url, {
                 userId: 10002,
                 semanticIdAasType: semanticIdType,
@@ -42,8 +43,8 @@ export const useGeneralStore = defineStore('general', {
 
     async addSubmodelElements(companyAasId, submodelIdShort, semanticIdSubmodel, submodelElementValues) {
         try {
-            const updateSubmodel = 'api/v1/Submodel/addSubmodelElements'
-            const url = '/awsBackend/' + updateSubmodel
+            const updateSubmodel = 'submodel/addsubmodelelements'
+            const url = this.aasServer + updateSubmodel
             console.log(url)
             const response = await axios.post(url, {
                 userId: 10002,
@@ -60,8 +61,8 @@ export const useGeneralStore = defineStore('general', {
 
     async inititalPostBomHasPart(parentId, partId) {
 
-        const bom = 'api/v1/Submodel/BOM/initialPost'
-        const urlBom = '/awsBackend/' + bom
+        const bom = 'submodel/bom/initialpost'
+        const urlBom = this.aasServer + bom
         try {
             const response = await axios.post(urlBom, {
                 userId: 10002,
@@ -87,8 +88,8 @@ export const useGeneralStore = defineStore('general', {
 
     async inititalPostBomIsPartOf(parentId, partId) {
         
-        const bom = 'api/v1/Submodel/BOM/initialPost'
-        const urlBom = '/awsBackend/' + bom
+        const bom = 'submodel/bom/initialpost'
+        const urlBom = this.aasServer + bom
         try {
             const response = await axios.post(urlBom, {
                 userId: 10002,
@@ -112,8 +113,8 @@ export const useGeneralStore = defineStore('general', {
     },
 
     async addHasPart(parentId, partId) {
-        const bom = 'api/v1/Submodel/BOM/addHasPartElement'
-        const urlBom = '/awsBackend/' + bom
+        const bom = 'submodel/bom/addhaspartelement'
+        const urlBom = this.aasServer + bom
         try {
             const response = await axios.post(urlBom, {
                 userId: 10002,
@@ -131,8 +132,8 @@ export const useGeneralStore = defineStore('general', {
     },
 
     async getBomChilds(aasId) {
-        const bomChilds = 'api/v1/Submodel/BOM/getChilds'
-        const urlBomChilds = '/awsBackend/' + bomChilds
+        const bomChilds = 'submodel/bom/getchilds'
+        const urlBomChilds = this.aasServer + bomChilds
         let childAasIds = []
         try {
             const response = await axios.post(urlBomChilds, {
@@ -147,8 +148,8 @@ export const useGeneralStore = defineStore('general', {
         return childAasIds
     },
     async getBomParent(aasId) {
-        const bomParent = 'api/v1/Submodel/BOM/getParents'
-        const urlBomParent = '/awsBackend/' + bomParent
+        const bomParent = 'submodel/bom/getparents'
+        const urlBomParent = this.aasServer + bomParent
         let parentAasId = []
         try {
             const response = await axios.post(urlBomParent, {
@@ -164,8 +165,8 @@ export const useGeneralStore = defineStore('general', {
         return parentAasId
     },
     async getAasByType (semanticId) {
-        const getAasByType = 'api/v1/AAS/getAllAasIdentifierByAasType'
-        const url = '/awsBackend/' + getAasByType
+        const getAasByType = 'aas/getallaasidentifierbyaastype'
+        const url = this.aasServer + getAasByType
         let aasIds = ''
         try {
             const response = await axios.post(url, {
@@ -180,8 +181,8 @@ export const useGeneralStore = defineStore('general', {
         return aasIds
     },
     async getSubmodel(aasId, submodelId) {
-        const getSubmodel = 'api/v1/Submodel/getSubmodel'
-        const url = '/awsBackend/' + getSubmodel
+        const getSubmodel = 'submodel/getsubmodel'
+        const url = this.aasServer + getSubmodel
         let responseBasyx = ''       
         
         try {
@@ -200,8 +201,8 @@ export const useGeneralStore = defineStore('general', {
     async getSeValue (aasId, submodelIdShort, idShortPaths) {
 
         let allSeInformations = {}
-        const getSeValue = 'api/v1/Submodel/getSubmodelElementValue'
-        const urlSeValue = '/awsBackend/' + getSeValue
+        const getSeValue = 'submodel/getsubmodelelementvalue'
+        const urlSeValue = this.aasServer + getSeValue
 
         for (let element in idShortPaths) {
             let value = idShortPaths[element] 
@@ -246,8 +247,8 @@ export const useGeneralStore = defineStore('general', {
 
     async editSeValue (aasId, submodelIdShort, idShort, value) {
 
-        const editSeValue = 'api/v1/Submodel/editSubmodelElementValue'
-        const url = '/awsBackend' + editSeValue
+        const editSeValue = 'submodel/editsubmodelelementvalue'
+        const url = this.aasServer + editSeValue
 
         if (idShort.length == 1) {
             try {
@@ -284,8 +285,8 @@ export const useGeneralStore = defineStore('general', {
         }
     },
     async getAasIdShortByIdentifier(aasId) {
-        const getAasIdShort = 'api/v1/AAS/getAasIdShortByIdentifier'
-        const url = '/awsBackend/' + getAasIdShort
+        const getAasIdShort = 'aas/getaasidshortbyidentifier'
+        const url = this.aasServer + getAasIdShort
         let idShort = ''
         try {
             const response = await axios.post(url, {
@@ -301,7 +302,7 @@ export const useGeneralStore = defineStore('general', {
     /*
     async getSubmodel (aasId, submodelIdShort) {
         const  = 'api/v1/Submodel/getSubmodel'
-        const url = '/awsBackend' + editSeValue
+        const url = this.aasServer + editSeValue
     },
     */
     async loadBacnetInformation(aasBacnetIds) {
@@ -395,8 +396,44 @@ export const useGeneralStore = defineStore('general', {
 
             }
     },
+
+    // Test of Amlify klapp
+    /*
+    async helloServer() {
+        //const hello = 'dev/v1/aas/helloserver'
+        const url = 'https://svmiv1rcci.execute-api.us-east-1.amazonaws.com/dev/v1/aas/helloserver'
+        //const url = this.aasServer + hello
+        try {
+            console.log(url)
+             const response = await axios.get(url);
+        
+            console.log('Response-1:', response.data);
+          } catch (error) {
+            console.error('Error-1:', error.message);
+        }
+    },
+    */
+    async postDataGetAllAasIdentifier() {
+
+        const getAasIdentifier = 'aas/getallaasidentifier'
+        const url = this.aasServer + getAasIdentifier
+        try {
+            console.log(url)
+            const response = await axios.post(url, {
+                // Hier kannst du die Daten angeben, die du senden möchtest
+                userId: 10002
+            });
+        console.log('Response-2:', response.data);
+      } catch (error) {
+        console.error('Error-2:', error.message);
+      }
+    },
     
     async fetchGeneralInfos() {
+        
+        // Test Amplify
+        //await this.helloServer()
+        await this.postDataGetAllAasIdentifier()
 
         // this.loading=true
         const companyIdShortPaths = {
@@ -420,12 +457,13 @@ export const useGeneralStore = defineStore('general', {
 
         const semanticIdAasType = 'https://th-koeln.de/gart/CompanyAAS/1/0'        
         const aasIds = await this.getAasByType(semanticIdAasType)
+        console.log(aasIds)
         const companyAasId = aasIds[0]
 
         
         const companySubmodelId = 'CompanyInformation'
         const organizationInformation =  await this.getSeValue (companyAasId, companySubmodelId, companyIdShortPaths)
-
+        console.log(organizationInformation)
         if (Object.keys(organizationInformation).length !== 0) {
             this.loadedOrganizationInformation.push(organizationInformation)  
         }
