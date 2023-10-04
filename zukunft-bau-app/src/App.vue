@@ -13,8 +13,6 @@
         <NavBar />
         <NavigationDrawer />
         <v-main>
-          <!-- AWS USER ID von Cognito -->
-          <!--<div>{{ auth.user.signInUserSession.idToken.payload.sub }}</div>-->
           <router-view />
           <Footer />
         </v-main>
@@ -28,7 +26,8 @@
   import Footer from '@/components/general/Footer.vue'
   import NavigationDrawer from '@/components/general/NavigationDrawer.vue'
 
-  import { onMounted } from "vue"
+  //import { onMounted } from "vue"
+  import { watchEffect } from "vue"
   import { useGeneralStore } from "@/store/general"
   import { Authenticator } from '@aws-amplify/ui-vue';
   import { useAuthenticator } from '@aws-amplify/ui-vue'
@@ -53,11 +52,22 @@
   const auth = useAuthenticator();
   const store = useGeneralStore()
 
-  
-
+  watchEffect(() => {
+    // Check if auth.user is available and contains the necessary properties.
+    if (auth.user && auth.user.signInUserSession) {
+      const userId = auth.user.signInUserSession.idToken.payload.sub
+      //console.log(userId)
+      store.fetchGeneralInfos(userId)
+    }
+  });
+  /*
   onMounted( () => {
-    store.fetchGeneralInfos()
+    //const authentification = useAuthenticator()
+    console.log(auth)
+    const userId = auth.user.signInUserSession.idToken.payload.sub
+    store.fetchGeneralInfos(userId)
   })
+  */
 </script>
 
 <style>

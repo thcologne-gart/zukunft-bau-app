@@ -7,6 +7,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
     state: () => {
       return {
         showProgressUploadAas: false,
+        aasServer: 'https://svmiv1rcci.execute-api.us-east-1.amazonaws.com/dev/v1/',
         showProgressEditDatenpunkt: false,
         aasId: '',
         aasIdShort: '',
@@ -29,15 +30,17 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             console.log(aasId)
             console.log(aasIdShort)
             this.showProgressUploadAas = true
-            const startNlp = 'api/v1/AI/startNLPPipeline'
+            const startNlp = 'ai/startnlppipeline'
             console.log(startNlp)
-            const url = '/awsBackend/' + startNlp
+            const url = this.aasServer + startNlp
             let responseBasyx = ''    
             console.log(url)      
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
             
             try {
                 const response = await axios.post(url, {
-                    userId: 10002,
+                    userId: userId,
                     aasIdentifier: aasId,
                     idShort :'BACnetDatapointsInformation'
                 }, {
@@ -68,7 +71,6 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             }
             */
             //const aas_id = '/TestAAS'
-            const generalStore = useGeneralStore()
             const bacnetIds = generalStore.loadedBacnetInformation
             console.log(bacnetIds)
             await generalStore.loadBacnetInformation(bacnetIds)
@@ -273,14 +275,16 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
 
         },
         async getSubmodel(aasId) {
-            const getSubmodel = 'api/v1/Submodel/getSubmodel'
-            const url = '/awsBackend/' + getSubmodel
+            const getSubmodel = 'submodel/getsubmodel'
+            const url = this.aasServer + getSubmodel
             let responseBasyx = ''    
             console.log(url)      
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
             
             try {
                 const response = await axios.post(url, {
-                    userId: 10002,
+                    userId: userId,
                     aasIdentifier: aasId,
                     submodelIdShort :'NLPClassificationResult'
                 })
@@ -291,12 +295,14 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             return responseBasyx
         },
         async getBomParent(aasId) {
-            const bomParent = 'api/v1/Submodel/BOM/getParents'
-            const urlBomParent = '/awsBackend/' + bomParent
+            const bomParent = 'submodel/bom/getparents'
+            const urlBomParent = this.aasServer + bomParent
             let parentAasId = []
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
             try {
                 const response = await axios.post(urlBomParent, {
-                    userId: 10002,
+                    userId: userId,
                     aasIdentifier: aasId,
                     submodelIdShort: 'HierarchicalStructures'
                 })
@@ -309,12 +315,14 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             return parentAasId
         },
         async getAasIdShortByIdentifier(aasId) {
-            const getAasIdShort = 'api/v1/AAS/getAasIdShortByIdentifier'
-            const url = '/awsBackend/' + getAasIdShort
+            const getAasIdShort = 'aas/getaasidshortbyidentifier'
+            const url = this.aasServer + getAasIdShort
             let idShort = ''
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
             try {
                 const response = await axios.post(url, {
-                    userId: 10002,
+                    userId: userId,
                     aasIdentifier: aasId
                 })
                 idShort = response.data
