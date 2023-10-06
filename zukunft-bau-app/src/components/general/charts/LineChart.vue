@@ -51,6 +51,7 @@ export default {
             for (var i = 0; i < count; ++i) {
                 data.push(generateData());
             }
+            console.log(data)
             return data;
         }
 
@@ -89,6 +90,15 @@ export default {
 
         // Set data
         let data = generateDatas(1200);
+        /*
+        let data = [
+                {date: 1705186800000, value: 134},
+                {date: 1705273200000, value: 129},
+                {date: 1705359600000, value: 126},
+                {date: 1705446000000, value: 123},
+                {date: 1705532400000, value: 122}
+        ]
+        */
         series.data.setAll(data);
 
 

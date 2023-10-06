@@ -5,10 +5,14 @@ import Home_Site from '../views/home/site/site_general.vue'
 import Home_Site_Building from '../views/home/site/building/building_general.vue'
 import RegisterInfos from '../views/RegisterInfos.vue'
 import DigitalTwins from '../views/digitaltwins/digitaltwins_general.vue'
-import Monitoring from '../views/monitoring/monitoring_general.vue'
 import DigitalTwins_Site from '../views/digitaltwins/site/site_general.vue'
 import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/building_general.vue'
 import DigitalTwins_Site_Building_Grundfunktion from '../views/digitaltwins/site/building/GrundfunktionTga.vue'
+import Monitoring from '../views/monitoring/monitoring_general.vue'
+import Monitoring_Site from '../views/monitoring/site/monitoring_site.vue'
+import Monitoring_Site_Building from '../views/monitoring/site/building/monitoring_building.vue'
+import Monitoring_Site_Building_Grundfunktion from '../views/monitoring/site/building/monitoring_grundfunktion.vue'
+
 
 const routes = [
   {
@@ -56,6 +60,21 @@ const routes = [
     path: '/monitoring',
     name: 'Monitoring',
     component: Monitoring,
+  },
+  {
+    path: '/monitoring/:siteid',
+    name: 'Monitoring_Site',
+    component: Monitoring_Site,
+  },
+  {
+    path: '/monitoring/:siteid/:buildingid',
+    name: 'Monitoring_Site_Building',
+    component: Monitoring_Site_Building,
+  },
+  {
+    path: '/monitoring/:siteid/:buildingid/:grundfunktion',
+    name: 'Monitoring_Site_Building_Grundfunktion',
+    component: Monitoring_Site_Building_Grundfunktion,
   },
 ]
 
