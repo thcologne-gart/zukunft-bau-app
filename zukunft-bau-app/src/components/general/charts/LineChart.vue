@@ -11,6 +11,9 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 export default {
+    props: {
+        timeSeries: Array, 
+    },
     mounted() {
         let root = am5.Root.new(this.$refs.lineChart);
 
@@ -35,8 +38,8 @@ export default {
 
         let date = new Date();
         date.setHours(0, 0, 0, 0);
-        let value = 100;
-
+        //let value = 100;
+        /*
         function generateData() {
             value = Math.round((Math.random() * 10 - 5) + value);
             am5.time.add(date, "day", 1);
@@ -45,7 +48,7 @@ export default {
                 value: value
             };
         }
-
+        
         function generateDatas(count) {
             let data = [];
             for (var i = 0; i < count; ++i) {
@@ -54,7 +57,7 @@ export default {
             console.log(data)
             return data;
         }
-
+        */
 
         let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
             maxDeviation: 0.2,
@@ -89,7 +92,9 @@ export default {
 
 
         // Set data
-        let data = generateDatas(1200);
+        // let data = generateDatas(1200);
+        let data = this.timeSeries
+        console.log(data)
         /*
         let data = [
                 {date: 1705186800000, value: 134},
