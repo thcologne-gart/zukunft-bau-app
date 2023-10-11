@@ -10,7 +10,6 @@
         </v-container>
         <AmCharts />
         <PieChart />
-        <LineChart />
     </div>
 </template> 
 
@@ -20,12 +19,11 @@ import MonitoringOverview from "@/components/monitoring/MonitoringOverview.vue"
 
 import AmCharts from "@/components/general/AmCharts.vue"
 import PieChart from "@/components/general/charts/PieChart.vue"
-import LineChart from "@/components/general/charts/LineChart.vue"
 
 
 export default{
     components: {
-        MonitoringOverview, AmCharts, PieChart, LineChart
+        MonitoringOverview, AmCharts, PieChart
     },
     computed: {
         generalStore () {

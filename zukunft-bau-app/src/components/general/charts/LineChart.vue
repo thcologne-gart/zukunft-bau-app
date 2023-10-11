@@ -9,10 +9,15 @@
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+import { useMonitoringStore } from "@/store/monitoring"
 
 export default {
-    props: {
-        timeSeries: Array, 
+    methods: {
+        async getData () {
+            await this.monitoringStore.createLineChart(this.submodelElementPath, this.submodelRefIdShort, this.aasId)
+            // const data = this.monitoringStore.roomTemperature
+            // return data
+        }
     },
     mounted() {
         let root = am5.Root.new(this.$refs.lineChart);
@@ -62,7 +67,8 @@ export default {
         let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
             maxDeviation: 0.2,
             baseInterval: {
-                timeUnit: "day",
+                //timeUnit: "hour",
+                timeUnit: 'minute',
                 count: 1
             },
             renderer: am5xy.AxisRendererX.new(root, {}),
@@ -93,7 +99,12 @@ export default {
 
         // Set data
         // let data = generateDatas(1200);
-        let data = this.timeSeries
+        //let data = this.timeSeries
+
+        // let data = this.getData()
+        // console.log(typeof data)
+
+        let data = this.monitoringStore.roomTemperature
         console.log(data)
         /*
         let data = [
@@ -104,13 +115,17 @@ export default {
                 {date: 1705532400000, value: 122}
         ]
         */
-        series.data.setAll(data);
-
+        series.data.setAll(data)
 
         // Make stuff animate on load
         // https://www.amcharts.com/docs/v5/concepts/animations/
         series.appear(1000);
         chart.appear(1000, 100);
+    },
+    computed: {
+        monitoringStore () {
+            return useMonitoringStore()
+        }
     }
 }
 
