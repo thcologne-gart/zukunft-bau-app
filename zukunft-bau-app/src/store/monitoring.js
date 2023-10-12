@@ -5,26 +5,64 @@ import { useGeneralStore } from "@/store/general"
 export const useMonitoringStore = defineStore('monitoring', {
     state: () => {
         return {
+            timeSeriesSubmodel: [],
+            timeSeriesSubmodelElementsIdShorts: [],
+            userId: '',
             loadingLineChart: false,
             aasServer: 'https://svmiv1rcci.execute-api.us-east-1.amazonaws.com/dev/v1/',
             roomTemperature: []
         }
     },
     actions: {
-        async createLineChart(submodelElementPath, submodelRefIdShort, aasId) {
+        async getTimeSeriesSubmodelElements(aasId) {
+            const getSubmodelElements = 'submodel/getsubmodelelementbypath'
+            const url = this.aasServer + getSubmodelElements
+            let responseBasyx = ''
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
+            this.userId = userId
+            console.log(this.userId)
+            console.log(aasId)
+
+            try {
+                const response = await axios.post(url, {
+                    userId: this.userId,
+                    aasIdentifier: aasId,
+                    submodelIdShort : 'TimeSeries',
+                    submodelElementShortIdPath: [
+                        "Segments"
+                    ]
+                })
+                responseBasyx = response.data
+            } catch (error) {
+                console.log(error)
+            }
+            let idShorts = []
+            for  (let element in responseBasyx['value']) {
+                console.log(responseBasyx['value'][element]['idShort'])
+                idShorts.push(responseBasyx['value'][element]['idShort'])
+            }
+            this.timeSeriesSubmodelElementsIdShorts = idShorts
+            this.timeSeriesSubmodel = responseBasyx
+
+
+            return responseBasyx
+        }, 
+        async getTimeSeriesValues(submodelElementPath, submodelRefIdShort, aasId) {
             this.loadingLineChart = true
 
             const readTimeSeries = 'submodel/timeseries/readtimeseries'
             const url = this.aasServer + readTimeSeries
             let responseBasyx = ''    
             console.log(url)      
-            const generalStore = useGeneralStore()
-            const userId = generalStore.userId
+            //const generalStore = useGeneralStore()
+            //const userId = generalStore.userId
+            //this.userId = userId
             const actualTime = Math.floor(new Date().getTime() / 1000)
             
             try {
                 const response = await axios.post(url, {
-                    userId: userId,
+                    userId: this.userId,
                     aasIdentifier: aasId,
                     submodelRefIdShort:submodelRefIdShort,
                     submodelElementPath:submodelElementPath,

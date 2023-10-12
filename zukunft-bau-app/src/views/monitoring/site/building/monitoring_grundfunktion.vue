@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div>Hallo</div>
-        <v-dialog
+        <v-dialog v-for = "(element, index) in this.chartType" :key="index"
             v-model="dialog"
             width="60%">
             <template v-slot:activator="{ props }">
@@ -12,8 +11,8 @@
                     v-bind="props"
                     variant="outlined"
                     color = "monitoring"
-                    @click= "monitoringStore.createLineChart(submodelElementPath, submodelRefIdShort, aasId)"
-                >Monitor</v-btn>
+                    @click= "monitoringStore.getTimeSeriesValues(Object.values(element)[0], submodelRefIdShort, aasId)"
+                >{{ Object.values(element)[0] }}</v-btn>
                 </v-container>
             </template>
                 <v-card>
@@ -32,7 +31,8 @@
                             ></v-progress-linear>
                         </div>
                         <div v-else>
-                            <LineChart />
+                            <LineChart v-if = "Object.keys(element)[0] == 'lineChart'" />
+                            <ColumnChart v-if = "Object.keys(element)[0] == 'columnChart'" />
                         </div>
                     </v-container>
                     <v-card-actions>
@@ -52,30 +52,45 @@
 <script>
 import { useMonitoringStore } from "@/store/monitoring"
 import LineChart from "@/components/general/charts/LineChart.vue"
+import ColumnChart from "@/components/general/charts/ColumnChart.vue"
 
 export default{
     data () {
         return {
-            aasId: 'TestAAS',
+            chartType: [],
+            timeSeriesSubmodel: '',
+            aasId: 'th-koeln.de/gart/aas/1688387828691',
             submodelRefIdShort:"Measurements",
-            submodelElementPath:"RoomTemperature",
-            //submodelElementPath: 'onOff',
+            //submodelElementPath:"RoomTemperature",
+            //submodelElementPath: 'OnOff',
             dialog: false,
         }
     },
     components: {
-        LineChart
+        LineChart, ColumnChart
     },
-    /*
+    
     mounted() {
-        this.loadTimeSeriesData()
+        this.getTimeSeries()
     },
     methods: {
-        loadTimeSeriesData() {
-            this.monitoringStore.createLineChart()
+        async getTimeSeries() {
+            await this.monitoringStore.getTimeSeriesSubmodelElements(this.aasId)
+            this.timeSeriesSubmodel = this.monitoringStore.timeSeriesSubmodel
+            
+            let chartType = []
+            for (let element in this.monitoringStore.timeSeriesSubmodelElementsIdShorts) {
+                let se = this.monitoringStore.timeSeriesSubmodelElementsIdShorts[element]
+
+                if (se == 'OnOff') {
+                    chartType.push({'columnChart': se})
+                } else if (se == 'RoomTemperature' || se == 'Speed') {
+                    chartType.push({'lineChart': se})
+                }
+            }
+            this.chartType = chartType
         }
     },
-    */
     computed: {
         monitoringStore () {
             return useMonitoringStore()

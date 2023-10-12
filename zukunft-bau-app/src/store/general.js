@@ -371,6 +371,8 @@ export const useGeneralStore = defineStore('general', {
                 // bacnetGatewayInformation.push(bacnetNameplateInformation)        
                 allBacnetGatewayInformationAssigned.push(bacnetNameplateInformation)
             }
+            console.log(allBacnetGatewayInformationAssigned)
+            console.log(allBacnetGatewayInformationNotAssigned)
             this.loadedBacnetInformationNotAssigned = allBacnetGatewayInformationNotAssigned
             this.loadedBacnetInformationAssigned = allBacnetGatewayInformationAssigned
 
