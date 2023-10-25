@@ -67,7 +67,7 @@ const routes = [
     component: Monitoring_Site,
   },
   {
-    path: '/monitoring/:siteid/:buildingid',
+    path: '/monitoring/:siteid/:buildingid/:buildingaasid',
     name: 'Monitoring_Site_Building',
     component: Monitoring_Site_Building,
   },
@@ -81,6 +81,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  mode: 'history',
 })
 
 export default router

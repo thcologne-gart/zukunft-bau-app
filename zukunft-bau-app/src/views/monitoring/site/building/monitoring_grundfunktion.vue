@@ -70,9 +70,11 @@ export default{
         LineChart, ColumnChart
     },
     
+    
     mounted() {
         this.getTimeSeries()
     },
+    
     methods: {
         async getTimeSeries() {
             await this.monitoringStore.getTimeSeriesSubmodelElements(this.aasId)

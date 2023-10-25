@@ -14,6 +14,178 @@ export const useMonitoringStore = defineStore('monitoring', {
         }
     },
     actions: {
+        /*
+        async getGrundfunktionen(aasId, allBuildings) {
+            const generalStore = useGeneralStore()
+
+
+            for (const obj of allBuildings) {
+                for (const key in obj) {
+                  if (key === aasId) {
+                    let grundfunktionenAas = obj[key]
+                    let aasStrukturinformationen = []
+                    for (let grundfunktionAas in grundfunktionenAas) {
+                        let aasIdGrundfunktion = grundfunktionenAas[grundfunktionAas]
+                        let idShort = await generalStore.getAasIdShortByIdentifier(aasIdGrundfunktion)
+                        //console.log(idShort)
+                        let aasIdsZweiteEbene = await generalStore.getBomChilds(aasIdGrundfunktion)
+                        console.log(aasIdsZweiteEbene)
+                        let aasZweiteEbeneArray = []
+                        for (let aas in aasIdsZweiteEbene) {
+                            let aasIdZweiteEbene = aasIdsZweiteEbene[aas]
+                            let idShortZweiteEbene = await generalStore.getAasIdShortByIdentifier(aasIdZweiteEbene)
+                            
+                            let aasIdsAnlagen = await generalStore.getBomChilds(aasIdZweiteEbene)
+                            
+                            let aasAnlagen = []
+                            for (let aasAnlage in aasIdsAnlagen) {
+                                let aasIdAnlage = aasIdsAnlagen[aasAnlage]
+                                let idShortAnlage = await generalStore.getAasIdShortByIdentifier(aasIdAnlage)
+
+                                let aasIdsKomponenten = await generalStore.getBomChilds(aasIdAnlage)
+                                
+                                let aasKomponenten = []
+                                for (let aasKomponente in aasIdsKomponenten) {
+                                    let aasIdKomponente = aasIdsKomponenten[aasKomponente]
+                                    let idShortKomponente = await generalStore.getAasIdShortByIdentifier(aasIdKomponente)
+                                    
+                                    aasKomponenten.push(
+                                        {
+                                            'semanticId': 'Platzhalter',
+                                            'aasId': aasIdKomponente,
+                                            'idShort': idShortKomponente[0]
+                                        }
+                                    )
+                                }
+
+                                aasAnlagen.push(
+                                    {
+                                        'semanticId': 'Platzhalter',
+                                        'aasId': aasIdAnlage,
+                                        'idShort': idShortAnlage[0],
+                                        'komponentenAas': aasKomponenten
+                                    }
+                                )
+
+                            }
+                            aasZweiteEbeneArray.push(
+                                {
+                                    'semanticId': 'Platzhalter',
+                                    'aasId': aasIdZweiteEbene,
+                                    'idShort': idShortZweiteEbene[0],
+                                    'anlagenAas': aasAnlagen
+                                }
+                            )
+                        }
+                        let allAas = {
+                            'aasGrundfunktion': {
+                                'semanticId': 'Platzhalter',
+                                'aasId': aasIdGrundfunktion,
+                                'idShort': idShort[0]
+                            },
+                            'aasZweiteEbene': aasZweiteEbeneArray
+                        }
+                        aasStrukturinformationen.push(allAas)
+                    }
+                    console.log(aasStrukturinformationen)
+                    break
+                  }
+                }
+            }
+        },
+        */
+        async getGrundfunktionen(aasId, allBuildings) {
+            const generalStore = useGeneralStore()
+            //const aasStrukturinformationen = []
+          
+            for (const obj of allBuildings) {
+              for (const key in obj) {
+                if (key === aasId) {
+                  const grundfunktionenAas = obj[key];
+                  const aasPromises = [];
+          
+                  for (let grundfunktionAas in grundfunktionenAas) {
+                    aasPromises.push(fetchAasData(grundfunktionenAas[grundfunktionAas]));
+                  }
+          
+                  const aasData = await Promise.all(aasPromises);
+          
+                  console.log(aasData);
+                  break;
+                }
+              }
+            }
+          
+            async function fetchAasData(aasId) {
+              const idShort = await generalStore.getAasIdShortByIdentifier(aasId);
+              const aasIdsZweiteEbene = await generalStore.getBomChilds(aasId);
+          
+              const aasZweiteEbeneArray = await Promise.all(
+                aasIdsZweiteEbene.map((aasIdZweiteEbene) =>
+                  fetchAasZweiteEbeneData(aasIdZweiteEbene)
+                )
+              );
+          
+              return {
+                aasGrundfunktion: {
+                  semanticId: 'Platzhalter',
+                  aasId: aasId,
+                  idShort: idShort[0],
+                },
+                aasZweiteEbene: aasZweiteEbeneArray,
+              };
+            }
+          
+            async function fetchAasZweiteEbeneData(aasIdZweiteEbene) {
+              const idShortZweiteEbene = await generalStore.getAasIdShortByIdentifier(
+                aasIdZweiteEbene
+              );
+              const aasIdsAnlagen = await generalStore.getBomChilds(aasIdZweiteEbene);
+          
+              const aasAnlagen = await Promise.all(
+                aasIdsAnlagen.map((aasIdAnlage) => fetchAasAnlageData(aasIdAnlage))
+              );
+          
+              return {
+                semanticId: 'Platzhalter',
+                aasId: aasIdZweiteEbene,
+                idShort: idShortZweiteEbene[0],
+                anlagenAas: aasAnlagen,
+              };
+            }
+          
+            async function fetchAasAnlageData(aasIdAnlage) {
+              const idShortAnlage = await generalStore.getAasIdShortByIdentifier(
+                aasIdAnlage
+              );
+              const aasIdsKomponenten = await generalStore.getBomChilds(aasIdAnlage);
+          
+              const aasKomponenten = await Promise.all(
+                aasIdsKomponenten.map((aasIdKomponente) =>
+                  fetchAasKomponenteData(aasIdKomponente)
+                )
+              );
+          
+              return {
+                semanticId: 'Platzhalter',
+                aasId: aasIdAnlage,
+                idShort: idShortAnlage[0],
+                komponentenAas: aasKomponenten,
+              };
+            }
+          
+        async function fetchAasKomponenteData(aasIdKomponente) {
+            const idShortKomponente = await generalStore.getAasIdShortByIdentifier(
+            aasIdKomponente
+            );
+        
+            return {
+            semanticId: 'Platzhalter',
+            aasId: aasIdKomponente,
+            idShort: idShortKomponente[0],
+            };
+            }
+        },
         async getTimeSeriesSubmodelElements(aasId) {
             const getSubmodelElements = 'submodel/getsubmodelelementbypath'
             const url = this.aasServer + getSubmodelElements

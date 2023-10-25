@@ -28,22 +28,25 @@ export default {
         const buildings = []
         // const site = Object.values(this.site)[0]
         console.log(this.site['buildings'])
-        for (let building in this.site['buildings'][0]) {
+        for (let building in this.site['buildings']) {
           // console.log(site[building])
             let buildingInformationDict = {}
             console.log(this.site['buildings'])
             //let buildingInformation = this.site['buildings'][building]
-            let buildingInformation = this.site['buildings'][0][building]
+            let buildingInformation = this.site['buildings'][building]
             console.log(buildingInformation)
-            for (const element in buildingInformation) {
-                if (element === 'country') {
-                    buildingInformationDict['Land'] = buildingInformation[element]
-                } else if (element === 'city') {
-                    buildingInformationDict['Stadt'] =  buildingInformation[element]
-                } else if (element === 'street') {
-                    buildingInformationDict['Straße'] = buildingInformation[element]
-                } else if (element === 'buildingName') {
-                    buildingInformationDict['Name Gebäude'] = buildingInformation[element] 
+            for (const i in buildingInformation) {
+                let elementDict = buildingInformation[i]
+                for (const element in elementDict) {
+                  if (element === 'country') {
+                    buildingInformationDict['Land'] = elementDict[element]
+                  } else if (element === 'city') {
+                      buildingInformationDict['Stadt'] =  elementDict[element]
+                  } else if (element === 'street') {
+                      buildingInformationDict['Straße'] = elementDict[element]
+                  } else if (element === 'buildingName') {
+                      buildingInformationDict['Name Gebäude'] = elementDict[element] 
+                  }
                 }
             }
             buildings.push(buildingInformationDict)

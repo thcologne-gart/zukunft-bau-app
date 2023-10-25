@@ -28,9 +28,13 @@
 </template> 
 
 <script>
+import { useGeneralStore } from "@/store/general"
+import { useMonitoringStore } from "@/store/monitoring"
+
   export default {
     data () {
       return {
+        grundfunktionen: [],
         items: [
             {function: 'Luft versorgen', image: Object.values(import.meta.glob('@/assets/air-system.jpeg', {as:'url', eager:true}))[0], route: 'Monitoring_Site_Building_Grundfunktion'},
             {function: 'Kälte versorgen', image: Object.values(import.meta.glob('@/assets/cooling-system.jpeg', {as:'url', eager:true}))[0], route: 'Monitoring_Site_Building_Grundfunktion'},
@@ -38,10 +42,28 @@
         ]
       }
     },
+    props: {
+        buildingAasId: String
+    },
+    computed: {
+        generalStore () {
+            return useGeneralStore()
+        },
+        monitoringStore () {
+            return useMonitoringStore()
+        }
+    },
+    mounted() {
+        this.grundfunktionen = this.generalStore.loadedBuildingWithGrundfunktion
+        this.getGrundfunktionenForBulding(this.$route.params.buildingaasid)
+    },
     methods: {
         navigateToRoute(routeName, siteid, buildingid) {
             this.$router.push({name:routeName, params:{siteid:siteid, buildingid: buildingid, grundfunktion:'Luft versorgen'}});
         },
+        async getGrundfunktionenForBulding(aasId) {
+            await this.monitoringStore.getGrundfunktionen(aasId, this.grundfunktionen)
+        }
     }
   }
 </script>

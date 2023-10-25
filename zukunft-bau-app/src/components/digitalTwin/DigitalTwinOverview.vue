@@ -15,19 +15,21 @@
                     </v-col>
                 </v-row>
                 <v-divider class="mx-4" :thickness="3"></v-divider>
-                <v-row v-for="building in site['buildings'][0]" :key="building['buildingName']">
-                    <v-col>
-                        <v-card-item>{{ building["buildingName"] }}</v-card-item>
-                    </v-col>
-                    <v-col class="d-flex justify-center align-center">
-                        <v-card-actions class="justify-end">
-                            <v-btn class="mt-0" variant="outlined" color="success" size="small"
-                            @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName']}})">
-                            Information
-                            </v-btn>
-                        </v-card-actions>
-                    </v-col>
-                </v-row>
+                <div v-for="aasId in site['buildings']" :key="aasId">
+                    <v-row v-for="building in site['buildings'][0]" :key="building['buildingName']">
+                        <v-col>
+                            <v-card-item>{{ building["buildingName"] }}</v-card-item>
+                        </v-col>
+                        <v-col class="d-flex justify-center align-center">
+                            <v-card-actions class="justify-end">
+                                <v-btn class="mt-0" variant="outlined" color="success" size="small"
+                                @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName']}})">
+                                Information
+                                </v-btn>
+                            </v-card-actions>
+                        </v-col>
+                    </v-row>
+                </div>
             </v-card>
         </v-container>
     </div>

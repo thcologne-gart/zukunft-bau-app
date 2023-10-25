@@ -18,7 +18,8 @@ export const useGeneralStore = defineStore('general', {
         loadedBacnetInformationAssigned: [],
         loadingBacnetAdding: false,
         buildingsList: [],
-        buildingsIdsWithSelectName: {}
+        buildingsIdsWithSelectName: {},
+        loadedBuildingWithGrundfunktion: []
         //buildingIdsArray: []
       // all these properties will have their type inferred automatically
     }
@@ -142,10 +143,16 @@ export const useGeneralStore = defineStore('general', {
                 aasIdentifier: aasId,
                 submodelIdShort: 'HierarchicalStructures'
             })
-            childAasIds = response.data
+            if ('status' in response.data) {
+                // 'status' property exists in the object
+                childAasIds = []
+            } else {
+                childAasIds = response.data
+            }
         } catch (error) {
             console.log(error)
         }
+        console.log(childAasIds)
         return childAasIds
     },
     async getBomParent(aasId) {
@@ -198,7 +205,7 @@ export const useGeneralStore = defineStore('general', {
         }
         return responseBasyx
     },
-
+    /*
     async getSeValue (aasId, submodelIdShort, idShortPaths) {
 
         let allSeInformations = {}
@@ -245,6 +252,32 @@ export const useGeneralStore = defineStore('general', {
         }
         return allSeInformations
     },
+    */
+    async getSeValue(aasId, submodelIdShort, idShortPaths) {
+        const getSeValue = 'submodel/getsubmodelelementvalue';
+        const urlSeValue = this.aasServer + getSeValue;
+        const allSeInformations = {};
+    
+        const requests = Object.entries(idShortPaths).map(async ([element, value]) => {
+            try {
+                const response = await axios.post(urlSeValue, {
+                    userId: this.userId,
+                    aasIdentifier: aasId,
+                    submodelIdShort: submodelIdShort,
+                    submodelElementShortIdPath: value
+                });
+    
+                if (response.data !== '') {
+                    allSeInformations[element] = response.data['value'];
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    
+        await Promise.all(requests);
+        return allSeInformations;
+    },    
 
     async editSeValue (aasId, submodelIdShort, idShort, value) {
 
@@ -432,6 +465,7 @@ export const useGeneralStore = defineStore('general', {
       }
     },
     
+    /*
     async fetchGeneralInfos(userId) {
         
         // Test Amplify
@@ -474,6 +508,7 @@ export const useGeneralStore = defineStore('general', {
             const organizationInformation =  await this.getSeValue (companyAasId, companySubmodelId, companyIdShortPaths)
             this.loadedOrganizationInformation.push(organizationInformation) 
         }
+        console.log(this.loadedOrganizationInformation)
         //const organizationInformation =  await this.getSeValue (companyAasId, companySubmodelId, companyIdShortPaths)
         //console.log(Object.keys(organizationInformation).length)
         //if (Object.keys(organizationInformation).length !== 0) {
@@ -505,6 +540,72 @@ export const useGeneralStore = defineStore('general', {
         await this.loadBacnetInformation(aasBacnetIds)
         // this.loading=false
     },
+    */
+   
+    async fetchGeneralInfos(userId) {
+        this.userId = userId;
+        console.log(this.userId);
+    
+        const semanticIdAasType = 'https://th-koeln.de/gart/CompanyAAS/1/0';
+        const aasIds = await this.getAasByType(semanticIdAasType);
+        console.log(aasIds);
+
+        const companyIdShortPaths = {
+            organizationName: ['CompanyName'],
+            country: ['Address', 'NationalCode'],
+            city: ['Address', 'CityTown'],
+            zipcode: ['Address', 'Zipcode'],
+            street: ['Address', 'Street'],
+        }
+        const siteIdShortPaths = {
+            siteName: ['SiteName'],
+            country: ['Address', 'NationalCode'],
+            city: ['Address', 'CityTown'],
+            zipcode: ['Address', 'Zipcode'],
+            lat: ['Address', 'Lattitude'],
+            lng: ['Address', 'Longitude'],
+            street: ['Address', 'Street'],
+        }
+    
+        if (aasIds.length > 0) {
+            const companyAasId = aasIds[0];
+            console.log(companyAasId);
+    
+            const companySubmodelId = 'CompanyInformation';
+            const organizationInformation = await this.getSeValue(companyAasId, companySubmodelId, companyIdShortPaths);
+    
+            if (Object.keys(organizationInformation).length > 0) {
+                this.loadedOrganizationInformation.push(organizationInformation);
+            }
+    
+            const siteAasIds = await this.getBomChilds(companyAasId);
+            console.log(siteAasIds);
+    
+            const siteSubmodelId = 'SiteInformation';
+    
+            const siteInformationPromises = siteAasIds.map(async (siteAasId) => {
+                const siteInformation = await this.getSeValue(siteAasId, siteSubmodelId, siteIdShortPaths);
+                return Object.keys(siteInformation).length > 0 ? siteInformation : null;
+            });
+    
+            const siteInformationResults = await Promise.all(siteInformationPromises);
+            this.loadedSiteInformation = siteInformationResults.filter((info) => info);
+    
+            this.loadedSiteInformationWithBuildings = this.getBuildingsForEachSite();
+        } else {
+            this.loadedOrganizationInformation = [];
+            this.loadedSiteInformation = [];
+        }
+    
+        const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0';
+        const aasBacnetIds = await this.getAasByType(semanticIdAasTypeBacnet);
+    
+        this.loadedBacnetInformation = aasBacnetIds;
+    
+        await this.loadBacnetInformation(aasBacnetIds);
+    },
+    
+      
     /*
     async addBacnetDevice() {
         const bacnetName = 'BACnetAsset2'
@@ -680,7 +781,7 @@ export const useGeneralStore = defineStore('general', {
 
         //this.fetchGeneralInfos()
     },
-
+    /*
     async getBuildingsForEachSite() {
         const buildingIdShortPaths = {
             buildingName: ['BuildingName'],
@@ -701,6 +802,7 @@ export const useGeneralStore = defineStore('general', {
         const siteIdShortPaths = {
             siteName: ['SiteName']
         }
+        let buildingsWithGrundfunktionen = []
         for (let siteId in siteAasIds) {
             let buildings = []
             let buildingIds = await this.getBomChilds(siteAasIds[siteId])
@@ -708,9 +810,14 @@ export const useGeneralStore = defineStore('general', {
             const buildingSubmodelId = 'BuildingInformation'
             let buildingInformationDict = {}
             for (let building in buildingIds) {
+                let grundfunktionenPerBuilding = {}
                 let buildingAasId = buildingIds[building]
                 let buildingInformation =  await this.getSeValue(buildingAasId, buildingSubmodelId, buildingIdShortPaths)
+                let grundfunktionenInBuildings = await this.getBomChilds(buildingAasId)
+                grundfunktionenPerBuilding[buildingAasId] = grundfunktionenInBuildings
                 buildingInformationDict[buildingAasId] = buildingInformation
+                console.log(grundfunktionenPerBuilding)
+                buildingsWithGrundfunktionen.push(grundfunktionenPerBuilding)
             }
             buildings.push(buildingInformationDict)
             let siteDict = {
@@ -720,27 +827,61 @@ export const useGeneralStore = defineStore('general', {
             }
             allSitesWithBuildings.push(siteDict)
         }
-
+        this.loadedBuildingWithGrundfunktion = buildingsWithGrundfunktionen
         this.loadedSiteInformationWithBuildings = allSitesWithBuildings
-
-        /*
-        const semanticIdAasTypeBuilding = 'https://th-koeln.de/gart/BuildingAAS/1/0' 
-        const buildingIds = await this.getAasByType(semanticIdAasTypeBuilding)
-
-        let buildingIdArray = []
-        for (let building in buildingIds) {
-            let aasId = buildingIds[building]
-            let idShort = await this.getAasIdShortByIdentifier(aasId)
-            let buildingIdAndIdShort = {
-                aasId: idShort
-            }
-            buildingIdArray.push(buildingIdAndIdShort)
-        }
-        this.buildingIdsArray = buildingIdArray
-        */
 
         return allSitesWithBuildings
     },
+    */
+    async getBuildingsForEachSite() {
+        const buildingIdShortPaths = {
+          buildingName: ['BuildingName'],
+          country: ['Address', 'NationalCode'],
+          city: ['Address', 'CityTown'],
+          zipcode: ['Address', 'Zipcode'],
+          lat: ['Address', 'Lattitude'],
+          lng: ['Address', 'Longitude'],
+          street: ['Address', 'Street'],
+        };
+      
+        this.loadedSiteInformationWithBuildings = [];
+        this.loadedBuildingWithGrundfunktion = [];
+      
+        const semanticIdAasTypeSite = 'https://th-koeln.de/gart/SiteAAS/1/0';
+        const siteAasIds = await this.getAasByType(semanticIdAasTypeSite);
+      
+        const siteSubmodelId = 'SiteInformation';
+        const buildingSubmodelId = 'BuildingInformation';
+      
+        const allSitesWithBuildings = await Promise.all(siteAasIds.map(async (siteAasId) => {
+          const siteName = await this.getSeValue(siteAasId, siteSubmodelId, { siteName: ['SiteName'] });
+          const buildingIds = await this.getBomChilds(siteAasId);
+      
+          const buildings = await Promise.all(buildingIds.map(async (buildingAasId) => {
+            const buildingInformation = await this.getSeValue(buildingAasId, buildingSubmodelId, buildingIdShortPaths);
+            const grundfunktionenInBuildings = await this.getBomChilds(buildingAasId);
+      
+            this.loadedBuildingWithGrundfunktion.push({
+              [buildingAasId]: grundfunktionenInBuildings,
+            });
+      
+            return {
+              [buildingAasId]: buildingInformation,
+            };
+          }));
+      
+          return {
+            siteName: siteName.siteName,
+            siteAasId,
+            buildings, // Store all buildings for the site in an array
+          };
+        }));
+      
+        this.loadedSiteInformationWithBuildings = allSitesWithBuildings;
+        console.log(this.loadedSiteInformationWithBuildings)
+        return allSitesWithBuildings;
+    },      
+      
     async addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode) {
         const siteAasId = site['siteAasId']
 
