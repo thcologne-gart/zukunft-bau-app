@@ -12,7 +12,7 @@ import Monitoring from '../views/monitoring/monitoring_general.vue'
 import Monitoring_Site from '../views/monitoring/site/monitoring_site.vue'
 import Monitoring_Site_Building from '../views/monitoring/site/building/monitoring_building.vue'
 import Monitoring_Site_Building_Grundfunktion from '../views/monitoring/site/building/monitoring_grundfunktion.vue'
-
+import Monitoring_Site_Building_Grundfunktion_Anlage from '../views/monitoring/site/building/monitoring_anlage.vue'
 
 const routes = [
   {
@@ -72,9 +72,14 @@ const routes = [
     component: Monitoring_Site_Building,
   },
   {
-    path: '/monitoring/:siteid/:buildingid/:grundfunktion',
+    path: '/monitoring/:siteid/:buildingid/:buildingaasid/:grundfunktion',
     name: 'Monitoring_Site_Building_Grundfunktion',
-    component: Monitoring_Site_Building_Grundfunktion,
+    component: Monitoring_Site_Building_Grundfunktion
+  },
+  {
+    path: '/monitoring/:siteid/:buildingid/:buildingaasid/:grundfunktion/:anlage',
+    name: 'Monitoring_Site_Building_Grundfunktion_Anlage',
+    component: Monitoring_Site_Building_Grundfunktion_Anlage
   },
 ]
 

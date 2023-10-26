@@ -8,7 +8,7 @@
                     </v-col>
                     <v-col class="d-flex justify-center align-center">
                         <v-card-actions class="justify-end">
-                            <v-btn class="mt-0" variant="outlined" color="success" 
+                            <v-btn class="mt-0" variant="outlined" color="warning" 
                                 @click="$router.push({name:'DigitalTwins_Site', params:{siteid:site['siteName']}})">Information
                             </v-btn>
                         </v-card-actions>
@@ -16,13 +16,13 @@
                 </v-row>
                 <v-divider class="mx-4" :thickness="3"></v-divider>
                 <div v-for="aasId in site['buildings']" :key="aasId">
-                    <v-row v-for="building in site['buildings'][0]" :key="building['buildingName']">
+                    <v-row v-for="(building, key) in aasId" :key="key">
                         <v-col>
                             <v-card-item>{{ building["buildingName"] }}</v-card-item>
                         </v-col>
                         <v-col class="d-flex justify-center align-center">
                             <v-card-actions class="justify-end">
-                                <v-btn class="mt-0" variant="outlined" color="success" size="small"
+                                <v-btn class="mt-0" variant="outlined" color="warning" size="small"
                                 @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName']}})">
                                 Information
                                 </v-btn>

@@ -4,7 +4,7 @@
         <v-toolbar
             color="white"
             >
-            <v-toolbar-title style="color: #bc3384">
+            <v-toolbar-title style="color: #3B5249">
                 <span>{{ currentTitle }}</span>
             </v-toolbar-title>
         </v-toolbar>
@@ -87,7 +87,7 @@ export default {
         currentTitle () {
             switch (this.step) {
             //case 1: return 'Registrierung Unternehmen'
-            case 1: return 'Company Registration'
+            case 1: return 'Registrierung Unternehmen'
             case 2: return 'Registrierung Liegenschaften'
             default: return 'Registrierung Gebäude'
             }

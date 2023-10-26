@@ -10,7 +10,12 @@ export const useMonitoringStore = defineStore('monitoring', {
             userId: '',
             loadingLineChart: false,
             aasServer: 'https://svmiv1rcci.execute-api.us-east-1.amazonaws.com/dev/v1/',
-            roomTemperature: []
+            roomTemperature: [],
+            aasTree: [],
+            loadingAasTree: false,
+            aasZweiteGrundfunktion: [],
+            currentBuildingAas: '',
+            aasAnlage: []
         }
     },
     actions: {
@@ -95,6 +100,11 @@ export const useMonitoringStore = defineStore('monitoring', {
         },
         */
         async getGrundfunktionen(aasId, allBuildings) {
+            if (this.currentBuildingAas === aasId) {
+              return this.aasTree
+            }
+            this.aasTree = []
+            this.loadingAasTree = true
             const generalStore = useGeneralStore()
             //const aasStrukturinformationen = []
           
@@ -111,13 +121,18 @@ export const useMonitoringStore = defineStore('monitoring', {
                   const aasData = await Promise.all(aasPromises);
           
                   console.log(aasData);
-                  break;
+                  this.aasTree = aasData
+                  this.loadingAasTree = false
+                  this.currentBuildingAas = aasId
+                  return aasData
+                  //break;
                 }
               }
             }
           
             async function fetchAasData(aasId) {
               const idShort = await generalStore.getAasIdShortByIdentifier(aasId);
+              const semanticId = await generalStore.getSemanticIdAas(aasId);
               const aasIdsZweiteEbene = await generalStore.getBomChilds(aasId);
           
               const aasZweiteEbeneArray = await Promise.all(
@@ -128,7 +143,7 @@ export const useMonitoringStore = defineStore('monitoring', {
           
               return {
                 aasGrundfunktion: {
-                  semanticId: 'Platzhalter',
+                  semanticId: semanticId[0],
                   aasId: aasId,
                   idShort: idShort[0],
                 },
@@ -140,6 +155,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               const idShortZweiteEbene = await generalStore.getAasIdShortByIdentifier(
                 aasIdZweiteEbene
               );
+              const semanticIdZweiteEbene = await generalStore.getSemanticIdAas(aasId);
               const aasIdsAnlagen = await generalStore.getBomChilds(aasIdZweiteEbene);
           
               const aasAnlagen = await Promise.all(
@@ -147,7 +163,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               );
           
               return {
-                semanticId: 'Platzhalter',
+                semanticId: semanticIdZweiteEbene[0],
                 aasId: aasIdZweiteEbene,
                 idShort: idShortZweiteEbene[0],
                 anlagenAas: aasAnlagen,
@@ -158,6 +174,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               const idShortAnlage = await generalStore.getAasIdShortByIdentifier(
                 aasIdAnlage
               );
+              const semanticIdAnlage = await generalStore.getSemanticIdAas(aasId);
               const aasIdsKomponenten = await generalStore.getBomChilds(aasIdAnlage);
           
               const aasKomponenten = await Promise.all(
@@ -167,7 +184,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               );
           
               return {
-                semanticId: 'Platzhalter',
+                semanticId: semanticIdAnlage[0],
                 aasId: aasIdAnlage,
                 idShort: idShortAnlage[0],
                 komponentenAas: aasKomponenten,
@@ -178,9 +195,10 @@ export const useMonitoringStore = defineStore('monitoring', {
             const idShortKomponente = await generalStore.getAasIdShortByIdentifier(
             aasIdKomponente
             );
+            const semanticIdKomponente = await generalStore.getSemanticIdAas(aasId);
         
             return {
-            semanticId: 'Platzhalter',
+            semanticId: semanticIdKomponente[0],
             aasId: aasIdKomponente,
             idShort: idShortKomponente[0],
             };

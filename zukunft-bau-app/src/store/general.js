@@ -114,6 +114,22 @@ export const useGeneralStore = defineStore('general', {
         }
     },
 
+    async getSemanticIdAas(aasId) {
+        const path = 'aas/getaassemanticidbyidentifier'
+        const url = this.aasServer + path
+        let semanticId = []
+        try {
+            const response = await axios.post(url, {
+                userId: this.userId,
+                aasIdentifier: aasId
+            })
+            semanticId = response.data
+        } catch(error) {
+            console.log(error)
+        }
+        return semanticId
+    },
+
     async addHasPart(parentId, partId) {
         const bom = 'submodel/bom/addhaspartelement'
         const urlBom = this.aasServer + bom

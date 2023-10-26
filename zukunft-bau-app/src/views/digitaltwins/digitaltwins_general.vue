@@ -10,7 +10,7 @@
         </div>
     -->
         <v-container>
-            <h2 style="color: #bc3384;">Digital Twins - Übersicht</h2>
+            <h2 style="color: #3B5249;">Digital Twins - Übersicht</h2>
             <!--
             <v-btn
             @click="generalStore.addBacnetDevice()">Create Bacnet

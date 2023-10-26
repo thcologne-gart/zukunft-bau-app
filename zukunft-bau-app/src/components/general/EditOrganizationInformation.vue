@@ -10,7 +10,7 @@
                 class="ma-1"
                 v-bind="props"
                 variant="outlined"
-                color = "success"
+                color = "warning"
             >Edit information</v-btn>
             </v-container>
           </template>
@@ -73,10 +73,10 @@
                     editOrganizationZip,
                     editOrganizationStreet
                   ), dialog = false"
-                  class="ma-3" variant="outlined" color="success">Submit</v-btn>
+                  class="ma-3" variant="outlined" color="warning">Submit</v-btn>
                 <v-btn
                     variant="outlined"
-                    color = "success"
+                    color = "warning"
                     @click="dialog = false"
                 >
                     Close

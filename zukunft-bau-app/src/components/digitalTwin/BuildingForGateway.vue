@@ -10,7 +10,7 @@
             </v-col>
         </v-row>
         <v-card-actions class="d-flex justify-center align-center">
-            <v-btn class="mt-0" variant="outlined" color="success" 
+            <v-btn class="mt-0" variant="outlined" color="warning" 
                 @click= "generalStore.addGatewayToBuilding(gateway, choosedBuilding, buildingsIdsWithSelectName);
                 buildingName = ''">Submit
             </v-btn>

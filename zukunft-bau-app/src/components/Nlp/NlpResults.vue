@@ -13,7 +13,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId, bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to
@@ -30,7 +30,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId, bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to
@@ -47,7 +47,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId, bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to
@@ -64,7 +64,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId,bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to
@@ -81,7 +81,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId,bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to
@@ -98,7 +98,7 @@
                             <v-btn
                                 class="max-3 mb-4" 
                                 variant="outlined" 
-                                color="success"
+                                color="warning"
                                 @click="$router.push({name:'DigitalTwins_Site_Building_Grundfunktion', params:{siteid:siteId, buildingid: buildingId,bacnetid:this.digitalTwinStore.aasId, grundfunktion:grundfunktion}})"
                             >
                                 Go to

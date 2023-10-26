@@ -8,7 +8,7 @@
                     </v-col>
                     <v-col class="d-flex justify-center align-center">
                         <v-card-actions class="justify-end">
-                            <v-btn class="mt-0" variant="outlined" color="monitoring" 
+                            <v-btn class="mt-0" variant="outlined" color="warning" 
                                 @click="$router.push({name:'Monitoring_Site', params:{siteid:site['siteName']}})">Information
                             </v-btn>
                         </v-card-actions>
@@ -22,7 +22,7 @@
                         </v-col>
                         <v-col class="d-flex justify-center align-center">
                             <v-card-actions class="justify-end">
-                                <v-btn class="mt-0" variant="outlined" color="monitoring" size="small"
+                                <v-btn class="mt-0" variant="outlined" color="warning" size="small"
                                 @click="$router.push({name:'Monitoring_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName'], buildingaasid:key}})">
                                 Information
                                 </v-btn>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <h2 style="color: #bc3384;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
+            <h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
             <!--
                 <v-file-input
                     v-model="file"
@@ -14,7 +14,7 @@
                 <v-btn 
                     class="mt-0" 
                     variant="outlined" 
-                    color="success"
+                    color="warning"
                     @click="digitalTwinStore.startNlp(file)">Upload AAS
                 </v-btn>
             -->

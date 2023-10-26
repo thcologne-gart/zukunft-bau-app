@@ -1,9 +1,9 @@
 <template>
     <div>
         <v-container>
-            <!--<h2 style="color: #bc3384;">Digital Twins - Building {{ $route.params.buildingid  }}</h2>-->
-            <h2 style="color: #bc3384;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
-            <h3 style="color: #bc3384;">{{ this.digitalTwinStore.aasIdShort }} - {{ title  }}</h3>
+            <!--<h2 style="color: #3B5249;">Digital Twins - Building {{ $route.params.buildingid  }}</h2>-->
+            <h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
+            <h3 style="color: #3B5249;">{{ this.digitalTwinStore.aasIdShort }} - {{ title  }}</h3>
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
                 <v-col v-if="Object.values(funktion).length !== 0" cols = '12'>
                     <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">

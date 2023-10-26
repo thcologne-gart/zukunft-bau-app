@@ -28,7 +28,7 @@
                     </v-expansion-panels>
                     <v-divider></v-divider>
                     <v-card-actions v-if="gateway['NlpDone'] == false" class="d-flex justify-center align-center">
-                        <v-btn class="max-3 mb-4"  variant="outlined" color="success" 
+                        <v-btn class="max-3 mb-4"  variant="outlined" color="warning" 
                             @click= "digitalTwinStore.startNlp(gateway['AAS ID'], gateway['AAS ID Short']);
                             buildingName = ''">Classify Datapoints
                         </v-btn>

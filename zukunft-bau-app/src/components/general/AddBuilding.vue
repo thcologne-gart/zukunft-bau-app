@@ -3,7 +3,7 @@
         <v-container class="no-padding">
         <v-card-actions class="d-flex justify-center align-center">
             <v-btn
-                color="success"
+                color="warning"
                 text
                 @click="show = !show"
             >
@@ -26,7 +26,7 @@
             ></v-text-field>
             <vue-google-autocomplete class="autocomplete-container" :id="'map-' + site['siteName']" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
             <v-container class="d-flex justify-center align-center">
-              <v-btn class="mt-0" variant="outlined" color="success" 
+              <v-btn class="mt-0" variant="outlined" color="warning" 
                 @click= "currentPlace = '';
                 generalStore.addBuildingInformation(site, buildingName, country, city, street, streetNumber, lat, lng, zipcode);
                 buildingName = ''">Submit
@@ -112,7 +112,7 @@ export default {
   border-style: none;
 }
 #addSiteTitle {
-  color: #bc3384;
+  color: #3B5249;
   font-weight: 300;
   margin-top: 8px;
   margin-bottom: 12px;

@@ -18,15 +18,18 @@ const myCustomLightTheme = {
     background:'#ece9e9',
     surface:'#FFFFFF',
     primary:'#c42424', //th: orange
+    //primary: '#FF4A1C',
     'primary-darken-1':'#bc3384',
     highlight:'#ec5c24',
     secondary:'#a3a0a0',
     'secondary-darken-1': '#6c6c6c',
     error:'#e03024',
     info:'#ec5c24',
-    success:'#bc3384',
-    warning:'#c42424',
-    monitoring: '#285757',
+    //success:'#bc3384',
+    success: '#3B5249',
+    warning:'#ff4a1c',
+    //monitoring: '#285757',
+    monitoring: '#3B5249',
   },
 }
 

@@ -48,8 +48,8 @@
               form.zipcode,
               form.street
             )"
-            class="ma-3" variant="outlined" color="success">Submit</v-btn>
-            <v-btn @click="onReset" class="max-3" type="reset" variant="outlined" color="success">Reset</v-btn>
+            class="ma-3" variant="outlined" color="warning">Submit</v-btn>
+            <v-btn @click="onReset" class="max-3" type="reset" variant="outlined" color="warning">Reset</v-btn>
         </v-container>
       </v-form>
     </div>
