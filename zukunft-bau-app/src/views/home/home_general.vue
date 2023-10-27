@@ -1,5 +1,6 @@
 <template>
     <v-container fill-height class="mb-3 mx-2" >
+    <HeizkreisMonitoring />
     <v-row no-gutters
       class="flex-nowrap">
       <div v-for="site in sites" :key="site.id" >
@@ -77,7 +78,11 @@
 </template>
 
 <script>
+import HeizkreisMonitoring from "@/components/monitoring/HeizkreisMonitoring.vue"
 export default{
+  components: {
+        HeizkreisMonitoring
+    },
     setup(){
         // das hier dann aus deinem store laden:
         const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"} ]

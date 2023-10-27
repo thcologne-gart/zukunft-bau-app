@@ -15,7 +15,7 @@ import { createVuetify} from 'vuetify'
 const myCustomLightTheme = {
   dark:false,
   colors:{
-    background:'#ece9e9',
+    background:'#fcefef',
     surface:'#FFFFFF',
     primary:'#c42424', //th: orange
     //primary: '#FF4A1C',
@@ -27,7 +27,8 @@ const myCustomLightTheme = {
     info:'#ec5c24',
     //success:'#bc3384',
     success: '#3B5249',
-    warning:'#ff4a1c',
+    //warning:'#ff4a1c',
+    warning: '#372772',
     //monitoring: '#285757',
     monitoring: '#3B5249',
   },
