@@ -12,6 +12,13 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { useMonitoringStore } from "@/store/monitoring"
 
 export default {
+    /*
+    data() {
+    return {
+      data: []
+    };
+  },
+    
     methods: {
         async getData () {
             await this.monitoringStore.createLineChart(this.submodelElementPath, this.submodelRefIdShort, this.aasId)
@@ -19,7 +26,15 @@ export default {
             // return data
         }
     },
-    mounted() {
+    */
+    props: {
+        aasId: String,
+        submodelRefIdShort: String,
+        submodelElementPath: String
+    },
+    async mounted() {
+        let data = await this.getTimeSeriesData()
+        //let data = this.data
         let root = am5.Root.new(this.$refs.lineChart);
 
         let chart = root.container.children.push(
@@ -104,7 +119,7 @@ export default {
         // let data = this.getData()
         // console.log(typeof data)
 
-        let data = this.monitoringStore.roomTemperature
+        //let data = this.monitoringStore.roomTemperature
         console.log(data)
         /*
         let data = [
@@ -125,6 +140,13 @@ export default {
     computed: {
         monitoringStore () {
             return useMonitoringStore()
+        }
+    },
+    methods: {
+        async getTimeSeriesData () {
+            let timeSeriesData = await this.monitoringStore.getTimeSeriesValues(this.submodelElementPath, this.submodelRefIdShort, this.aasId)
+            //this.data = timeSeriesData
+            return timeSeriesData
         }
     }
 }

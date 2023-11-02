@@ -100,12 +100,15 @@ export const useMonitoringStore = defineStore('monitoring', {
         },
         */
         async getGrundfunktionen(aasId, allBuildings) {
+          
             if (this.currentBuildingAas === aasId) {
               return this.aasTree
             }
             this.aasTree = []
             this.loadingAasTree = true
             const generalStore = useGeneralStore()
+            const userId = generalStore.userId
+            this.userId = userId
             //const aasStrukturinformationen = []
           
             for (const obj of allBuildings) {
@@ -155,7 +158,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               const idShortZweiteEbene = await generalStore.getAasIdShortByIdentifier(
                 aasIdZweiteEbene
               );
-              const semanticIdZweiteEbene = await generalStore.getSemanticIdAas(aasId);
+              const semanticIdZweiteEbene = await generalStore.getSemanticIdAas(aasIdZweiteEbene);
               const aasIdsAnlagen = await generalStore.getBomChilds(aasIdZweiteEbene);
           
               const aasAnlagen = await Promise.all(
@@ -174,7 +177,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               const idShortAnlage = await generalStore.getAasIdShortByIdentifier(
                 aasIdAnlage
               );
-              const semanticIdAnlage = await generalStore.getSemanticIdAas(aasId);
+              const semanticIdAnlage = await generalStore.getSemanticIdAas(aasIdAnlage);
               const aasIdsKomponenten = await generalStore.getBomChilds(aasIdAnlage);
           
               const aasKomponenten = await Promise.all(
@@ -195,7 +198,7 @@ export const useMonitoringStore = defineStore('monitoring', {
             const idShortKomponente = await generalStore.getAasIdShortByIdentifier(
             aasIdKomponente
             );
-            const semanticIdKomponente = await generalStore.getSemanticIdAas(aasId);
+            const semanticIdKomponente = await generalStore.getSemanticIdAas(aasIdKomponente);
         
             return {
             semanticId: semanticIdKomponente[0],
@@ -234,8 +237,7 @@ export const useMonitoringStore = defineStore('monitoring', {
             }
             this.timeSeriesSubmodelElementsIdShorts = idShorts
             this.timeSeriesSubmodel = responseBasyx
-
-
+            
             return responseBasyx
         }, 
         async getTimeSeriesValues(submodelElementPath, submodelRefIdShort, aasId) {
@@ -260,11 +262,11 @@ export const useMonitoringStore = defineStore('monitoring', {
                     //submodelRefIdShort:"Measurements",
                     //submodelElementPath:"RoomTemperature",
                     timestampStart: 0,
-                    timestampStop: actualTime,
-                    // timestampStop: 1696878572
-                }, {
-                    timeout: 600000
-                  })
+                    // timestampStop: actualTime,
+                    timestampStop: 1696878572
+                },{
+                  timeout: 600000
+                })
                 responseBasyx = response.data
             } catch (error) {
                 console.log(error)
@@ -273,7 +275,7 @@ export const useMonitoringStore = defineStore('monitoring', {
             this.roomTemperature = responseBasyx
             this.loadingLineChart = false
 
-            // return responseBasyx
+            return responseBasyx
         }
     }
 })
