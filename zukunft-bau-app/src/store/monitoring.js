@@ -13,92 +13,21 @@ export const useMonitoringStore = defineStore('monitoring', {
             roomTemperature: [],
             aasTree: [],
             loadingAasTree: false,
+            loadingMonitoringComponent: false,
             aasZweiteGrundfunktion: [],
             currentBuildingAas: '',
             aasAnlage: []
         }
     },
     actions: {
-        /*
-        async getGrundfunktionen(aasId, allBuildings) {
-            const generalStore = useGeneralStore()
-
-
-            for (const obj of allBuildings) {
-                for (const key in obj) {
-                  if (key === aasId) {
-                    let grundfunktionenAas = obj[key]
-                    let aasStrukturinformationen = []
-                    for (let grundfunktionAas in grundfunktionenAas) {
-                        let aasIdGrundfunktion = grundfunktionenAas[grundfunktionAas]
-                        let idShort = await generalStore.getAasIdShortByIdentifier(aasIdGrundfunktion)
-                        //console.log(idShort)
-                        let aasIdsZweiteEbene = await generalStore.getBomChilds(aasIdGrundfunktion)
-                        console.log(aasIdsZweiteEbene)
-                        let aasZweiteEbeneArray = []
-                        for (let aas in aasIdsZweiteEbene) {
-                            let aasIdZweiteEbene = aasIdsZweiteEbene[aas]
-                            let idShortZweiteEbene = await generalStore.getAasIdShortByIdentifier(aasIdZweiteEbene)
-                            
-                            let aasIdsAnlagen = await generalStore.getBomChilds(aasIdZweiteEbene)
-                            
-                            let aasAnlagen = []
-                            for (let aasAnlage in aasIdsAnlagen) {
-                                let aasIdAnlage = aasIdsAnlagen[aasAnlage]
-                                let idShortAnlage = await generalStore.getAasIdShortByIdentifier(aasIdAnlage)
-
-                                let aasIdsKomponenten = await generalStore.getBomChilds(aasIdAnlage)
-                                
-                                let aasKomponenten = []
-                                for (let aasKomponente in aasIdsKomponenten) {
-                                    let aasIdKomponente = aasIdsKomponenten[aasKomponente]
-                                    let idShortKomponente = await generalStore.getAasIdShortByIdentifier(aasIdKomponente)
-                                    
-                                    aasKomponenten.push(
-                                        {
-                                            'semanticId': 'Platzhalter',
-                                            'aasId': aasIdKomponente,
-                                            'idShort': idShortKomponente[0]
-                                        }
-                                    )
-                                }
-
-                                aasAnlagen.push(
-                                    {
-                                        'semanticId': 'Platzhalter',
-                                        'aasId': aasIdAnlage,
-                                        'idShort': idShortAnlage[0],
-                                        'komponentenAas': aasKomponenten
-                                    }
-                                )
-
-                            }
-                            aasZweiteEbeneArray.push(
-                                {
-                                    'semanticId': 'Platzhalter',
-                                    'aasId': aasIdZweiteEbene,
-                                    'idShort': idShortZweiteEbene[0],
-                                    'anlagenAas': aasAnlagen
-                                }
-                            )
-                        }
-                        let allAas = {
-                            'aasGrundfunktion': {
-                                'semanticId': 'Platzhalter',
-                                'aasId': aasIdGrundfunktion,
-                                'idShort': idShort[0]
-                            },
-                            'aasZweiteEbene': aasZweiteEbeneArray
-                        }
-                        aasStrukturinformationen.push(allAas)
-                    }
-                    console.log(aasStrukturinformationen)
-                    break
-                  }
-                }
-            }
+        
+        async setLoadingMonitoringComponent(value) {
+          if (value == 'true') {
+            this.loadingMonitoringComponent = true
+          } else if (value == 'false') {
+            this.loadingMonitoringComponent = false
+          }
         },
-        */
         async getGrundfunktionen(aasId, allBuildings) {
           
             if (this.currentBuildingAas === aasId) {
@@ -214,8 +143,6 @@ export const useMonitoringStore = defineStore('monitoring', {
             const generalStore = useGeneralStore()
             const userId = generalStore.userId
             this.userId = userId
-            console.log(this.userId)
-            console.log(aasId)
 
             try {
                 const response = await axios.post(url, {
@@ -245,8 +172,7 @@ export const useMonitoringStore = defineStore('monitoring', {
 
             const readTimeSeries = 'submodel/timeseries/readtimeseries'
             const url = this.aasServer + readTimeSeries
-            let responseBasyx = ''    
-            console.log(url)      
+            let responseBasyx = ''        
             //const generalStore = useGeneralStore()
             //const userId = generalStore.userId
             //this.userId = userId
@@ -271,7 +197,6 @@ export const useMonitoringStore = defineStore('monitoring', {
             } catch (error) {
                 console.log(error)
             }
-            console.log(responseBasyx)
             this.roomTemperature = responseBasyx
             this.loadingLineChart = false
 

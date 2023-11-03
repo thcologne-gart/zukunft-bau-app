@@ -8,7 +8,9 @@
             </v-img>
 
         -->
-            <HeizkreisMonitoring :anlage="monitoringStore.aasAnlage.komponentenAas"/>
+            <HeizkreisMonitoring v-if='monitoringStore.aasAnlage.semanticId == "https://th-koeln.de/gart/PlantDistributionCircuitAAS/1/0"' :anlage="monitoringStore.aasAnlage.komponentenAas"/>
+            <RLTAnlageMonitoring v-else-if='monitoringStore.aasAnlage.semanticId == "https://th-koeln.de/gart/PlantVentilationSystemAAS/1/0"' :anlage="monitoringStore.aasAnlage.komponentenAas"/>
+        
         </v-container>
     </div>
 </template>
@@ -16,9 +18,10 @@
 <script>
 import { useMonitoringStore } from "@/store/monitoring"
 import HeizkreisMonitoring from "@/components/monitoring/HeizkreisMonitoring.vue"
+import RLTAnlageMonitoring from "@/components/monitoring/RLTAnlageMonitoring.vue"
 export default {
     components: {
-        HeizkreisMonitoring
+        HeizkreisMonitoring, RLTAnlageMonitoring
     },
     computed: {
         monitoringStore () {

@@ -120,7 +120,6 @@ export default {
         // console.log(typeof data)
 
         //let data = this.monitoringStore.roomTemperature
-        console.log(data)
         /*
         let data = [
                 {date: 1705186800000, value: 134},
