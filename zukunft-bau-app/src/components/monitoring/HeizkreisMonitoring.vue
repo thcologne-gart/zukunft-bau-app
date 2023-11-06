@@ -65,6 +65,15 @@
                   </v-toolbar-title>
               </v-toolbar>
               <v-divider></v-divider>
+              <v-card-text class="py-0">
+                <v-row align="center" no-gutters>
+                  <v-col
+                    class="text"
+                  >
+                    Present value: {{ element.presentValue.path[0].value }}{{ element.presentValue.path[1].value }}
+                  </v-col>
+                </v-row>
+              </v-card-text>
               <LineChart :aasId="element.aasId" :submodelRefIdShort="element.submodelName" :submodelElementPath="element.idShort"/>
             </v-card>
           </v-col>
@@ -124,6 +133,27 @@ export default {
         const submodel = await this.generalStore.getSubmodel(aasId, submodelId);
         const submodelElements = submodel.submodelElements;
 
+        // Define an array to store the promises for the asynchronous calls
+        const elementPromises = submodelElements.map(async (element) => {
+          const elementData = {
+            'aasId': aasId,
+            'submodelName': submodelId,
+            'idShort': element.idShort,
+            'name': element.descriptions[0].text,
+            'semanticId': element.semanticId.keys[0].value
+          };
+
+          let valueIdShortpath = {
+            path: [element.idShort]
+          }
+          const presentValue = await this.generalStore.getSeValue(aasId, submodelId, valueIdShortpath)
+          elementData.presentValue = presentValue;
+          return elementData
+        });
+
+        const elements = await Promise.all(elementPromises);
+        //console.log(elements);
+        /*
         const elements = submodelElements.map(element => ({
           'aasId': aasId,
           'submodelName': submodelId,
@@ -131,7 +161,7 @@ export default {
           'name': element.descriptions[0].text,
           'semanticId': element.semanticId.keys[0].value
         }));
-
+        */
         if (semanticId === 'https://th-koeln.de/gart/ComponentReturnAAS/1/0') {
           this.rücklauf = elements;
           this.rücklaufEnthalten = true
