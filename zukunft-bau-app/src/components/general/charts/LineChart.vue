@@ -34,8 +34,11 @@ export default {
     },
     async mounted() {
         let data = await this.getTimeSeriesData()
+        console.log(data)
         //let data = this.data
         let root = am5.Root.new(this.$refs.lineChart);
+
+        let customTheme = am5themes_Animated.new(root);
 
         let chart = root.container.children.push(
             am5xy.XYChart.new(root, {
@@ -47,9 +50,11 @@ export default {
             })
         );
 
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
+        root.setThemes([customTheme]);
+
+        //root.setThemes([
+          //  am5themes_Animated.new(root)
+        //]);
 
         let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
             behavior: "none"
@@ -58,43 +63,48 @@ export default {
 
         let date = new Date();
         date.setHours(0, 0, 0, 0);
-        //let value = 100;
-        /*
-        function generateData() {
-            value = Math.round((Math.random() * 10 - 5) + value);
-            am5.time.add(date, "day", 1);
-            return {
-                date: date.getTime(),
-                value: value
-            };
-        }
-        
-        function generateDatas(count) {
-            let data = [];
-            for (var i = 0; i < count; ++i) {
-                data.push(generateData());
-            }
-            console.log(data)
-            return data;
-        }
-        */
+
+        let tooltipTime = am5.Tooltip.new(root, {
+            getFillFromSprite: false,
+        });
+
+        tooltipTime.get("background").setAll({
+            fill: am5.color(0x3B5249)
+        });
 
         let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
             maxDeviation: 0.2,
             baseInterval: {
+
+                // Zu Minute setzen wenn Daten jede Minute angezeigt werden, Stunde wenn nur jede Stunde
+                
                 //timeUnit: "hour",
-                timeUnit: 'minute',
+                timeUnit: 'hour',
                 count: 1
             },
             renderer: am5xy.AxisRendererX.new(root, {}),
-            tooltip: am5.Tooltip.new(root, {})
+            //tooltip: am5.Tooltip.new(root, {})
+            tooltip: tooltipTime
         }));
+
+        let xRenderer = xAxis.get("renderer");
+        xRenderer.labels.template.setAll({
+            //fill: am5.color(0xFF0000),
+            fontSize: "12px",
+            fontFamily: "Montserrat"
+        });
 
         let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
             renderer: am5xy.AxisRendererY.new(root, {
                 pan:"zoom"
             })  
         }));
+        let yRenderer = yAxis.get("renderer");
+        yRenderer.labels.template.setAll({
+            //fill: am5.color(0xFF0000),
+            fontSize: "12px",
+            fontFamily: "Montserrat"
+        });
 
         let series = chart.series.push(am5xy.LineSeries.new(root, {
             name: "Series",
@@ -109,30 +119,11 @@ export default {
 
         chart.set("scrollbarX", am5.Scrollbar.new(root, {
             orientation: "horizontal"
-        }));
-
-
-        // Set data
-        // let data = generateDatas(1200);
-        //let data = this.timeSeries
-
-        // let data = this.getData()
-        // console.log(typeof data)
-
-        //let data = this.monitoringStore.roomTemperature
-        /*
-        let data = [
-                {date: 1705186800000, value: 134},
-                {date: 1705273200000, value: 129},
-                {date: 1705359600000, value: 126},
-                {date: 1705446000000, value: 123},
-                {date: 1705532400000, value: 122}
-        ]
-        */
+        }))
+        //let color = am5.Color.fromHex(0xff0000)
+        series.set("stroke", am5.color(0xFF4A1C));
+        series.set("fill", am5.color(0x3B5249));
         series.data.setAll(data)
-
-        // Make stuff animate on load
-        // https://www.amcharts.com/docs/v5/concepts/animations/
         series.appear(1000);
         chart.appear(1000, 100);
     },

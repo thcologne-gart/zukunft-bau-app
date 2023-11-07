@@ -11,8 +11,10 @@
               <g id="Ebene_1" xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
                   <g>
                       <path class="st0" d=""/>
-                      <line class="st1" x1="0" y1="85.7" x2="90" y2="85.7"/>
-                      <line class="st2" x1="0" y1="92.8" x2="89.9" y2="92.8"/>
+                      <line id="vorlauf1" class="st1" x1="0" y1="85.7" x2="90" y2="85.7"
+                      @click="handleAreaClick('Vorlauf')"/>
+                      <line id="rücklauf1" class="st2" x1="0" y1="92.8" x2="89.9" y2="92.8"
+                      @click="handleAreaClick('Rücklauf')"/>
                       <polyline class="st3" points="65.1,92.8 65.1,11 59.7,11 		"/>
                       <polyline id = 'rücklauf' class="st4" points="65.1,92.8 65.1,11 59.7,11"
                       @click="handleAreaClick('Rücklauf')"/>
@@ -28,22 +30,25 @@
                       <circle id ='ventil' class="st5" cx="16.7" cy="60.9" r="5.7"
                         @click="handleAreaClick('Ventil')"/>
                       <line class="st3" x1="22.4" y1="60.9" x2="28.4" y2="60.9"/>
-                      <line class="st7" x1="28.4" y1="68.1" x2="28.4" y2="85.7"/>
-                      <line class="st7" x1="28.7" y1="47.4" x2="28.7" y2="53.9"/>
+                      <line id ='vorlauf2' class="st7" x1="28.4" y1="68.1" x2="28.4" y2="85.7"
+                      @click="handleAreaClick('Vorlauf')"/>
+                      <line id="vorlauf3" class="st7" x1="28.7" y1="47.4" x2="28.7" y2="53.9"
+                      @click="handleAreaClick('Vorlauf')"/>
                       <polyline id ='vorlauf' class="st7" points="28.6,32.1 28.6,11 33.4,11"
                       @click="handleAreaClick('Vorlauf')"/>
-                      <line class="st4" x1="35.8" y1="60.9" x2="65.1" y2="60.9"/>
+                      <line id="rücklauf2" class="st4" x1="35.8" y1="60.9" x2="65.1" y2="60.9"
+                      @click="handleAreaClick('Rücklauf')"/>
                   </g>
               </g>
               </svg>
             </div>
           </v-col>
-          <div v-if="monitoringStore.loadingMonitoringComponent === true">
+          <v-col cols="7" v-if="monitoringStore.loadingMonitoringComponent === true">
             <v-progress-linear
             indeterminate
             color="success"
             ></v-progress-linear>
-          </div>
+          </v-col>
           <v-col cols="7" v-else-if="monitoringStore.loadingMonitoringComponent === false">
             <v-card class="mx-auto" elevation="1" rounded="0">
               <v-tabs
@@ -65,12 +70,16 @@
                   </v-toolbar-title>
               </v-toolbar>
               <v-divider></v-divider>
-              <v-card-text class="py-0">
+              <v-card-text class="px-6 pb-0">
                 <v-row align="center" no-gutters>
-                  <v-col
-                    class="text"
-                  >
-                    Present value: {{ element.presentValue.path[0].value }}{{ element.presentValue.path[1].value }}
+                  <v-col cols="3"
+                    >
+                    Present value:
+                  </v-col>
+                  <v-col cols="2">
+                    <v-chip variant="outlined" color="success">
+                      {{ element.presentValue.path[0].value }}{{ element.presentValue.path[1].value }}
+                    </v-chip>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -167,12 +176,22 @@ export default {
           this.rücklaufEnthalten = true
           const cssElement = document.getElementById("rücklauf");
           cssElement.classList.add("pointer", "rücklauf")
+          const cssElement1 = document.getElementById("rücklauf1");
+          cssElement1.classList.add("pointer", "rücklauf")
+          const cssElement2 = document.getElementById("rücklauf2");
+          cssElement2.classList.add("pointer", "rücklauf")
           allComponents.push('Rücklauf')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAAS/1/0') {
           this.vorlauf = elements;
           this.vorlaufEnthalten = true
           const cssElement = document.getElementById("vorlauf");
           cssElement.classList.add("pointer", "vorlauf")
+          const cssElement1 = document.getElementById("vorlauf1");
+          cssElement1.classList.add("pointer", "vorlauf")
+          const cssElement2 = document.getElementById("vorlauf2");
+          cssElement2.classList.add("pointer", "vorlauf")
+          const cssElement3 = document.getElementById("vorlauf3");
+          cssElement3.classList.add("pointer", "vorlauf")
           allComponents.push('Vorlauf')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentPumpAAS/1/0') {
           this.pumpe = elements;
@@ -198,7 +217,7 @@ export default {
         } 
       }
       this.allComponents = allComponents
-      this.monitoringStore.setLoadingMonitoringComponent('false')
+      await this.monitoringStore.setLoadingMonitoringComponent('false')
     },
     handleAreaClick(component) {
       if (component == 'Rücklauf') {

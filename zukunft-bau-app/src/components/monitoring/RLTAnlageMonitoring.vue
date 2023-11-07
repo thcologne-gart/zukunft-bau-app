@@ -128,14 +128,14 @@
             </v-row>
         </v-container>
         <v-container>
-            <div v-if="monitoringStore.loadingMonitoringComponent === true">
+            <v-row v-if="monitoringStore.loadingMonitoringComponent === true">
                     <v-progress-linear
                     indeterminate
                     color="success"
                     ></v-progress-linear>
-                </div>
-                <div v-else-if="monitoringStore.loadingMonitoringComponent === false">
-          <v-row>
+            </v-row>
+          <div v-else-if="monitoringStore.loadingMonitoringComponent === false">
+            <v-row>
                 <v-col cols="2"></v-col>
                 <v-col cols="8">
                     <v-card class="mx-auto" elevation="1" rounded="0">
