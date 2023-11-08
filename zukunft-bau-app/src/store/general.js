@@ -19,7 +19,8 @@ export const useGeneralStore = defineStore('general', {
         loadingBacnetAdding: false,
         buildingsList: [],
         buildingsIdsWithSelectName: {},
-        loadedBuildingWithGrundfunktion: []
+        loadedBuildingWithGrundfunktion: [],
+        chartTypes: []
         //buildingIdsArray: []
       // all these properties will have their type inferred automatically
     }
@@ -168,7 +169,6 @@ export const useGeneralStore = defineStore('general', {
         } catch (error) {
             console.log(error)
         }
-        console.log(childAasIds)
         return childAasIds
     },
     async getBomParent(aasId) {
@@ -557,8 +557,48 @@ export const useGeneralStore = defineStore('general', {
         // this.loading=false
     },
     */
+
+    //import { ref } from 'vue';
+
+    //const data = ref([]); // initialize empty array
+
+    // function to read the CSV file
+    async readCSV() {
+        const reader = new FileReader();
+        let rows = [];
+        reader.onload = (event) => {
+            const text = event.target.result;
+            const lines = text.split('\n');
+            //const headers = lines[0].split(';');
+            
+            for (let i = 0; i < lines.length; i++) {
+                const cells = lines[i].split(';');
+                let semanticId = cells[0]
+                let chartType = cells[1]
+                let obj = {}
+                obj[semanticId] = chartType
+                rows.push(obj)
+            /*
+            if (cells.length === headers.length) {
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = cells[j];
+                }
+                rows.push(obj);
+            }
+            */
+            }
+
+        };
+        //console.log(csvData)
+        this.chartTypes = rows
+        const response = await fetch('/data/chartType.csv');
+        const blobCsv = await response.blob()
+        reader.readAsText(blobCsv);
+    },
    
     async fetchGeneralInfos(userId) {
+        await this.readCSV()
         this.userId = userId;
         console.log(this.userId);
     

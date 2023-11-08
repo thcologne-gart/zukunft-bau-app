@@ -34,7 +34,6 @@ export default {
     },
     async mounted() {
         let data = await this.getTimeSeriesData()
-        console.log(data)
         //let data = this.data
         let root = am5.Root.new(this.$refs.lineChart);
 

@@ -13,7 +13,8 @@ export const useMonitoringStore = defineStore('monitoring', {
             roomTemperature: [],
             aasTree: [],
             loadingAasTree: false,
-            loadingMonitoringComponent: false,
+            loadingMonitoringComponent: null,
+            loadedElement: false,
             aasZweiteGrundfunktion: [],
             currentBuildingAas: '',
             aasAnlage: []
@@ -166,6 +167,46 @@ export const useMonitoringStore = defineStore('monitoring', {
             this.timeSeriesSubmodel = responseBasyx
             
             return responseBasyx
+        }, 
+        async getChartType(semanticId) {
+          const generalStore = useGeneralStore()
+        
+          let chartTypesForSemanticId = generalStore.chartTypes;
+          
+          let matchedValue = 'None';
+
+          for (let i = 0; i < chartTypesForSemanticId.length; i++) {
+            if (Object.keys(chartTypesForSemanticId[i])[0] === semanticId) {
+              matchedValue = chartTypesForSemanticId[i][semanticId]
+              return matchedValue
+            }
+          }
+        },
+
+        async getSeValueAnlagenmonitoring(aasId, submodelIdShort, idShort, elementData) {
+          const getSeValue = 'submodel/getsubmodelelementvalue';
+          const urlSeValue = this.aasServer + getSeValue;
+          //let supplementInfos = {}
+      
+          try {
+              const response = await axios.post(urlSeValue, {
+                userId: this.userId,
+                aasIdentifier: aasId,
+                submodelIdShort: submodelIdShort,
+                submodelElementShortIdPath: [idShort]
+              });
+              elementData['presentValue'] = response.data
+  
+          } catch (error) {
+              console.error(error);
+          }
+
+          const chartType = await this.getChartType(elementData.semanticId)
+          console.log(chartType)    
+          elementData['chartType'] = chartType  
+          //await Promise.all(requests);
+          this.loadedElement = true
+          return elementData;
         }, 
         async getTimeSeriesValues(submodelElementPath, submodelRefIdShort, aasId) {
             this.loadingLineChart = true

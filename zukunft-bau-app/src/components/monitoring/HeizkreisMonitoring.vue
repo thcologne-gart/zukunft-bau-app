@@ -61,30 +61,9 @@
                 </v-tab>
               </v-tabs>
             </v-card>
-            <v-card 
-              v-for="element in this.komponenteZeigen" :key="element.idShort"
-              class="mx-auto my-8" elevation="1" rounded="0">
-              <v-toolbar color="success" density="compact">
-                  <v-toolbar-title class="text-center" style="color: white; font-size: 18px">
-                    {{ element.name }}
-                  </v-toolbar-title>
-              </v-toolbar>
-              <v-divider></v-divider>
-              <v-card-text class="px-6 pb-0">
-                <v-row align="center" no-gutters>
-                  <v-col cols="3"
-                    >
-                    Present value:
-                  </v-col>
-                  <v-col cols="2">
-                    <v-chip variant="outlined" color="success">
-                      {{ element.presentValue.path[0].value }}{{ element.presentValue.path[1].value }}
-                    </v-chip>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <LineChart :aasId="element.aasId" :submodelRefIdShort="element.submodelName" :submodelElementPath="element.idShort"/>
-            </v-card>
+            <div v-for="element in this.komponenteZeigen" :key="element.idShort">
+              <AnlagenMonitoringCard :element="element"/>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -94,7 +73,8 @@
 <script>
 import { useGeneralStore } from "@/store/general"
 import { useMonitoringStore } from "@/store/monitoring"
-import LineChart from "@/components/general/charts/LineChart.vue"
+import AnlagenMonitoringCard from "@/components/monitoring//AnlagenMonitoringCard.vue"
+
 export default {
   data() {
     return {
@@ -116,7 +96,7 @@ export default {
     };
   },
   components: {
-    LineChart
+    AnlagenMonitoringCard
   },
   props: {
     anlage: Object
@@ -144,19 +124,20 @@ export default {
 
         // Define an array to store the promises for the asynchronous calls
         const elementPromises = submodelElements.map(async (element) => {
-          const elementData = {
+          let elementData = {
             'aasId': aasId,
             'submodelName': submodelId,
             'idShort': element.idShort,
             'name': element.descriptions[0].text,
             'semanticId': element.semanticId.keys[0].value
           };
-
+          /*
           let valueIdShortpath = {
             path: [element.idShort]
           }
-          const presentValue = await this.generalStore.getSeValue(aasId, submodelId, valueIdShortpath)
-          elementData.presentValue = presentValue;
+          */
+          elementData = await this.monitoringStore.getSeValueAnlagenmonitoring(aasId, submodelId, element.idShort, elementData)
+          // elementData.presentValue = supplementaryInfos.presentValue;
           return elementData
         });
 

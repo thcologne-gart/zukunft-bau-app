@@ -11,7 +11,7 @@
                 <v-row>
                     <v-col v-for="aasGrundfunktion in monitoringStore.aasTree" :key="aasGrundfunktion" cols = '6'>
                         <v-card max-width="70%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyHeatAAS/1/0'" 
-                        class="mx-auto my-8" elevation="0">
+                        class="mx-auto my-8" elevation="1" rounded="0">
                             <v-card-title class="text-center">Wärme versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
@@ -30,7 +30,7 @@
                                 </v-btn>
                             </div>
                         </v-card>
-                        <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyAirAAS/1/0'" class="mx-auto my-8" elevation="0">
+                        <v-card elevation="1" max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyAirAAS/1/0'" class="mx-auto my-8">
                             <v-card-title class="text-center">Luft versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
@@ -49,7 +49,7 @@
                                 </v-btn>
                             </div>
                         </v-card>
-                        <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyColdAAS/1/0'" class="mx-auto my-8" elevation="0">
+                        <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyColdAAS/1/0'" class="mx-auto my-8" elevation="1">
                             <v-card-title class="text-center">Kälte versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
@@ -69,7 +69,7 @@
                             </div>
                         </v-card>
                         <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyMediaAAS/1/0'" 
-                        class="mx-auto my-8" elevation="0">
+                        class="mx-auto my-8" elevation="1">
                             <v-card-title class="text-center">Medien versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
@@ -88,7 +88,7 @@
                                 </v-btn>
                             </div>
                         </v-card>
-                        <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSecureAAS/1/0'" class="mx-auto my-8" elevation="0">
+                        <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSecureAAS/1/0'" class="mx-auto my-8" elevation="1">
                             <v-card-title class="text-center">Sichern</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
@@ -108,7 +108,7 @@
                             </div>
                         </v-card>
                         <v-card max-width="70%" v-else-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyElectricityAAS/1/0'" 
-                        class="mx-auto my-8" elevation="0">
+                        class="mx-auto my-8" elevation="1">
                             <v-card-title class="text-center">Strom versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">
