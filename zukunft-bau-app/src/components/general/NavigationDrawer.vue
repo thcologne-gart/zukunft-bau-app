@@ -39,15 +39,9 @@
                             </v-list-item>
                             </v-col>
                     </v-row>
-                </v-list>
-
-           
-        
-        
+                </v-list>        
         </v-navigation-drawer>
-        
-    
-  </template>
+</template>
 
 <script>
 import { useGeneralStore } from "@/store/general"

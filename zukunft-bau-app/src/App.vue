@@ -13,6 +13,7 @@
         <NavBar />
         <NavigationDrawer />
         <v-main>
+          <Breadcrumbs />
           <router-view />
           <Footer />
         </v-main>
@@ -25,6 +26,7 @@
   import NavBar from '@/components/general/NavBar.vue'
   import Footer from '@/components/general/Footer.vue'
   import NavigationDrawer from '@/components/general/NavigationDrawer.vue'
+  import Breadcrumbs from '@/components/general/Breadcrumbs.vue'
 
   //import { onMounted } from "vue"
   import { watchEffect } from "vue"

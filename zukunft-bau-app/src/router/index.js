@@ -19,6 +19,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { breadcrumb: 'Home' }
   },
   {
     path: '/:siteid',
@@ -56,33 +57,78 @@ const routes = [
     name: 'DigitalTwins_Site_Building_Grundfunktion',
     component: DigitalTwins_Site_Building_Grundfunktion,
   },
+  
   {
     path: '/monitoring',
     name: 'Monitoring',
     component: Monitoring,
+    meta: { 
+      breadcrumb: (route) => {
+        return [
+            { text: 'Monitoring', to: '/monitoring' },
+        ];
+      } 
+    }
   },
   {
     path: '/monitoring/:siteid',
     name: 'Monitoring_Site',
     component: Monitoring_Site,
+    meta: {
+      breadcrumb: (route) => {
+          return [
+              { text: 'Monitoring', to: '/monitoring' },
+              { text: `${route.params.siteid}`, to: `/monitoring/${route.params.siteid}` }
+          ];
+      }
+    }
   },
   {
     path: '/monitoring/:siteid/:buildingid/:buildingaasid',
     name: 'Monitoring_Site_Building',
     component: Monitoring_Site_Building,
+    meta: {
+      breadcrumb: (route) => {
+          return [
+              { text: 'Monitoring', to: '/monitoring' },
+              { text: `${route.params.siteid}`, to: `/monitoring/${route.params.siteid}` },
+              { text: `${route.params.buildingid}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}` }
+          ];
+      }
+    }
   },
   {
     path: '/monitoring/:siteid/:buildingid/:buildingaasid/:grundfunktion',
     name: 'Monitoring_Site_Building_Grundfunktion',
-    component: Monitoring_Site_Building_Grundfunktion
+    component: Monitoring_Site_Building_Grundfunktion,
+    meta: {
+      breadcrumb: (route) => {
+          return [
+              { text: 'Monitoring', to: '/monitoring' },
+              { text: `${route.params.siteid}`, to: `/monitoring/${route.params.siteid}` },
+              { text: `${route.params.buildingid}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}`},
+              { text: `${route.params.grundfunktion}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}/${route.params.grundfunktion}` }
+          ];
+      }
+    }
   },
   {
     path: '/monitoring/:siteid/:buildingid/:buildingaasid/:grundfunktion/:anlage',
     name: 'Monitoring_Site_Building_Grundfunktion_Anlage',
-    component: Monitoring_Site_Building_Grundfunktion_Anlage
+    component: Monitoring_Site_Building_Grundfunktion_Anlage,
+    meta: {
+      breadcrumb: (route) => {
+          return [
+              { text: 'Monitoring', to: '/monitoring' },
+              { text: `${route.params.siteid}`, to: `/monitoring/${route.params.siteid}` },
+              { text: `${route.params.buildingid}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}`},
+              { text: `${route.params.grundfunktion}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}/${route.params.grundfunktion}` },
+              { text: `${route.params.anlage}`, to: `/monitoring/${route.params.siteid}/${route.params.buildingid}/${route.params.buildingaasid}/${route.params.grundfunktion}/${route.params.anlage}` }
+          ];
+      }
+    }
   },
 ]
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,

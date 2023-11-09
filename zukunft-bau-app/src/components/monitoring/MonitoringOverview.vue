@@ -9,7 +9,8 @@
                     <v-col class="d-flex justify-center align-center">
                         <v-card-actions class="justify-end">
                             <v-btn class="mt-0" variant="outlined" color="warning" 
-                                @click="$router.push({name:'Monitoring_Site', params:{siteid:site['siteName']}})">Information
+                                @click="$router.push({name:'Monitoring_Site', params:{siteid:site['siteName']}})">
+                                Information
                             </v-btn>
                         </v-card-actions>
                     </v-col>
@@ -56,7 +57,7 @@ export default{
         getBuildingId (building) {
             const buildingId = building['buildingName']
             return buildingId
-        }
+        },
     }
 }
 </script>
