@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <h2 style="color: #3B5249;">Monitoring - Gebäude {{ $route.params.buildingid  }}</h2> 
+            <!--<h2 style="color: #3B5249;">Monitoring - Gebäude {{ $route.params.buildingid  }}</h2> -->
                 <div v-if="monitoringStore.loadingAasTree === true">
                     <v-progress-linear
                     indeterminate

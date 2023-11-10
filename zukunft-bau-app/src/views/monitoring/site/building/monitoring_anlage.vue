@@ -1,8 +1,9 @@
 <template>
     <div>
         <v-container>
+            <!--
             <h2 style="color: #3B5249;">Monitoring - Gebäude {{ $route.params.buildingid  }}</h2>
-            <h3 style="color: #3B5249;">{{ $route.params.grundfunktion }} - {{ monitoringStore.aasAnlage.idShort }}</h3>
+            <h3 style="color: #3B5249;">{{ $route.params.grundfunktion }} - {{ monitoringStore.aasAnlage.idShort }}</h3>-->
             <!--
             <v-img class="mx-auto" max-width="400" href="#" contain src="@/assets/heizkreis.svg">
             </v-img>

@@ -3,6 +3,7 @@
         <v-app-bar
             id="top-header"
             color="monitoring"
+            elevation="1"
             >
             
             <!--v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>-->

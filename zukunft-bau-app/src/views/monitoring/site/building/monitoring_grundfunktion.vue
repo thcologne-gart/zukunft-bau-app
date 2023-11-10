@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-container>
-            <h2 style="color: #3B5249;">Monitoring - Gebäude {{ $route.params.buildingid  }}</h2>
-            <h3 style="color: #3B5249;">{{ $route.params.grundfunktion }}</h3>
+            <!--<h2 style="color: #3B5249;">Monitoring - Gebäude {{ $route.params.buildingid  }}</h2>
+            <h3 style="color: #3B5249;">{{ $route.params.grundfunktion }}</h3>-->
             <v-row v-for="(funktion, key) in monitoringStore.aasZweiteGrundfunktion" :key="key">
                 <v-col cols = '12'>
                     <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">

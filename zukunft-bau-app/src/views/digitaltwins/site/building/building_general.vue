@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
+            <!--<h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>-->
             <!--
                 <v-file-input
                     v-model="file"

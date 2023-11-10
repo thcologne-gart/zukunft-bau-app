@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <h2 style="color: #3B5249;">Monitoring - Übersicht</h2>
+            <!--<h2 style="color: #3B5249;">Monitoring - Übersicht</h2>-->
             <v-row>
                 <v-col cols="6" v-for="site in generalStore.loadedSiteInformationWithBuildings" :key="Object.keys(site)[0]">
                     <MonitoringOverview :site="site"/>
