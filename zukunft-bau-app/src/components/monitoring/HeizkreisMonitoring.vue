@@ -1,6 +1,16 @@
 <template>
     <div>
-      <v-container class="my-8 d-flex justify-center align-center">
+      <v-container v-if="monitoringStore.loadingMonitoringComponent === true">
+        <v-progress-linear
+        indeterminate
+        color="success"
+        ></v-progress-linear>
+      </v-container>
+      <v-container v-else-if="monitoringStore.loadingMonitoringComponent === false" class="my-8 justify-center align-center">
+        <KpisMonitoringAnlage />
+        <v-container>
+          <LineChartAll :allElements="this.allSes"/> 
+        </v-container>>
         <v-row>
           <v-col cols="4">
             <v-card
@@ -48,15 +58,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="8" v-if="monitoringStore.loadingMonitoringComponent === true">
-            <v-progress-linear
-            indeterminate
-            color="success"
-            ></v-progress-linear>
-          </v-col>
-          <v-col cols="7" v-else-if="monitoringStore.loadingMonitoringComponent === false">
-            <KpisMonitoringAnlage />
-            <LineChartAll />
+          <v-col cols="7">
             <v-card class="mx-auto" elevation="1" rounded="0">
               <v-tabs
                 color="success"
@@ -101,7 +103,8 @@ export default {
       heizkurve: [],
       heizkurveEnthalten: false,
       komponenteZeigen: [],
-      allComponents: null
+      allComponents: null,
+      allSes: null
     };
   },
   components: {
@@ -124,6 +127,7 @@ export default {
   methods: {
     async getSubmodelInformations() {
       await this.monitoringStore.setLoadingMonitoringComponent('true')
+      let allSE = []
       let allComponents = []
       for (const komponente in this.anlage) {
         const { aasId, semanticId } = this.anlage[komponente];
@@ -151,6 +155,14 @@ export default {
         });
 
         const elements = await Promise.all(elementPromises);
+
+        allSE.push(
+            {
+            'anlagenInformation': this.anlage[komponente],
+            'elements': elements
+            }
+        )
+        this.allSes = allSE
         //console.log(elements);
         /*
         const elements = submodelElements.map(element => ({
@@ -161,19 +173,49 @@ export default {
           'semanticId': element.semanticId.keys[0].value
         }));
         */
+      
         if (semanticId === 'https://th-koeln.de/gart/ComponentReturnAAS/1/0') {
           this.rücklauf = elements;
           this.rücklaufEnthalten = true
+          allComponents.push('Rücklauf')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAAS/1/0') {
+          this.vorlauf = elements;
+          this.vorlaufEnthalten = true
+          allComponents.push('Vorlauf')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentPumpAAS/1/0') {
+          this.pumpe = elements;
+          this.pumpeEnthalten = true
+          allComponents.push('Pumpe')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCurveAAS/1/0') {
+          this.heizkurve = elements;
+          this.heizkurveEnthalten = true
+          allComponents.push('Heizkurve')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCircuitGeneralAAS/1/0') {
+          this.heizkreisAllgemein = elements;
+          this.hkEnthalten = true
+          allComponents.push('Heizkreis allgemein')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentValveAAS/1/0') {
+          this.ventil = elements;
+          this.ventilEnthalten = true
+          allComponents.push('Ventil')
+        } 
+      }
+      this.allComponents = allComponents
+      await this.monitoringStore.setLoadingMonitoringComponent('false')
+      this.getCssInfos(allComponents)
+    },
+
+    getCssInfos(allComponents) {
+      for (let element in allComponents) {
+        let name = allComponents[element]
+        if (name === 'Rücklauf') {
           const cssElement = document.getElementById("rücklauf");
           cssElement.classList.add("pointer", "rücklauf")
           const cssElement1 = document.getElementById("rücklauf1");
           cssElement1.classList.add("pointer", "rücklauf")
           const cssElement2 = document.getElementById("rücklauf2");
           cssElement2.classList.add("pointer", "rücklauf")
-          allComponents.push('Rücklauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAAS/1/0') {
-          this.vorlauf = elements;
-          this.vorlaufEnthalten = true
+        } else if (name === 'Vorlauf') {
           const cssElement = document.getElementById("vorlauf");
           cssElement.classList.add("pointer", "vorlauf")
           const cssElement1 = document.getElementById("vorlauf1");
@@ -182,33 +224,19 @@ export default {
           cssElement2.classList.add("pointer", "vorlauf")
           const cssElement3 = document.getElementById("vorlauf3");
           cssElement3.classList.add("pointer", "vorlauf")
-          allComponents.push('Vorlauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentPumpAAS/1/0') {
-          this.pumpe = elements;
-          this.pumpeEnthalten = true
+        } else if (name === 'Pumpe') {
           const cssElement = document.getElementById("pumpe");
           cssElement.classList.add("pointer", "pumpe")
-          allComponents.push('Pumpe')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCurveAAS/1/0') {
-          this.heizkurve = elements;
-          this.heizkurveEnthalten = true
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCircuitGeneralAAS/1/0') {
-          this.heizkreisAllgemein = elements;
-          this.hkEnthalten = true
+        }  else if (name === 'Heizkreis allgemein') {
           const cssElement = document.getElementById("hkAllgemein");
           cssElement.classList.add("pointer", "hkAllgemein")
-          allComponents.push('Heizkreis allgemein')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentValveAAS/1/0') {
-          this.ventil = elements;
-          this.ventilEnthalten = true
+        } else if (name === 'Ventil') {
           const cssElement = document.getElementById("ventil");
           cssElement.classList.add("pointer", "ventil")
-          allComponents.push('Ventil')
-        } 
+        }
       }
-      this.allComponents = allComponents
-      await this.monitoringStore.setLoadingMonitoringComponent('false')
     },
+
     handleAreaClick(component) {
       if (component == 'Rücklauf') {
         this.komponenteZeigen = this.rücklauf

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row>
-            <v-col cols = "4" v-for="kpi in this.kpis" :key="kpi.name">
+            <v-col cols = "3" v-for="kpi in this.kpis" :key="kpi.name">
                 <v-card variant="flat" color ="#FFFAF4">
                     <v-card-subtitle class="multiline-title center-content text-body-2">{{ kpi.name }}</v-card-subtitle>
                     <v-card-text class="center-content text-h6">

@@ -1,9 +1,25 @@
 <template>
     <div>
         <v-card
-            color ="#ff4a1c" variant="outlined" class="pa-4 line-chart-card">
+            color =success variant="outlined" class="pa-4 line-chart-card">
+            <v-card-actions>
+                <v-btn
+                  variant="text"
+                  color="teal-accent-4"
+                  @click="initChart('day')"
+                >
+                  Dieser Tag
+                </v-btn>
+                <v-btn
+                  variant="text"
+                  color="teal-accent-4"
+                  @click="initChart('week')"
+                >
+                  Diese Woche
+                </v-btn>
+              </v-card-actions>
             <v-card-text class="center-content">
-                <div id="chartdiv"></div>
+              <div id="chartdiv"></div>
             </v-card-text>
         </v-card>
     </div>
@@ -13,6 +29,7 @@
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
+import { useMonitoringStore } from "@/store/monitoring"
 
 export default {
   name: "MyChart",
@@ -21,16 +38,58 @@ export default {
       chart: null,
     };
   },
+  props: {
+      allElements: Array
+    },
   mounted() {
-    this.initChart();
+    let presetTime = 'month'
+    this.initChart(presetTime);
   },
   beforeUnmount() {
     if (this.chart) {
       this.chart.dispose();
     }
   },
+  computed: {
+    monitoringStore () {
+      return useMonitoringStore()
+    }
+  },
   methods: {
-    initChart() {
+    async initChart(time) {
+      console.log(time)
+      let elementsToDisplay = [];
+
+      const semanticIdMappings = {
+        'https://th-koeln.de/gart/vocabulary/MeasuredValueReturnTemperature/1/0': 0x372772,
+        'https://th-koeln.de/gart/vocabulary/MeasuredValueFlowTemperature/1/0': 0xFF4A1C,
+        // Add more mappings as needed
+      };
+
+      for (let komponente in this.allElements) {
+        let component = this.allElements[komponente].elements;
+
+        for (let elementInformation in component) {
+          let element = component[elementInformation];
+          let semanticId = element.semanticId;
+
+          if (semanticIdMappings.hasOwnProperty(semanticId)) {
+            console.log(semanticIdMappings[semanticId]);
+
+            let aasId = this.allElements[komponente].anlagenInformation.aasId;
+            let timeSeriesData = await this.monitoringStore.getTimeSeriesValues(element.idShort, element.submodelName, aasId);
+
+            //data.push(timeSeriesData)
+            //names.push(element.name)
+            elementsToDisplay.push({
+              'name': element.name,
+              'data': timeSeriesData,
+              'color': semanticIdMappings[semanticId]
+            });
+          }
+        }
+      }
+      console.log(elementsToDisplay)
       let root = am5.Root.new("chartdiv");
 
       root.setThemes([am5themes_Animated.new(root)]);
@@ -50,28 +109,19 @@ export default {
       date.setHours(0, 0, 0, 0);
       let value = 100;
 
-      function generateData() {
-        value = Math.round(Math.random() * 10 - 4.2 + value);
-        am5.time.add(date, "day", 1);
-        return {
-          date: date.getTime(),
-          value: value,
-        };
-      }
+      let tooltipTime = am5.Tooltip.new(root, {
+          getFillFromSprite: false,
+      });
 
-      function generateDatas(count) {
-        let data = [];
-        for (var i = 0; i < count; ++i) {
-          data.push(generateData());
-        }
-        return data;
-      }
-
+      tooltipTime.get("background").setAll({
+          fill: am5.color(0x3B5249)
+      });
+            
       let xAxis = chart.xAxes.push(
         am5xy.DateAxis.new(root, {
           maxDeviation: 0.2,
           baseInterval: {
-            timeUnit: "day",
+            timeUnit: "hour",
             count: 1,
           },
           renderer: am5xy.AxisRendererX.new(root, {}),
@@ -79,16 +129,31 @@ export default {
         })
       );
 
+      let xRenderer = xAxis.get("renderer");
+        xRenderer.labels.template.setAll({
+          //fill: am5.color(0xFF0000),
+          fontSize: "12px",
+          fontFamily: "Montserrat"
+      });
+
       let yAxis = chart.yAxes.push(
         am5xy.ValueAxis.new(root, {
           renderer: am5xy.AxisRendererY.new(root, {}),
         })
       );
-
-      for (var i = 0; i < 10; i++) {
+      let yRenderer = yAxis.get("renderer");
+        yRenderer.labels.template.setAll({
+          //fill: am5.color(0xFF0000),
+          fontSize: "12px",
+          fontFamily: "Montserrat"
+      });
+      console.log(elementsToDisplay.length)
+      for (var i = 0; i < elementsToDisplay.length; i++) {
+        console.log(elementsToDisplay[i].name)
         let series = chart.series.push(
           am5xy.LineSeries.new(root, {
-            name: "Series " + i,
+            //name: "Series " + i,
+            name: elementsToDisplay[i].name,
             xAxis: xAxis,
             yAxis: yAxis,
             valueYField: "value",
@@ -105,7 +170,12 @@ export default {
         date.setHours(0, 0, 0, 0);
         value = 0;
 
-        let data = generateDatas(100);
+        //let data = generateDatas(100);
+        let data = elementsToDisplay[i].data
+        //console.log(data)
+        //series.set("stroke", am5.color(0xFF4A1C));
+        series.set("stroke", am5.color(elementsToDisplay[i].color))
+        //series.set("fill", am5.color(0x3B5249)); -> Die ist für den tooltip, könnte auch noch angepasst werden
         series.data.setAll(data);
 
         series.appear();
@@ -119,10 +189,11 @@ export default {
       chart.set("scrollbarX", am5.Scrollbar.new(root, {
         orientation: "horizontal",
       }));
-
+      /*
       chart.set("scrollbarY", am5.Scrollbar.new(root, {
         orientation: "vertical",
       }));
+      */
 
       let legend = chart.rightAxesContainer.children.push(
         am5.Legend.new(root, {
@@ -180,9 +251,11 @@ export default {
 </script>
 
 <style>
+/*
 .line-chart-card {
-  background-color: #fcefef;
+  background-color: rgba(157,172,178, 0.);
 }
+*/
 #chartdiv {
   width: 100%;
   height: 400px; /* Adjust the height as needed */
