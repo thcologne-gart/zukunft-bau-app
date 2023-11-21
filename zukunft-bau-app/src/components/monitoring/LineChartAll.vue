@@ -4,18 +4,28 @@
             color =success variant="outlined" class="pa-4 line-chart-card">
             <v-card-actions>
                 <v-btn
-                  variant="text"
-                  color="teal-accent-4"
-                  @click="initChart('day')"
+                  class="max-3 mr-2" 
+                  variant="outlined" 
+                  color="warning"
+                  @click="zoomXAxes('day')"
                 >
                   Dieser Tag
                 </v-btn>
                 <v-btn
-                  variant="text"
-                  color="teal-accent-4"
-                  @click="initChart('week')"
+                  class="max-3 mr-2" 
+                  variant="outlined" 
+                  color="warning"
+                  @click="zoomXAxes('week')"
                 >
                   Diese Woche
+                </v-btn>
+                <v-btn
+                  class="max-3 mr-2" 
+                  variant="outlined" 
+                  color="warning"
+                  @click="zoomXAxes('month')"
+                >
+                  Dieser Monat
                 </v-btn>
               </v-card-actions>
             <v-card-text class="center-content">
@@ -36,6 +46,9 @@ export default {
   data() {
     return {
       chart: null,
+      xAxis: null,
+      elementsToDisplay: [],
+      data: null,
     };
   },
   props: {
@@ -43,7 +56,8 @@ export default {
     },
   mounted() {
     let presetTime = 'month'
-    this.initChart(presetTime);
+    let chart = this.initChart(presetTime);
+    console.log(chart)
   },
   beforeUnmount() {
     if (this.chart) {
@@ -56,6 +70,94 @@ export default {
     }
   },
   methods: {
+    zoomXAxes(period) {
+
+      // Hier ist der code, wie man die aktuelle Zeit minus eins bekommt
+      
+      /*
+      const currentTime = new Date();
+      console.log(currentTime)
+      const updatedYear = currentTime.getFullYear();
+      const updatedMonth = currentTime.getMonth();
+      const updatedDay = currentTime.getDate();
+      const updatedHours = currentTime.getHours();
+      const updatedMinutes = currentTime.getMinutes();
+      const updatedSeconds = currentTime.getSeconds();
+      const updatedTime = new Date();
+      updatedTime.setFullYear(updatedYear);
+      updatedTime.setMonth(updatedMonth);
+      updatedTime.setDate(updatedDay - 1);
+      updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
+      */
+
+      // Zwei zeilen könenn dann weg
+      let currentTime
+      let updatedTime
+      if (period === 'day') {
+        // Funktioneirt mit echten Daten
+        /*
+        const updatedTime = new Date();
+        updatedTime.setFullYear(updatedYear);
+        updatedTime.setMonth(updatedMonth);
+        updatedTime.setDate(updatedDay - 1);
+        updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
+        console.log(updatedTime)
+        */
+
+        // Hier als Ersatz, sodass es mit den daten funktioniert
+
+        currentTime = new Date(2023, 8, 28)
+        updatedTime = new Date(2023, 8, 29)
+      } else if (period === 'week'){
+
+        // Funktioniert mit echten Daten
+        /*
+        const updatedTime = new Date();
+        updatedTime.setFullYear(updatedYear);
+        updatedTime.setMonth(updatedMonth);
+        updatedTime.setDate(updatedDay - 7);
+        updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
+        console.log(updatedTime)
+        */
+
+        currentTime = new Date(2023, 8, 21)
+        updatedTime = new Date(2023, 8, 28)
+      } else if (period === 'month'){
+
+        // funktioniert mit echten daten
+        /*
+        const updatedTime = new Date();
+        updatedTime.setFullYear(updatedYear);
+        updatedTime.setMonth(updatedMonth-1);
+        updatedTime.setDate(updatedDay);
+        updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
+        console.log(updatedTime)
+        */
+        currentTime = new Date(2023, 7, 28)
+        updatedTime = new Date(2023, 8, 28)
+      }
+
+
+      if (this.chart && this.elementsToDisplay.length > 0) {
+
+        const xAxis = this.chart.xAxes.getIndex(0);
+        /*
+        const startOfDay = new Date(specificDate);
+        startOfDay.setHours(0, 0, 0, 0); // Set to the beginning of the day
+
+        const endOfDay = new Date(specificDate);
+        endOfDay.setHours(23, 59, 59, 999); // Set to the end of the day
+        */
+
+        for (let i = 0; i < this.elementsToDisplay.length; i++) {
+          const series = this.chart.series.getIndex(i);
+          //series.data.setAll(dayData);
+          series.data.setAll(this.elementsToDisplay[i].data)
+        }
+        xAxis.zoomToDates(updatedTime, currentTime);
+      }
+    },
+
     async initChart(time) {
       console.log(time)
       let elementsToDisplay = [];
@@ -129,6 +231,7 @@ export default {
         })
       );
 
+
       let xRenderer = xAxis.get("renderer");
         xRenderer.labels.template.setAll({
           //fill: am5.color(0xFF0000),
@@ -148,6 +251,7 @@ export default {
           fontFamily: "Montserrat"
       });
       console.log(elementsToDisplay.length)
+      this.elementsToDisplay = elementsToDisplay
       for (var i = 0; i < elementsToDisplay.length; i++) {
         console.log(elementsToDisplay[i].name)
         let series = chart.series.push(
@@ -172,11 +276,16 @@ export default {
 
         //let data = generateDatas(100);
         let data = elementsToDisplay[i].data
+        this.data = data
         //console.log(data)
         //series.set("stroke", am5.color(0xFF4A1C));
         series.set("stroke", am5.color(elementsToDisplay[i].color))
         //series.set("fill", am5.color(0x3B5249)); -> Die ist für den tooltip, könnte auch noch angepasst werden
         series.data.setAll(data);
+
+        console.log(xAxis)
+
+        console.log(series)
 
         series.appear();
       }
@@ -244,7 +353,11 @@ export default {
 
       chart.appear(1000, 100);
 
+      console.log(chart)
+      this.xAxis = xAxis
+
       this.chart = chart;
+      return chart
     },
   },
 };
