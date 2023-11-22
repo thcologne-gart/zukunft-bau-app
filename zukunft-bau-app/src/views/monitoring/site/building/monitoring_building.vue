@@ -11,7 +11,7 @@
                 <v-row>
                     <v-col v-for="aasGrundfunktion in monitoringStore.aasTree" :key="aasGrundfunktion" cols = '6'>
                         <v-card max-width="70%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyHeatAAS/1/0'" 
-                        class="mx-auto my-8" elevation="1" rounded="0">
+                        class="mx-auto my-8" elevation="1">
                             <v-card-title class="text-center">Wärme versorgen</v-card-title>
                             <v-divider class="mx-4" :thickness="3"></v-divider>
                             <div class="d-flex flex-column align-center">

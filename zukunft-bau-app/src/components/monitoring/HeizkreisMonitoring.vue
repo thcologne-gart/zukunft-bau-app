@@ -58,8 +58,8 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="7">
-            <v-card class="mx-auto" elevation="1" rounded="0">
+          <v-col cols="8">
+            <v-card variant="outlined" class="anlagen-card">
               <v-tabs
                 color="success"
               >
@@ -155,6 +155,10 @@ export default {
         });
 
         const elements = await Promise.all(elementPromises);
+
+        if (this.komponenteZeigen.length === 0) {
+          this.komponenteZeigen = elements
+        }
 
         allSE.push(
             {

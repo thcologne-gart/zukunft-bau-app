@@ -1,10 +1,22 @@
 <template>
     <div>
-      <v-container class="my-8 d-flex justify-center align-center">
+      <v-container v-if="monitoringStore.loadingMonitoringComponent === true">
+        <v-progress-linear
+        indeterminate
+        color="success"
+        ></v-progress-linear>
+      </v-container>
+      <v-container v-else-if="monitoringStore.loadingMonitoringComponent === false" class="my-8 justify-center align-center">
+        <KpisMonitoringAnlage />
+        <v-container>
+          <LineChartAll :allElements="this.allSes"/> 
+        </v-container>>
         <v-row>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
-                    <svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 519.14 160.95">
+            <v-col cols="5">
+              <v-card
+                variant="outlined" class="pa-4 anlagen-card">
+                <v-card-text class="center-content">
+                  <svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 519.14 160.95">
                         <rect id ="außenluftfilter" class="cls-2" x="55.19" y="112.82" width="31.86" height="47.62"
                         @click="handleAreaClick('Außenluftfilter')"/>
                         <polyline class="cls-2" points="71.12 160.44 87.05 136.63 71.12 112.82"
@@ -123,40 +135,27 @@
                         <line id ="abluftAllgemein" class="cls-1" x1="115.4" y1="25.74" x2="26.84" y2="25.74"
                         @click="handleAreaClick('Abluft allgemein')"/>
                     </svg>
-                </v-col>
-                <v-col cols="2"></v-col>
-            </v-row>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="7">
+              <v-card variant="outlined" class="anlagen-card">
+                <v-tabs
+                  color="success"
+                >
+                  <v-tab v-for="komponente in this.allComponents" :key="komponente"
+                  @click="handleAreaClick(komponente)"
+                  >
+                    {{ komponente }}
+                  </v-tab>
+                </v-tabs>
+              </v-card>
+              <div v-for="element in this.komponenteZeigen" :key="element.idShort">
+                <AnlagenMonitoringCard :element="element"/>
+              </div>
+            </v-col>
+          </v-row>
         </v-container>
-        <v-container>
-            <v-row v-if="monitoringStore.loadingMonitoringComponent === true">
-                    <v-progress-linear
-                    indeterminate
-                    color="success"
-                    ></v-progress-linear>
-            </v-row>
-          <div v-else-if="monitoringStore.loadingMonitoringComponent === false">
-            <v-row>
-                <v-col cols="2"></v-col>
-                <v-col cols="8">
-                    <v-card class="mx-auto" elevation="1" rounded="0">
-                    <v-tabs
-                        color="success"
-                    >
-                        <v-tab v-for="komponente in this.allComponents" :key="komponente"
-                        @click="handleAreaClick(komponente)"
-                        >
-                        {{ komponente }}
-                        </v-tab>
-                    </v-tabs>
-                    </v-card>
-                    <div v-for="element in this.komponenteZeigen" :key="element.idShort">
-                      <AnlagenMonitoringCard :element="element"/>
-                    </div>
-                </v-col>
-                <v-col cols="2"></v-col>
-            </v-row>
-        </div>
-      </v-container>
     </div>
 </template>
 
@@ -164,6 +163,9 @@
 import { useGeneralStore } from "@/store/general"
 import { useMonitoringStore } from "@/store/monitoring"
 import AnlagenMonitoringCard from "@/components/monitoring/AnlagenMonitoringCard.vue"
+import LineChartAll from "@/components/monitoring/LineChartAll.vue"
+import KpisMonitoringAnlage from "@/components/monitoring/KpisMonitoringAnlage.vue"
+
 
 export default {
   data() {
@@ -212,11 +214,12 @@ export default {
       ventilator: [],
       ventilatorEnthalten: false,
       komponenteZeigen: [],
-      allComponents: null
+      allComponents: null,
+      allSes: null
     };
   },
   components: {
-    AnlagenMonitoringCard
+    AnlagenMonitoringCard, KpisMonitoringAnlage, LineChartAll
   },
   props: {
     anlage: Object
@@ -235,6 +238,7 @@ export default {
   methods: {
     async getSubmodelInformations() {
       await this.monitoringStore.setLoadingMonitoringComponent('true')
+      let allSE = []
       let allComponents = []
       for (const komponente in this.anlage) {
         const { aasId, semanticId } = this.anlage[komponente];
@@ -262,96 +266,78 @@ export default {
           return elementData
         });
         const elements = await Promise.all(elementPromises);
+        
+        if (this.komponenteZeigen.length === 0) {
+          this.komponenteZeigen = elements
+        }
+
+        allSE.push(
+            {
+            'anlagenInformation': this.anlage[komponente],
+            'elements': elements
+            }
+        )
+        this.allSes = allSE
 
         if (semanticId === 'https://th-koeln.de/gart/ComponentExtractAirFanAAS/1/0') {
           this.abluftventilator = elements;
           this.abluftventilatorEnthalten = true
-          const cssElement = document.getElementById("abluftventilator");
-          cssElement.classList.add("pointer", "abluftventilator")
           allComponents.push('Abluftventilator')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentExtractAirGeneralAAS/1/0') {
           this.abluftAllgemein = elements;
           this.abluftAllgemeinEnthalten = true
-          const cssElement = document.getElementById("abluftAllgemein");
-          cssElement.classList.add("pointer", "abluftAllgemein")
           allComponents.push('Abluft allgemein')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentExtractAirFilterAAS/1/0') {
           this.abluftFilter = elements;
           this.abluftFilterEnthalten = true
-          const cssElement = document.getElementById("abluftfilter");
-          cssElement.classList.add("pointer", "abluftfilter")
           allComponents.push('Abluftfilter')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentExhaustAirFlapAAS/1/0') {
           this.abluftklappe = elements;
           this.abluftklappeEnthalten = true
-          const cssElement = document.getElementById("abluftklappe");
-          cssElement.classList.add("pointer", "abluftklappe")
           allComponents.push('Abluftklappe')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentOutsideAirFilterAAS/1/0') {
           this.außenluftfilter = elements;
           this.außenluftfilterEnthalten = true
-          const cssElement = document.getElementById("außenluftfilter");
-          cssElement.classList.add("pointer", "außenluftfilter")
           allComponents.push('Außenluftfilter')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentOutsideAirFlapAAS/1/0') {
           this.außenluftklappe = elements;
           this.außenluftklappeEnthalten = true
-          const cssElement = document.getElementById("außenluftklappe");
-          cssElement.classList.add("pointer", "außenluftklappe")
           allComponents.push('Außenluftklappe')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentDeviceGeneralAAS/1/0') {
           this.gerätAllgemein = elements;
           this.gerätAllgemeinEnthalten = true
-          //const cssElement = document.getElementById("vorlauf");
-          //cssElement.classList.add("pointer", "vorlauf")
           allComponents.push('Gerät allgemein')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeaterAAS/1/0') {
           this.erhitzer = elements;
           this.erhitzerEnthalten = true
-          const cssElement = document.getElementById("vorerhitzer");
-          cssElement.classList.add("pointer", "vorerhitzer")
           allComponents.push('Erhitzer')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentExtractAirFlapAAS/1/0') {
           this.fortluftklappe = elements;
           this.fortluftklappeEnthalten = true
-          const cssElement = document.getElementById("fortluftklappe");
-          cssElement.classList.add("pointer", "fortluftklappe")
           allComponents.push('Fortluftklappe')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentCoolerAAS/1/0') {
           this.kühler = elements;
           this.kühlerEnthalten = true
-          const cssElement = document.getElementById("kühler");
-          cssElement.classList.add("pointer", "kühler")
           allComponents.push('Kühler')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatRecoveryAAS/1/0') {
           this.wrg = elements;
           this.wrgEnthalten = true
-          const cssElement = document.getElementById("wrg");
-          cssElement.classList.add("pointer", "wrg")
           allComponents.push('WRG')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAirGeneralAAS/1/0') {
           this.zuluftAllgemein = elements;
           this.zuluftAllgemeinEnthalten = true
-          const cssElement = document.getElementById("zuluftAllgemein");
-          cssElement.classList.add("pointer", "zuluftAllgemein")
           allComponents.push('Zuluft allgemein')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAirFilterAAS/1/0') {
           this.zuluftfilter = elements;
           this.zuluftfilterEnthalten = true
-          const cssElement = document.getElementById("zuluftfilter");
-          cssElement.classList.add("pointer", "zuluftfilter")
           allComponents.push('Zuluftfilter')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAirFlapAAS/1/0') {
           this.zuluftklappe = elements;
           this.zuluftklappeEnthalten = true
-          const cssElement = document.getElementById("zuluftklappe");
-          cssElement.classList.add("pointer", "zuluftklappe")
           allComponents.push('Zuluftklappe')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAirFanAAS/1/0') {
           this.zuluftventilator = elements;
           this.zuluftventilatorEnthalten = true
-          const cssElement = document.getElementById("zuluftventilator");
-          cssElement.classList.add("pointer", "zuluftventilator")
           allComponents.push('Zuluftventilator')
         } else if (semanticId === 'https://th-koeln.de/gart/ComponentHumidifierAAS/1/0') {
           this.befeuchter = elements;
@@ -380,7 +366,56 @@ export default {
         }
       }
       this.allComponents = allComponents
-      this.monitoringStore.setLoadingMonitoringComponent('false')
+      await this.monitoringStore.setLoadingMonitoringComponent('false')
+      this.getCssInfos(allComponents)
+    },
+    getCssInfos(allComponents) {
+      for (let element in allComponents) {
+        let name = allComponents[element]
+        if (name === 'Abluftventilator') {
+          const cssElement = document.getElementById("abluftventilator");
+          cssElement.classList.add("pointer", "abluftventilator")
+        } else if (name === 'Abluft allgemein') {
+          const cssElement = document.getElementById("abluftAllgemein");
+          cssElement.classList.add("pointer", "abluftAllgemein")
+        } else if (name === 'Abluftfilter') {
+          const cssElement = document.getElementById("abluftfilter");
+          cssElement.classList.add("pointer", "abluftfilter")
+        } else if (name ==='Abluftklappe') {
+          const cssElement = document.getElementById("abluftklappe");
+          cssElement.classList.add("pointer", "abluftklappe")
+        } else if (name === 'Außenluftfilter') {
+          const cssElement = document.getElementById("außenluftfilter");
+          cssElement.classList.add("pointer", "außenluftfilter")
+        } else if (name === 'Außenluftklappe') {
+          const cssElement = document.getElementById("außenluftklappe");
+          cssElement.classList.add("pointer", "außenluftklappe")
+        } else if (name === 'Erhitzer') {
+          const cssElement = document.getElementById("vorerhitzer");
+          cssElement.classList.add("pointer", "vorerhitzer")
+        } else if (name === 'Fortluftklappe') {
+          const cssElement = document.getElementById("fortluftklappe");
+          cssElement.classList.add("pointer", "fortluftklappe")
+        } else if (name === 'Kühler') {
+          const cssElement = document.getElementById("kühler");
+          cssElement.classList.add("pointer", "kühler")
+        } else if (name === 'WRG') {
+          const cssElement = document.getElementById("wrg");
+          cssElement.classList.add("pointer", "wrg")
+        } else if (name === 'Zuluft allgemein') {e
+          const cssElement = document.getElementById("zuluftAllgemein");
+          cssElement.classList.add("pointer", "zuluftAllgemein")
+        } else if (name === 'Zuluftfilter') {
+          const cssElement = document.getElementById("zuluftfilter");
+          cssElement.classList.add("pointer", "zuluftfilter")
+        } else if (name === 'Zuluftklappe') {
+          const cssElement = document.getElementById("zuluftklappe");
+          cssElement.classList.add("pointer", "zuluftklappe")
+        } else if (name === 'Zuluftventilator') {
+          const cssElement = document.getElementById("zuluftventilator");
+          cssElement.classList.add("pointer", "zuluftventilator")
+        }
+      }
     },
     handleAreaClick(component) {
       if (component == 'Abluftventilator') {
@@ -431,7 +466,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   
   .cls-1 {
         stroke-width: 3px;
@@ -539,5 +574,11 @@ export default {
 
 .heizkreis {
     width:80%;
+}
+.v-container {
+  padding: 0px;
+}
+.anlagen-card {
+  background-color: #ffffff;
 }
 </style>

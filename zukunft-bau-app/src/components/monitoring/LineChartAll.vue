@@ -165,6 +165,9 @@ export default {
       const semanticIdMappings = {
         'https://th-koeln.de/gart/vocabulary/MeasuredValueReturnTemperature/1/0': 0x372772,
         'https://th-koeln.de/gart/vocabulary/MeasuredValueFlowTemperature/1/0': 0xFF4A1C,
+        // Alles was hier hinzugefügt wird, wird in dem Chart visualisiert, wenn es
+        // auch in this.allElements enthalten ist
+        //'https://th-koeln.de/gart/vocabulary/AlarmMessage/1/0': 0xFF4A1C
         // Add more mappings as needed
       };
 
