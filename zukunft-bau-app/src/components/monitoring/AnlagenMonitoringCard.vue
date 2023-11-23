@@ -2,7 +2,7 @@
     <div>
         <v-card
             class="mx-auto my-8" elevation="1" rounded="0">
-            <v-toolbar density="compact" color="info">
+            <v-toolbar density="compact" color="monitoring">
                 <v-toolbar-title class="text-center" style="font-size: 18px">
                     {{ element.name }}
                 </v-toolbar-title>
@@ -14,7 +14,7 @@
                     >
                     Present value:
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="8">
                     <v-chip variant="outlined" color="success">
                         {{ element.presentValue['value'][0]['value'] }}{{ element.presentValue['value'][1]['value'] }}
                     </v-chip>

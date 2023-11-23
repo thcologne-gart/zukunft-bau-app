@@ -21,7 +21,7 @@
                     <DigitalTwinOverview :site="site"/>
                 </v-col>
             </v-row>
-            <GatewayInformation />
+            <!--<GatewayInformation />-->
         </v-container>
     </div>
 </template> 
@@ -29,7 +29,7 @@
 <script>
 import { useGeneralStore } from "@/store/general"
 import DigitalTwinOverview from "@/components/digitalTwin/DigitalTwinOverview.vue"
-import GatewayInformation from "@/components/digitalTwin/GatewayInformation.vue"
+//import GatewayInformation from "@/components/digitalTwin/GatewayInformation.vue"
 
 export default{
     setup(){
@@ -37,7 +37,8 @@ export default{
         const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"} ]
     return{sites}},
     components: {
-        DigitalTwinOverview, GatewayInformation
+        DigitalTwinOverview, 
+        //GatewayInformation
     },
     computed: {
         generalStore () {

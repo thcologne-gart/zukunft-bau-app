@@ -16,6 +16,7 @@ export const useGeneralStore = defineStore('general', {
         loadedOrganizationInformation: [],
         loadedBacnetInformationNotAssigned: [],
         loadedBacnetInformationAssigned: [],
+        loadedGatewayInformation: [],
         loadingBacnetAdding: false,
         buildingsList: [],
         buildingsIdsWithSelectName: {},
@@ -36,7 +37,6 @@ export const useGeneralStore = defineStore('general', {
                 semanticIdAasType: semanticIdType,
                 idShort: aasIdShort
             })
-            console.log(response.data)
             aasId = response.data
         } catch (error) {
             console.log(error)
@@ -48,7 +48,6 @@ export const useGeneralStore = defineStore('general', {
         try {
             const updateSubmodel = 'submodel/addsubmodelelements'
             const url = this.aasServer + updateSubmodel
-            console.log(url)
             const response = await axios.post(url, {
                 userId: this.userId,
                 aasIdentifier: companyAasId,
@@ -56,7 +55,6 @@ export const useGeneralStore = defineStore('general', {
                 semanticIdSubmodel: semanticIdSubmodel,
                 submodelElementValues: submodelElementValues	
             })
-            console.log(response)
         } catch (error) {
             console.log(error)
         }
@@ -83,7 +81,6 @@ export const useGeneralStore = defineStore('general', {
                     ]
                 }	
             })
-            console.log(response.data)
         } catch (error) {
             console.log(error)
         }
@@ -109,7 +106,6 @@ export const useGeneralStore = defineStore('general', {
                     ]
                 }	
             })
-            console.log(response.data)
         } catch (error) {
             console.log(error)
         }
@@ -420,8 +416,6 @@ export const useGeneralStore = defineStore('general', {
                 // bacnetGatewayInformation.push(bacnetNameplateInformation)        
                 allBacnetGatewayInformationAssigned.push(bacnetNameplateInformation)
             }
-            console.log(allBacnetGatewayInformationAssigned)
-            console.log(allBacnetGatewayInformationNotAssigned)
             this.loadedBacnetInformationNotAssigned = allBacnetGatewayInformationNotAssigned
             this.loadedBacnetInformationAssigned = allBacnetGatewayInformationAssigned
 
@@ -449,6 +443,74 @@ export const useGeneralStore = defineStore('general', {
             }
     },
 
+    async loadBacnetInformationForGateway(aasBacnetIds) {
+        const digitalNameplateIdShortPaths = {
+            manufacturerName: ['ManufacturerName'],
+            serialNumber: ['SerialNumber'],
+        }
+        const digitalNameplate = 'Nameplate'
+        // const semanticIdNameplate = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate'
+        const allBacnetInformation = []
+
+        for (let bacnetDevice in aasBacnetIds) {
+            let aasId = aasBacnetIds[bacnetDevice]
+            let aasIdShort = await this.getAasIdShortByIdentifier(aasId)
+            let nameplateSeInformationAll = await this.getSeValue(aasId, digitalNameplate, digitalNameplateIdShortPaths)
+            let manufacturerName = nameplateSeInformationAll['manufacturerName'][0]['text']
+            
+            let bacnetNameplateInformation = {
+                'Digital Nameplate': {
+                    'Herstellername': manufacturerName,
+                    'Seriennummer': nameplateSeInformationAll['serialNumber']
+                },
+                'AAS ID Short': aasIdShort,
+                'AAS ID': aasId,
+            }  
+        
+            allBacnetInformation.push(bacnetNameplateInformation)
+        }
+        return allBacnetInformation
+    },
+
+    async loadGatewayInformation(aasGatewayIds) {
+        this.loadedGatewayInformation = []    
+        
+        const monkiGatewayIdShortPaths = {
+            thingName: ['AWSIotCoreInformation', 'ThingName'],
+            thingId: ['AWSIotCoreInformation', 'ThingId'],
+            connectionStatus: ['ConnectionInformation', 'ConnectionStatus'],
+        }
+        const submodelGateway = 'MonKiGateway'
+        // const semanticIdNameplate = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate'
+        let allGatewayInformation = []
+
+        for (let device in aasGatewayIds) {
+            let aasId = aasGatewayIds[device]
+            let parent = await this.getBomParent(aasId)
+            let children = await this.getBomChilds(aasId)
+    
+            let aasIdShort = await this.getAasIdShortByIdentifier(aasId)
+            let parentAasIdShort = await this.getAasIdShortByIdentifier(parent)
+            let gatewaySeInformation = await this.getSeValue(aasId, submodelGateway, monkiGatewayIdShortPaths)
+             
+            let bacnetInformation = await this.loadBacnetInformationForGateway(children)
+            let gatewayInformation = {
+                'Gateway Information': {
+                    'Name': gatewaySeInformation['thingName'],
+                    'ID': gatewaySeInformation['thingId'],
+                    'Status': gatewaySeInformation['connectionStatus']
+                },
+                'AAS ID Short': aasIdShort,
+                'AAS ID': aasId,
+                'ParentAasId': parent,
+                'ParentAasIdShort': parentAasIdShort,
+                'bacnetDevices': bacnetInformation
+            }    
+            allGatewayInformation.push(gatewayInformation)
+        }
+        this.loadedGatewayInformation = allGatewayInformation
+    },
+
     // Test of Amlify klapp
     /*
     async helloServer() {
@@ -470,7 +532,6 @@ export const useGeneralStore = defineStore('general', {
         const getAasIdentifier = 'aas/getallaasidentifier'
         const url = this.aasServer + getAasIdentifier
         try {
-            console.log(url)
             const response = await axios.post(url, {
                 // Hier kannst du die Daten angeben, die du senden möchtest
                 userId: this.userId
@@ -600,11 +661,9 @@ export const useGeneralStore = defineStore('general', {
     async fetchGeneralInfos(userId) {
         await this.readCSV()
         this.userId = userId;
-        console.log(this.userId);
     
         const semanticIdAasType = 'https://th-koeln.de/gart/CompanyAAS/1/0';
         const aasIds = await this.getAasByType(semanticIdAasType);
-        console.log(aasIds);
 
         const companyIdShortPaths = {
             organizationName: ['CompanyName'],
@@ -625,7 +684,6 @@ export const useGeneralStore = defineStore('general', {
     
         if (aasIds.length > 0) {
             const companyAasId = aasIds[0];
-            console.log(companyAasId);
     
             const companySubmodelId = 'CompanyInformation';
             const organizationInformation = await this.getSeValue(companyAasId, companySubmodelId, companyIdShortPaths);
@@ -655,8 +713,16 @@ export const useGeneralStore = defineStore('general', {
     
         const semanticIdAasTypeBacnet = 'https://th-koeln.de/gart/BACnetDeviceAAS/1/0';
         const aasBacnetIds = await this.getAasByType(semanticIdAasTypeBacnet);
+
+        const semanticIdAasTypeGateway = 'https://th-koeln.de/gart/MonKiGatewayAas/1/0';
+        const aasGatewayIds = await this.getAasByType(semanticIdAasTypeGateway);
+
+        console.log(aasBacnetIds)
+        console.log(aasGatewayIds)
     
         this.loadedBacnetInformation = aasBacnetIds;
+
+        await this.loadGatewayInformation(aasGatewayIds)
     
         await this.loadBacnetInformation(aasBacnetIds);
     },
@@ -934,7 +1000,6 @@ export const useGeneralStore = defineStore('general', {
         }));
       
         this.loadedSiteInformationWithBuildings = allSitesWithBuildings;
-        console.log(this.loadedSiteInformationWithBuildings)
         return allSitesWithBuildings;
     },      
       
@@ -967,5 +1032,5 @@ export const useGeneralStore = defineStore('general', {
 
         //this.fetchGeneralInfos()
     }
-  }
+}
 })

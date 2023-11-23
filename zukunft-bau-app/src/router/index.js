@@ -7,6 +7,7 @@ import RegisterInfos from '../views/RegisterInfos.vue'
 import DigitalTwins from '../views/digitaltwins/digitaltwins_general.vue'
 import DigitalTwins_Site from '../views/digitaltwins/site/site_general.vue'
 import DigitalTwins_Site_Building from '../views/digitaltwins/site/building/building_general.vue'
+import DigitalTwins_Site_Building_Bacnet from '../views/digitaltwins/site/building/building_bacnet.vue'
 import DigitalTwins_Site_Building_Grundfunktion from '../views/digitaltwins/site/building/GrundfunktionTga.vue'
 import Monitoring from '../views/monitoring/monitoring_general.vue'
 import Monitoring_Site from '../views/monitoring/site/monitoring_site.vue'
@@ -106,6 +107,22 @@ const routes = [
           { title: 'Digital Twins', to: '/digitaltwins' },
           { title: `${route.params.siteid}`, to: `/digitaltwins/${route.params.siteid}` },
           { title: `${route.params.buildingid}`, to: `/digitaltwins/${route.params.siteid}/${route.params.buildingid}/${encodedBuildingaasid}` }
+        ];
+      }
+    }
+  },
+  {
+    path: '/digitaltwins/:siteid/:buildingid/:buildingaasid/bacnet',
+    name: 'DigitalTwins_Site_Building_Bacnet',
+    component: DigitalTwins_Site_Building_Bacnet,
+    meta: {
+      breadcrumb: (route) => {
+        const encodedBuildingaasid = encodeURIComponent(route.params.buildingaasid)
+        return [
+          { title: 'Digital Twins', to: '/digitaltwins' },
+          { title: `${route.params.siteid}`, to: `/digitaltwins/${route.params.siteid}` },
+          { title: `${route.params.buildingid}`, to: `/digitaltwins/${route.params.siteid}/${route.params.buildingid}/${encodedBuildingaasid}` },
+          { title: `BACnet`, to: `/digitaltwins/${route.params.siteid}/${route.params.buildingid}/${encodedBuildingaasid}/bacnet` }
         ];
       }
     }

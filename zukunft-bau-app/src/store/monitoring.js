@@ -48,12 +48,23 @@ export const useMonitoringStore = defineStore('monitoring', {
                   const aasPromises = [];
           
                   for (let grundfunktionAas in grundfunktionenAas) {
-                    aasPromises.push(fetchAasData(grundfunktionenAas[grundfunktionAas]));
+                    let aasId = grundfunktionenAas[grundfunktionAas]
+                    let semanticIdAAS = await generalStore.getSemanticIdAas(aasId)
+
+                    if (semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSupplyHeatAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSupplyAirAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSupplyColdAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSupplyMediaAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSupplyElectricityAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionOtherAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionTransportAAS/1/0' ||
+                    semanticIdAAS[0] === 'https://th-koeln.de/gart/BaseFunctionSecureAAS/1/0')  {
+                      aasPromises.push(fetchAasData(aasId, semanticIdAAS[0]));
+                    }
                   }
           
                   const aasData = await Promise.all(aasPromises);
           
-                  console.log(aasData);
                   this.aasTree = aasData
                   this.loadingAasTree = false
                   this.currentBuildingAas = aasId
@@ -63,9 +74,9 @@ export const useMonitoringStore = defineStore('monitoring', {
               }
             }
           
-            async function fetchAasData(aasId) {
+            async function fetchAasData(aasId, semanticId) {
               const idShort = await generalStore.getAasIdShortByIdentifier(aasId);
-              const semanticId = await generalStore.getSemanticIdAas(aasId);
+              //const semanticId = await generalStore.getSemanticIdAas(aasId);
               const aasIdsZweiteEbene = await generalStore.getBomChilds(aasId);
           
               const aasZweiteEbeneArray = await Promise.all(
@@ -76,7 +87,7 @@ export const useMonitoringStore = defineStore('monitoring', {
           
               return {
                 aasGrundfunktion: {
-                  semanticId: semanticId[0],
+                  semanticId: semanticId,
                   aasId: aasId,
                   idShort: idShort[0],
                 },
@@ -160,7 +171,6 @@ export const useMonitoringStore = defineStore('monitoring', {
             }
             let idShorts = []
             for  (let element in responseBasyx['value']) {
-                console.log(responseBasyx['value'][element]['idShort'])
                 idShorts.push(responseBasyx['value'][element]['idShort'])
             }
             this.timeSeriesSubmodelElementsIdShorts = idShorts
@@ -201,8 +211,7 @@ export const useMonitoringStore = defineStore('monitoring', {
               console.error(error);
           }
 
-          const chartType = await this.getChartType(elementData.semanticId)
-          console.log(chartType)    
+          const chartType = await this.getChartType(elementData.semanticId) 
           elementData['chartType'] = chartType  
           //await Promise.all(requests);
           this.loadedElement = true
@@ -214,23 +223,17 @@ export const useMonitoringStore = defineStore('monitoring', {
             const readTimeSeries = 'submodel/timeseries/readtimeseries'
             const url = this.aasServer + readTimeSeries
             let responseBasyx = ''        
-            //const generalStore = useGeneralStore()
-            //const userId = generalStore.userId
-            //this.userId = userId
             const actualTime = Math.floor(new Date().getTime() / 1000)
-            
+            let path = submodelElementPath + '/PresentValue'
             try {
                 const response = await axios.post(url, {
                     userId: this.userId,
                     aasIdentifier: aasId,
                     submodelRefIdShort:submodelRefIdShort,
-                    submodelElementPath:submodelElementPath,
-                    //aasIdentifier: 'TestAAS',
-                    //submodelRefIdShort:"Measurements",
-                    //submodelElementPath:"RoomTemperature",
+                    submodelElementPath:path,
                     timestampStart: 0,
-                    // timestampStop: actualTime,
-                    timestampStop: 1696878572
+                    timestampStop: actualTime,
+                    //timestampStop: 1696878572
                 },{
                   timeout: 600000
                 })

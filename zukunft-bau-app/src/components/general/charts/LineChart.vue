@@ -78,7 +78,7 @@ export default {
                 // Zu Minute setzen wenn Daten jede Minute angezeigt werden, Stunde wenn nur jede Stunde
                 
                 //timeUnit: "hour",
-                timeUnit: 'hour',
+                timeUnit: 'minute',
                 count: 1
             },
             renderer: am5xy.AxisRendererX.new(root, {}),

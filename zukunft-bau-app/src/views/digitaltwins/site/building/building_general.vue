@@ -1,33 +1,22 @@
 <template>
     <div>
-        <v-container>
-            <!--<h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>-->
-            <!--
-                <v-file-input
-                    v-model="file"
-                    variant="underlined"
-                    chips
-                    accept=".json"
-                    label="Select an AAS file (as JSON)"
-                    :style="{ 'max-width': '30%' }"
-                ></v-file-input>
-                <v-btn 
-                    class="mt-0" 
-                    variant="outlined" 
-                    color="warning"
-                    @click="digitalTwinStore.startNlp(file)">Upload AAS
-                </v-btn>
-            -->
-                <v-container>
-                    <div v-if="digitalTwinStore.showProgressUploadAas === true">
-                        <v-progress-linear
-                        indeterminate
-                        color="success"
-                        ></v-progress-linear>
-                    </div>
-                </v-container>
-                <GatewayInformationSelected :buildingId="$route.params.buildingid"/>            
-        </v-container>
+        <v-row class="ma-0 pa-0">
+            <v-col cols="11"></v-col>
+            <v-col cols="1" class="ma-0 pa-0">
+                <v-tooltip text="BACnet">
+                    <template v-slot:activator="{ props }">
+                        <v-btn 
+                            v-bind="props"
+                            :style="{ marginTop: '-100px' }" 
+                            variant="outlined" 
+                            color="warning"
+                            @click="$router.push({name:'DigitalTwins_Site_Building_Bacnet',
+                            params:{siteid: $route.params.siteid, buildingid: $route.params.buildingid, buildingaasid:$route.params.buildingaasid}})"
+                            size="x-small"></v-btn>
+                    </template>
+                </v-tooltip>
+            </v-col>
+        </v-row>
     </div>
     
 </template> 
@@ -35,16 +24,12 @@
 <script>
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
 import { useGeneralStore } from "@/store/general"
-import GatewayInformationSelected from "@/components/digitalTwin/GatewayInformationSelected.vue"
 
 export default{
     data () {
         return {
             file: null,
         }
-    },
-    components: {
-        GatewayInformationSelected
     },
     computed: {
         digitalTwinStore () {
@@ -56,3 +41,9 @@ export default{
     }
 }
 </script>
+
+<style>
+.negative-margin {
+  margin-top: -100px; 
+}
+</style>

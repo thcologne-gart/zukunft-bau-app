@@ -57,7 +57,6 @@ export default {
   mounted() {
     let presetTime = 'month'
     let chart = this.initChart(presetTime);
-    console.log(chart)
   },
   beforeUnmount() {
     if (this.chart) {
@@ -72,11 +71,7 @@ export default {
   methods: {
     zoomXAxes(period) {
 
-      // Hier ist der code, wie man die aktuelle Zeit minus eins bekommt
-      
-      /*
       const currentTime = new Date();
-      console.log(currentTime)
       const updatedYear = currentTime.getFullYear();
       const updatedMonth = currentTime.getMonth();
       const updatedDay = currentTime.getDate();
@@ -88,53 +83,47 @@ export default {
       updatedTime.setMonth(updatedMonth);
       updatedTime.setDate(updatedDay - 1);
       updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
-      */
 
       // Zwei zeilen könenn dann weg
-      let currentTime
-      let updatedTime
+      //let currentTime
+      //let updatedTime
       if (period === 'day') {
         // Funktioneirt mit echten Daten
-        /*
+        
         const updatedTime = new Date();
         updatedTime.setFullYear(updatedYear);
         updatedTime.setMonth(updatedMonth);
         updatedTime.setDate(updatedDay - 1);
         updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
-        console.log(updatedTime)
-        */
 
         // Hier als Ersatz, sodass es mit den daten funktioniert
 
-        currentTime = new Date(2023, 8, 28)
-        updatedTime = new Date(2023, 8, 29)
+        //currentTime = new Date(2023, 8, 28)
+        //updatedTime = new Date(2023, 8, 29)
       } else if (period === 'week'){
 
         // Funktioniert mit echten Daten
-        /*
+      
         const updatedTime = new Date();
         updatedTime.setFullYear(updatedYear);
         updatedTime.setMonth(updatedMonth);
         updatedTime.setDate(updatedDay - 7);
-        updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
-        console.log(updatedTime)
-        */
+        updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);       
 
-        currentTime = new Date(2023, 8, 21)
-        updatedTime = new Date(2023, 8, 28)
+        //currentTime = new Date(2023, 8, 21)
+        //updatedTime = new Date(2023, 8, 28)
       } else if (period === 'month'){
 
         // funktioniert mit echten daten
-        /*
+      
         const updatedTime = new Date();
         updatedTime.setFullYear(updatedYear);
         updatedTime.setMonth(updatedMonth-1);
         updatedTime.setDate(updatedDay);
         updatedTime.setHours(updatedHours, updatedMinutes, updatedSeconds);
-        console.log(updatedTime)
-        */
-        currentTime = new Date(2023, 7, 28)
-        updatedTime = new Date(2023, 8, 28)
+        
+        //currentTime = new Date(2023, 7, 28)
+        //updatedTime = new Date(2023, 8, 28)
       }
 
 
@@ -159,7 +148,6 @@ export default {
     },
 
     async initChart(time) {
-      console.log(time)
       let elementsToDisplay = [];
 
       const semanticIdMappings = {
@@ -179,7 +167,6 @@ export default {
           let semanticId = element.semanticId;
 
           if (semanticIdMappings.hasOwnProperty(semanticId)) {
-            console.log(semanticIdMappings[semanticId]);
 
             let aasId = this.allElements[komponente].anlagenInformation.aasId;
             let timeSeriesData = await this.monitoringStore.getTimeSeriesValues(element.idShort, element.submodelName, aasId);
@@ -194,7 +181,6 @@ export default {
           }
         }
       }
-      console.log(elementsToDisplay)
       let root = am5.Root.new("chartdiv");
 
       root.setThemes([am5themes_Animated.new(root)]);
@@ -226,7 +212,7 @@ export default {
         am5xy.DateAxis.new(root, {
           maxDeviation: 0.2,
           baseInterval: {
-            timeUnit: "hour",
+            timeUnit: "minute",
             count: 1,
           },
           renderer: am5xy.AxisRendererX.new(root, {}),
@@ -253,10 +239,8 @@ export default {
           fontSize: "12px",
           fontFamily: "Montserrat"
       });
-      console.log(elementsToDisplay.length)
       this.elementsToDisplay = elementsToDisplay
       for (var i = 0; i < elementsToDisplay.length; i++) {
-        console.log(elementsToDisplay[i].name)
         let series = chart.series.push(
           am5xy.LineSeries.new(root, {
             //name: "Series " + i,
@@ -286,9 +270,6 @@ export default {
         //series.set("fill", am5.color(0x3B5249)); -> Die ist für den tooltip, könnte auch noch angepasst werden
         series.data.setAll(data);
 
-        console.log(xAxis)
-
-        console.log(series)
 
         series.appear();
       }
@@ -356,7 +337,6 @@ export default {
 
       chart.appear(1000, 100);
 
-      console.log(chart)
       this.xAxis = xAxis
 
       this.chart = chart;

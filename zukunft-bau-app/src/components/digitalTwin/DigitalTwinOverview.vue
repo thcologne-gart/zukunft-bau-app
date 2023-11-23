@@ -23,7 +23,7 @@
                         <v-col class="d-flex justify-center align-center">
                             <v-card-actions class="justify-end">
                                 <v-btn class="mt-0" variant="outlined" color="warning" size="small"
-                                @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName']}})">
+                                @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName'], buildingaasid:key}})">
                                 Information
                                 </v-btn>
                             </v-card-actions>

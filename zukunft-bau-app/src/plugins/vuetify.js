@@ -21,15 +21,15 @@ const myCustomLightTheme = {
     primary:'#c42424', //th: orange
     //primary: '#FF4A1C',
     'primary-darken-1':'#bc3384',
-    highlight:'#ec5c24',
+    highlight:'#ff4a1c', // plyteq rot
     secondary:'#a3a0a0',
     'secondary-darken-1': '#6c6c6c',
     error:'#e03024',
-    info:'#DDFDD6',
+    info:'#b2ffa9', // plyteq hellgrüm
     //success:'#bc3384',
-    success: '#3B5249',
+    success: '#3B5249', // plyteq dunkelgrün
     //warning:'#ff4a1c',
-    warning: '#372772',
+    warning: '#372772', // plyteq blau
     //monitoring: '#285757',
     monitoring: '#3B5249',
   },
