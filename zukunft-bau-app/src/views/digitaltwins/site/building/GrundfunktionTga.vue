@@ -1,9 +1,36 @@
 <template>
     <div>
-        <v-container>
-            <!--<h2 style="color: #3B5249;">Digital Twins - Building {{ $route.params.buildingid  }}</h2>-->
-            <h2 style="color: #3B5249;">Digital Twins - Gebäude {{ $route.params.buildingid  }}</h2>
-            <h3 style="color: #3B5249;">{{ this.digitalTwinStore.aasIdShort }} - {{ title  }}</h3>
+        <v-container class="ma-0">
+            <v-row>
+                <v-col cols="4">
+                    <BuildingCardVisualization />
+                </v-col>
+                <v-col cols="8">
+                    <!--
+                    <v-chip variant="outlined" id="chipErkennung" size="large">
+                        Wir haben folgendes erkannt:
+                    </v-chip>
+                -->
+                    <v-row>
+                        <v-col cols="4" v-for="(funktion, key) in monitoringStore.aasZweiteGrundfunktion" :key="key">
+                            <v-card style="border-radius: 60px;" variant="outlined">
+                                <v-card-title class="title-center" style="font-size: 18px">
+                                    {{ funktion.idShort }}
+                                </v-card-title>
+                                <!--Hier muss noch was gemacht werden, damit die Anlagen den richtigen zweiten Funktionen zigeordnet werden-->
+                                <v-card-text class="custom-card-text" style="font-size: 16px">
+                                    <v-container class="justify-center align-center">
+                                        <v-btn class="center-btn" variant="text" v-for="(anlage, key) in funktion.anlagenAas" :key="key">
+                                            {{ anlage.idShort }}
+                                        </v-btn>
+                                    </v-container>                                    
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+            <!--
             <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
                 <v-col v-if="Object.values(funktion).length !== 0" cols = '4'>
                     <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
@@ -29,7 +56,6 @@
                                                             <v-expansion-panel-text>
                                                                 <v-row>
                                                                     <v-col cols="8">
-                                                                        <!--<p class="my-4">Score Datapoint: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>-->
                                                                         <p class="my-4">Score Datenpunkt: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>
                                                                     </v-col>
                                                                     <v-col cols="4">
@@ -53,21 +79,24 @@
                                 </v-expansion-panel>
                             </v-expansion-panels>
                         </div>
-                        <!--{{ Object.values(funktion) }}-->
                     </v-card>
                 </v-col>
             </v-row>
+        -->
         </v-container>
     </div>
 </template>
 
 <script>
+import { useMonitoringStore } from "@/store/monitoring"
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
 import EditBacnetProperties from "@/components/digitalTwin/EditBacnetProperties.vue"
+import BuildingCardVisualization from "@/components/digitalTwin/BuildingCardVisualization.vue"
 
 export default{
     data() {
         return {
+            funktionZweiteEbene: {},
             siteId: '',
             buildingId: '',
             grundfunktionId: '',
@@ -77,7 +106,7 @@ export default{
         }
     },
     components: {
-        EditBacnetProperties
+        EditBacnetProperties, BuildingCardVisualization
     },
     created() {
         const site_id = this.$route.params.siteid
@@ -93,10 +122,17 @@ export default{
         //this.getNlpSubmodel('TestAAS')
         this.getZweiteGrundfunktion()
     },
+    mounted() {
+        let firstFunktion = this.monitoringStore.aasZweiteGrundfunktion[0]
+        this.funktionZweiteEbene = firstFunktion
+    },
     computed: {
         digitalTwinStore () {
-        return useDigitalTwinsStore()
+            return useDigitalTwinsStore()
         },
+        monitoringStore () {
+            return useMonitoringStore()
+        }
     },
     methods: {
         async getNlpSubmodel (aas_id) {
@@ -129,3 +165,20 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+#chipErkennung {
+    background-color: #ffffff;
+}
+.title-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.custom-card-text {
+  background-color: #3B5249; 
+  color: white;
+}
+</style>

@@ -112,6 +112,22 @@ const routes = [
     }
   },
   {
+    path: '/digitaltwins/:siteid/:buildingid/:buildingaasid/:grundfunktion',
+    name: 'DigitalTwins_Site_Building_Grundfunktion',
+    component: DigitalTwins_Site_Building_Grundfunktion,
+    meta: {
+      breadcrumb: (route) => {
+        const encodedBuildingaasid = encodeURIComponent(route.params.buildingaasid)
+        return [
+          { title: 'Digital Twins', to: '/digitaltwins' },
+          { title: `${route.params.siteid}`, to: `/digitaltwins/${route.params.siteid}` },
+          { title: `${route.params.buildingid}`, to: `/digitaltwins/${route.params.siteid}/${route.params.buildingid}/${encodedBuildingaasid}` },
+          { title: `${route.params.grundfunktion}`, to: `/digitaltwins/${route.params.siteid}/${route.params.buildingid}/${encodedBuildingaasid}/${route.params.grundfunktion}` }
+        ];
+      }
+    }
+  },
+  {
     path: '/digitaltwins/:siteid/:buildingid/:buildingaasid/bacnet',
     name: 'DigitalTwins_Site_Building_Bacnet',
     component: DigitalTwins_Site_Building_Bacnet,
@@ -126,12 +142,6 @@ const routes = [
         ];
       }
     }
-  },
-  // To Do
-  {
-    path: '/digitaltwins/:siteid/:buildingid/:bacnetid/:grundfunktion',
-    name: 'DigitalTwins_Site_Building_Grundfunktion',
-    component: DigitalTwins_Site_Building_Grundfunktion,
   },
   
   {
