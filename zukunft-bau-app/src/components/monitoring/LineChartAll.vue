@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card
-            color =success variant="outlined" class="pa-4 line-chart-card">
+            color ="success" variant="outlined" class="pa-4 line-chart-card">
             <v-card-actions>
                 <v-btn
                   class="max-3 mr-2" 
@@ -347,11 +347,11 @@ export default {
 </script>
 
 <style>
-/*
+
 .line-chart-card {
-  background-color: rgba(157,172,178, 0.);
+  background-color: #ffffff;
 }
-*/
+
 #chartdiv {
   width: 100%;
   height: 400px; /* Adjust the height as needed */

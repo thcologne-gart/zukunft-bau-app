@@ -31,11 +31,27 @@
                         </v-col>
                     </v-row>
                     <v-row>
+                        <v-container class="ma-0 pa-0">
+                            <div v-if="this.loadingAnlage === true">
+                            <v-progress-linear
+                            indeterminate
+                            color="success"
+                            ></v-progress-linear>
+                            </div>
+                        </v-container>
                         <v-col>
-                            <v-card
+                            <v-card v-if="selectedAnlage !== null"
                                 variant="outlined" class="pa-4 anlagen-card">
                                 <v-card-title class="title-center-two" style="font-size: 18px">
                                     {{ this.selectedAnlage }}
+                                    <v-btn
+                                    class="max-3 mb-4" 
+                                    variant="outlined" 
+                                    color="warning"
+                                    @click="$router.push({name:'Monitoring_Site_Building_Grundfunktion_Anlage', 
+                                    params:{siteid: $route.params.siteid, buildingid: $route.params.buildingid, buildingaasid:$route.params.buildingaasid, grundfunktion:$route.params.grundfunktion, anlage:anlage.idShort}}), 
+                                    monitoringStore.aasAnlage = this.anlage">Monitoring
+                                    </v-btn>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-row>
@@ -48,7 +64,10 @@
                                             rounded class="ma-2" @click="showProperties(component.elements)">
                                                 {{ component.anlagenInformation.idShort }}
                                             </v-btn>
-                                            <v-data-table :items="this.selcectedComponentElements"></v-data-table>
+                                            <v-data-table  v-if="this.selectedComponentElements !== null"
+                                            :items="this.selectedComponentElements"
+                                            :headers="this.headers"
+                                            ></v-data-table>
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
@@ -124,6 +143,9 @@ import { useGeneralStore } from "@/store/general"
 export default{
     data() {
         return {
+            headers: [
+                {title: 'Name', value: 'name'},
+            ],
             funktionZweiteEbene: {},
             siteId: '',
             buildingId: '',
@@ -133,7 +155,9 @@ export default{
             title: '',
             allSes: null,
             selectedAnlage: null,
-            selectedComponentElements: []
+            selectedComponentElements: null,
+            loadingAnlage: false,
+            anlage: null
         }
     },
     components: {
@@ -170,10 +194,13 @@ export default{
     },
     methods: {
         showProperties(elements) {
-            console.log(elements)
             this.selectedComponentElements = elements
         },
         async getAnlagenData(anlage) {
+            this.anlage = anlage
+            this.selectedComponentElements = null
+            this.selectedAnlage = null
+            this.loadingAnlage = true
             let components = anlage.komponentenAas
             let allSE = []
             for (const komponente in components) {
@@ -208,6 +235,7 @@ export default{
             }
             this.allSes = allSE
             this.selectedAnlage = anlage.idShort
+            this.loadingAnlage = false
         },
         async getNlpSubmodel (aas_id) {
             const ready = await this.digitalTwinStore.getBasyxNlpSubmodel(aas_id)
@@ -267,6 +295,6 @@ export default{
   width: 0px; /* Adjust the width as needed */
 }
 .anlagen-card {
-  background-color: rgba(178, 255, 169, 0.5);
+  background-color: rgba(178, 255, 169, 0.3);
 }
 </style>
