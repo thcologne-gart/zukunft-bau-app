@@ -18,12 +18,39 @@
                                     {{ funktion.idShort }}
                                 </v-card-title>
                                 <!--Hier muss noch was gemacht werden, damit die Anlagen den richtigen zweiten Funktionen zigeordnet werden-->
-                                <v-card-text class="custom-card-text" style="font-size: 16px">
-                                    <v-container class="justify-center align-center">
-                                        <v-btn class="center-btn" variant="text" v-for="(anlage, key) in funktion.anlagenAas" :key="key">
-                                            {{ anlage.idShort }}
-                                        </v-btn>
-                                    </v-container>                                    
+                                <v-card-text class="custom-card-text pr-0">
+                                    <v-virtual-scroll id="virtualScroll" :items="funktion.anlagenAas" height="100">
+                                        <template v-slot:default="{ item }">
+                                            <v-btn variant="text" size="small" @click="getAnlagenData(item)">
+                                                {{ item.idShort }}
+                                            </v-btn>
+                                        </template>
+                                    </v-virtual-scroll>                                
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-card
+                                variant="outlined" class="pa-4 anlagen-card">
+                                <v-card-title class="title-center-two" style="font-size: 18px">
+                                    {{ this.selectedAnlage }}
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
+                                        <v-col cols="3" class="mt-3" style="font-size: 16px">
+                                            Komponenten: 
+                                        </v-col>
+                                        <v-col cols="9">
+                                            <v-btn v-for="(component, key) in this.allSes" :key="key"
+                                            variant="outlined" id="component-button"
+                                            rounded class="ma-2" @click="showProperties(component.elements)">
+                                                {{ component.anlagenInformation.idShort }}
+                                            </v-btn>
+                                            <v-data-table :items="this.selcectedComponentElements"></v-data-table>
+                                        </v-col>
+                                    </v-row>
                                 </v-card-text>
                             </v-card>
                         </v-col>
@@ -92,6 +119,7 @@ import { useMonitoringStore } from "@/store/monitoring"
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
 import EditBacnetProperties from "@/components/digitalTwin/EditBacnetProperties.vue"
 import BuildingCardVisualization from "@/components/digitalTwin/BuildingCardVisualization.vue"
+import { useGeneralStore } from "@/store/general"
 
 export default{
     data() {
@@ -103,6 +131,9 @@ export default{
             grundfunktion: [],
             zweiteGrundfunktion: [],
             title: '',
+            allSes: null,
+            selectedAnlage: null,
+            selectedComponentElements: []
         }
     },
     components: {
@@ -132,9 +163,52 @@ export default{
         },
         monitoringStore () {
             return useMonitoringStore()
+        },
+        generalStore () {
+            return useGeneralStore()
         }
     },
     methods: {
+        showProperties(elements) {
+            console.log(elements)
+            this.selectedComponentElements = elements
+        },
+        async getAnlagenData(anlage) {
+            let components = anlage.komponentenAas
+            let allSE = []
+            for (const komponente in components) {
+                let component = components[komponente]
+                const aasId =  component.aasId
+                //const semanticId = anlage.semanticId
+                const submodelId = 'OperatingInformation'
+                const submodel = await this.generalStore.getSubmodel(aasId, submodelId)
+                const submodelElements = submodel.submodelElements;
+
+                const elementPromises = submodelElements.map(async (element) => {
+                    let elementData = {
+                        'aasId': aasId,
+                        'submodelName': submodelId,
+                        'idShort': element.idShort,
+                        'name': element.descriptions[0].text,
+                        'semanticId': element.semanticId.keys[0].value
+                    };
+                    elementData = await this.monitoringStore.getSeValueAnlagenmonitoring(aasId, submodelId, element.idShort, elementData)
+                    // elementData.presentValue = supplementaryInfos.presentValue;
+                    return elementData
+                });
+
+                const elements = await Promise.all(elementPromises);
+
+                allSE.push(
+                    {
+                    'anlagenInformation': component,
+                    'elements': elements
+                    }
+                )
+            }
+            this.allSes = allSE
+            this.selectedAnlage = anlage.idShort
+        },
         async getNlpSubmodel (aas_id) {
             const ready = await this.digitalTwinStore.getBasyxNlpSubmodel(aas_id)
             console.log(ready)
@@ -167,6 +241,9 @@ export default{
 </script>
 
 <style scoped>
+#component-button {
+    background-color: #ffffff;
+}
 #chipErkennung {
     background-color: #ffffff;
 }
@@ -176,9 +253,20 @@ export default{
   align-items: center;
   background-color: #ffffff;
 }
+.title-center-two {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .custom-card-text {
   background-color: #3B5249; 
   color: white;
+}
+#virtualScroll::-webkit-scrollbar {
+  width: 0px; /* Adjust the width as needed */
+}
+.anlagen-card {
+  background-color: rgba(178, 255, 169, 0.5);
 }
 </style>
