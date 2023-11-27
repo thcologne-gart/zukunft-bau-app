@@ -18,12 +18,14 @@
                                     {{ funktion.idShort }}
                                 </v-card-title>
                                 <!--Hier muss noch was gemacht werden, damit die Anlagen den richtigen zweiten Funktionen zigeordnet werden-->
-                                <v-card-text class="custom-card-text pr-0">
+                                <v-card-text class="custom-card-text">
                                     <v-virtual-scroll id="virtualScroll" :items="funktion.anlagenAas" height="100">
                                         <template v-slot:default="{ item }">
-                                            <v-btn variant="text" size="small" @click="getAnlagenData(item)">
-                                                {{ item.idShort }}
-                                            </v-btn>
+                                            <div class="text-center">
+                                                <v-btn variant="text" size="small" @click="getAnlagenData(item)">
+                                                    {{ item.idShort }}
+                                                </v-btn>
+                                            </div>
                                         </template>
                                     </v-virtual-scroll>                                
                                 </v-card-text>
@@ -42,17 +44,25 @@
                         <v-col>
                             <v-card v-if="selectedAnlage !== null"
                                 variant="outlined" class="pa-4 anlagen-card">
-                                <v-card-title class="title-center-two" style="font-size: 18px">
-                                    {{ this.selectedAnlage }}
-                                    <v-btn
-                                    class="max-3 mb-4" 
-                                    variant="outlined" 
-                                    color="warning"
-                                    @click="$router.push({name:'Monitoring_Site_Building_Grundfunktion_Anlage', 
-                                    params:{siteid: $route.params.siteid, buildingid: $route.params.buildingid, buildingaasid:$route.params.buildingaasid, grundfunktion:$route.params.grundfunktion, anlage:anlage.idShort}}), 
-                                    monitoringStore.aasAnlage = this.anlage">Monitoring
-                                    </v-btn>
-                                </v-card-title>
+                                <v-row>
+                                    <v-col cols="2"></v-col>
+                                    <v-col cols="8">
+                                        <v-card-title class="title-center-two" style="font-size: 18px">
+                                            {{ this.selectedAnlage }}
+                                        </v-card-title>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <v-btn
+                                            class="max-3 mb-4" 
+                                            variant="outlined" 
+                                            color="warning"
+                                            size="x-small"
+                                            @click="$router.push({name:'Monitoring_Site_Building_Grundfunktion_Anlage', 
+                                            params:{siteid: $route.params.siteid, buildingid: $route.params.buildingid, buildingaasid:$route.params.buildingaasid, grundfunktion:$route.params.grundfunktion, anlage:anlage.idShort}}), 
+                                            monitoringStore.aasAnlage = this.anlage">Monitoring
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
                                 <v-card-text>
                                     <v-row>
                                         <v-col cols="3" class="mt-3" style="font-size: 16px">
@@ -60,14 +70,35 @@
                                         </v-col>
                                         <v-col cols="9">
                                             <v-btn v-for="(component, key) in this.allSes" :key="key"
-                                            variant="outlined" id="component-button"
+                                            variant="outlined" id="component-button" size="small"
                                             rounded class="ma-2" @click="showProperties(component.elements)">
                                                 {{ component.anlagenInformation.idShort }}
                                             </v-btn>
-                                            <v-data-table  v-if="this.selectedComponentElements !== null"
-                                            :items="this.selectedComponentElements"
-                                            :headers="this.headers"
-                                            ></v-data-table>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col>
+                                            <v-data-table v-if="this.selectedComponentElements !== null"
+                                                v-model:page="page"
+                                                :headers="headers"
+                                                :items="this.selectedComponentElements"
+                                                density="comfortable"
+                                                hover
+                                                :items-per-page="itemsPerPage"
+                                            >
+
+                                            <template v-slot:item.actions="{ item }">
+                                                <EditBacnetPropertiesNew :datenpunkt="item"/>
+                                            </template>
+                                            <template v-slot:bottom>
+                                                <div class="text-center pt-2">
+                                                    <v-pagination
+                                                        v-model="page"
+                                                        :length="pageCount"
+                                                    ></v-pagination>
+                                                </div>
+                                            </template>
+                                            </v-data-table>
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
@@ -136,15 +167,22 @@
 <script>
 import { useMonitoringStore } from "@/store/monitoring"
 import { useDigitalTwinsStore } from "@/store/digitaltwins"
-import EditBacnetProperties from "@/components/digitalTwin/EditBacnetProperties.vue"
+import EditBacnetPropertiesNew from "@/components/digitalTwin/EditBacnetPropertiesNew.vue"
 import BuildingCardVisualization from "@/components/digitalTwin/BuildingCardVisualization.vue"
 import { useGeneralStore } from "@/store/general"
 
 export default{
     data() {
         return {
+            page: 1,
+            itemsPerPage: 10,
+            dialog: false,
             headers: [
-                {title: 'Name', value: 'name'},
+                {title: 'Name', key: 'name'},
+                {title: 'Object Name', key: 'objectName'},
+                {title: 'Description', key: 'definition'},
+                {title: 'Object Type', key: 'type'},
+                {title: 'Edit', align: 'center', key: 'actions', sortable: false }
             ],
             funktionZweiteEbene: {},
             siteId: '',
@@ -161,7 +199,7 @@ export default{
         }
     },
     components: {
-        EditBacnetProperties, BuildingCardVisualization
+        EditBacnetPropertiesNew, BuildingCardVisualization
     },
     created() {
         const site_id = this.$route.params.siteid
@@ -190,7 +228,10 @@ export default{
         },
         generalStore () {
             return useGeneralStore()
-        }
+        },
+        pageCount () {
+            return Math.ceil(this.selectedComponentElements.length / this.itemsPerPage)
+        },
     },
     methods: {
         showProperties(elements) {

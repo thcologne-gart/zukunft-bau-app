@@ -1,35 +1,41 @@
 <template>
     <div>
         <v-container>
-            <v-card class="mx-auto" elevation="1" rounded="0">
-                <v-row>
-                    <v-col>
-                        <v-card-item :title="site['siteName']"></v-card-item>
-                    </v-col>
-                    <v-col class="d-flex justify-center align-center">
-                        <v-card-actions class="justify-end">
-                            <v-btn class="mt-0" variant="outlined" color="warning" 
-                                @click="$router.push({name:'DigitalTwins_Site', params:{siteid:site['siteName']}})">Information
-                            </v-btn>
-                        </v-card-actions>
-                    </v-col>
-                </v-row>
-                <v-divider class="mx-4" :thickness="3"></v-divider>
-                <div v-for="aasId in site['buildings']" :key="aasId">
-                    <v-row v-for="(building, key) in aasId" :key="key">
-                        <v-col>
-                            <v-card-item>{{ building["buildingName"] }}</v-card-item>
+            <v-card 
+            style="border-radius: 60px;" 
+            variant="outlined"
+            class="mx-10">
+                <v-card-title style="font-size: 18px">
+                    <v-row>
+                        <v-col cols="2">
                         </v-col>
-                        <v-col class="d-flex justify-center align-center">
-                            <v-card-actions class="justify-end">
-                                <v-btn class="mt-0" variant="outlined" color="warning" size="small"
-                                @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName'], buildingaasid:key}})">
-                                Information
-                                </v-btn>
-                            </v-card-actions>
+                        <v-col cols="7" class="title-center"> {{ site['siteName'] }}</v-col>
+                        <v-col cols="3">
+                            <v-btn class="mt-0" variant="outlined" color="warning" 
+                            size="small"
+                                icon="mdi-map-marker-radius"
+                                @click="$router.push({name:'DigitalTwins_Site', params:{siteid:site['siteName']}})">
+                            </v-btn>
                         </v-col>
                     </v-row>
-                </div>
+                </v-card-title>
+                <v-divider 
+                class="border-opacity-75 mx-4 mb-2" :thickness="2" color="success"></v-divider>
+                <v-card-subtitle class="title-center">Gebäude</v-card-subtitle>
+                <v-card-title v-for="aasId in site['buildings']" :key="aasId" style="font-size: 18px">
+                    <v-row v-for="(building, key) in aasId" :key="key">
+                        <v-col cols="2"></v-col>
+                        <v-col cols="7" class="title-center">
+                            {{ building["buildingName"] }}
+                        </v-col>
+                        <v-col cols="3">
+                                <v-btn variant="outlined" color="warning" size="small"
+                                icon="mdi-home" class="mt-0"
+                                @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName'], buildingaasid:key}})">
+                                </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-title>
             </v-card>
         </v-container>
     </div>
@@ -60,3 +66,11 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+.title-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
