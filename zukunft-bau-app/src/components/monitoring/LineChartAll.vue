@@ -1,28 +1,29 @@
 <template>
     <div>
         <v-card
-            color ="success" variant="outlined" class="pa-4 line-chart-card">
+            color ="success" variant="outlined" class="pa-4"
+            style="border-radius: 40px; background-color: whitesmoke;">
             <v-card-actions>
                 <v-btn
+                rounded="xl"
+                  variant="text" color="rgba(255, 74, 28, 1.0)" 
                   class="max-3 mr-2" 
-                  variant="outlined" 
-                  color="warning"
                   @click="zoomXAxes('day')"
                 >
                   Dieser Tag
                 </v-btn>
                 <v-btn
                   class="max-3 mr-2" 
-                  variant="outlined" 
-                  color="warning"
+                  rounded="xl"
+                  variant="text" color="rgba(255, 74, 28, 1.0)" 
                   @click="zoomXAxes('week')"
                 >
                   Diese Woche
                 </v-btn>
                 <v-btn
                   class="max-3 mr-2" 
-                  variant="outlined" 
-                  color="warning"
+                  rounded="xl"
+                  variant="text" color="rgba(255, 74, 28, 1.0)" 
                   @click="zoomXAxes('month')"
                 >
                   Dieser Monat
@@ -170,7 +171,7 @@ export default {
 
             let aasId = this.allElements[komponente].anlagenInformation.aasId;
             let timeSeriesData = await this.monitoringStore.getTimeSeriesValues(element.idShort, element.submodelName, aasId);
-
+            console.log(timeSeriesData)
             //data.push(timeSeriesData)
             //names.push(element.name)
             elementsToDisplay.push({
@@ -347,10 +348,6 @@ export default {
 </script>
 
 <style>
-
-.line-chart-card {
-  background-color: #ffffff;
-}
 
 #chartdiv {
   width: 100%;

@@ -3,7 +3,9 @@
         <v-row>
             <v-col cols ="6" v-for="gateway in generalStore.loadedGatewayInformation" :key="gateway['AAS ID']">
                 <v-card v-if="gateway['ParentAasIdShort'][0] == buildingId"
-                max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
+                style="border-radius: 40px; background-color: whitesmoke"
+                variant="outlined"
+                max-width="70%" class="mx-auto my-8">
                     <v-toolbar color="success">
                         <v-toolbar-title class="text-center" style="color: white; font-size: 20px">
                             {{ gateway['AAS ID Short'][0] }}
@@ -29,7 +31,9 @@
                         </v-col>
                         </v-row>
                     </v-card-text>
-                    <v-expansion-panels v-for="(bacnetDevice, key) in gateway['bacnetDevices']" :key="key">
+                    <v-expansion-panels 
+                    v-for="(bacnetDevice, key) in gateway['bacnetDevices']" :key="key"
+                    style="background-color: whitesmoke">
                         <v-expansion-panel elevation="0" rounded="0">
                             <v-expansion-panel-title style="font-size: 16px;" >{{ bacnetDevice['AAS ID Short'][0] }}</v-expansion-panel-title>
                             <v-expansion-panel-text>
@@ -169,3 +173,9 @@ export default{
 }
 
 </script>
+
+<style scoped>
+.transparent-background .v-expansion-panel {
+  background-color: transparent !important;
+}
+</style>

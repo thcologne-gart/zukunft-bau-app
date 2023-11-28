@@ -6,7 +6,8 @@
       <v-chip
         v-if="item.title !== ''"
         variant="outlined"
-        color="success"
+        style="background-color: whitesmoke;"
+        color="highlight"
         link
         size="large"
         class="custom-chip">

@@ -13,7 +13,7 @@
                 -->
                     <v-row>
                         <v-col cols="4" v-for="(funktion, key) in monitoringStore.aasZweiteGrundfunktion" :key="key">
-                            <v-card style="border-radius: 60px;" variant="outlined">
+                            <v-card style="border-radius: 40px;" variant="outlined">
                                 <v-card-title class="title-center" style="font-size: 18px">
                                     {{ funktion.idShort }}
                                 </v-card-title>
@@ -43,6 +43,7 @@
                         </v-container>
                         <v-col>
                             <v-card v-if="selectedAnlage !== null"
+                            style="border-radius: 40px;"
                                 variant="outlined" class="pa-4 anlagen-card">
                                 <v-row>
                                     <v-col cols="2"></v-col>
@@ -54,8 +55,10 @@
                                     <v-col cols="2">
                                         <v-btn
                                             class="max-3 mb-4" 
+                                            rounded="xl"
+                                            style="background-color: whitesmoke;"
                                             variant="outlined" 
-                                            color="warning"
+                                            color="highlight"
                                             size="x-small"
                                             @click="$router.push({name:'Monitoring_Site_Building_Grundfunktion_Anlage', 
                                             params:{siteid: $route.params.siteid, buildingid: $route.params.buildingid, buildingaasid:$route.params.buildingaasid, grundfunktion:$route.params.grundfunktion, anlage:anlage.idShort}}), 

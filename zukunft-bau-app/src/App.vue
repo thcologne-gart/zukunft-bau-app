@@ -114,5 +114,8 @@
   --amplify-components-button-link-focus-background-color: transparent;
   --amplify-components-button-link-hover-background-color: transparent;
 }
+.card-background {
+  background-color: whitesmoke;
+}
 </style>
 

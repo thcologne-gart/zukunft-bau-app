@@ -2,16 +2,16 @@
     <div>
         <v-container>
             <v-card 
-            style="border-radius: 60px;" 
+            style="border-radius: 40px; background-color: whitesmoke" 
             variant="outlined"
-            class="mx-10">
+            class="mx-10 card-background">
                 <v-card-title style="font-size: 18px">
                     <v-row>
                         <v-col cols="2">
                         </v-col>
                         <v-col cols="7" class="title-center"> {{ site['siteName'] }}</v-col>
                         <v-col cols="3">
-                            <v-btn class="mt-0" variant="outlined" color="warning" 
+                            <v-btn class="mt-0" variant="flat" color="rgba(255, 74, 28, 0.7)" 
                             size="small"
                                 icon="mdi-map-marker-radius"
                                 @click="$router.push({name:'DigitalTwins_Site', params:{siteid:site['siteName']}})">
@@ -29,7 +29,7 @@
                             {{ building["buildingName"] }}
                         </v-col>
                         <v-col cols="3">
-                                <v-btn variant="outlined" color="warning" size="small"
+                                <v-btn variant="flat" color="rgba(255, 74, 28, 0.7)" size="small"
                                 icon="mdi-home" class="mt-0"
                                 @click="$router.push({name:'DigitalTwins_Site_Building', params:{buildingid:building['buildingName'], siteid:site['siteName'], buildingaasid:key}})">
                                 </v-btn>

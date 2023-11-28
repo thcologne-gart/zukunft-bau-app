@@ -6,75 +6,82 @@
         color="success"
         ></v-progress-linear>
       </v-container>
-      <v-container v-else-if="monitoringStore.loadingMonitoringComponent === false" class="my-8 justify-center align-center">
-        <KpisMonitoringAnlage />
+      <v-container v-else-if="monitoringStore.loadingMonitoringComponent === false" class="my-4 justify-center align-center">
+        <v-container>
+          <KpisMonitoringAnlage />
+        </v-container>
         <v-container>
           <LineChartAll :allElements="this.allSes"/> 
-        </v-container>>
-        <v-row>
-          <v-col cols="4">
-            <v-card
-              variant="outlined" class="pa-4 anlagen-card">
-              <v-card-text class="center-content">
-                <div class="heizkreis">
-                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                      viewBox="0 0 90 94.3" style="enable-background:new 0 0 90 94.3;" xml:space="preserve">
-                  <g id="Ebene_2">
-                  </g>
-                  <g id="Ebene_1" xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
-                      <g>
-                          <path class="st0" d=""/>
-                          <line id="vorlauf1" class="st1" x1="0" y1="85.7" x2="90" y2="85.7"
-                          @click="handleAreaClick('Vorlauf')"/>
-                          <line id="rücklauf1" class="st2" x1="0" y1="92.8" x2="89.9" y2="92.8"
-                          @click="handleAreaClick('Rücklauf')"/>
-                          <polyline class="st3" points="65.1,92.8 65.1,11 59.7,11 		"/>
-                          <polyline id = 'rücklauf' class="st4" points="65.1,92.8 65.1,11 59.7,11"
-                          @click="handleAreaClick('Rücklauf')"/>
-                          <circle class="st5" cx="46.5" cy="11.8" r="7.8"/>
-                          <circle id = 'hkAllgemein' class="st5" cx="46.5" cy="11.8" r="11.3"
-                          @click="handleAreaClick('Heizkreis allgemein')"/>
-                          <circle id = 'pumpe' class="st5" cx="28.7" cy="39.8" r="6.4"
-                            @click="handleAreaClick('Pumpe')"/>
-                          <polyline class="st3" points="35,39.8 28.7,33.5 22.3,39.8 		"/>
-                          <path class="st3" d="M25,55l3.4,5.9l3.4-5.9C31.7,55,25,55,25,55z"/>
-                          <path class="st6" d="M25,66.7l3.4-5.9l3.4,5.9C31.7,66.7,25,66.7,25,66.7z"/>
-                          <path class="st6" d="M34.2,64.2l-5.9-3.4l5.9-3.4V64.2z"/>
-                          <circle id ='ventil' class="st5" cx="16.7" cy="60.9" r="5.7"
-                            @click="handleAreaClick('Ventil')"/>
-                          <line class="st3" x1="22.4" y1="60.9" x2="28.4" y2="60.9"/>
-                          <line id ='vorlauf2' class="st7" x1="28.4" y1="68.1" x2="28.4" y2="85.7"
-                          @click="handleAreaClick('Vorlauf')"/>
-                          <line id="vorlauf3" class="st7" x1="28.7" y1="47.4" x2="28.7" y2="53.9"
-                          @click="handleAreaClick('Vorlauf')"/>
-                          <polyline id ='vorlauf' class="st7" points="28.6,32.1 28.6,11 33.4,11"
-                          @click="handleAreaClick('Vorlauf')"/>
-                          <line id="rücklauf2" class="st4" x1="35.8" y1="60.9" x2="65.1" y2="60.9"
-                          @click="handleAreaClick('Rücklauf')"/>
-                      </g>
-                  </g>
-                  </svg>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="8">
-            <v-card variant="outlined" class="anlagen-card">
-              <v-tabs
-                color="success"
-              >
-                <v-tab v-for="komponente in this.allComponents" :key="komponente"
-                @click="handleAreaClick(komponente)"
+        </v-container>
+        <v-container>
+          <v-row>
+            <v-col cols="4">
+              <v-card
+                style="border-radius: 40px; background-color: whitesmoke"
+                variant="outlined" class="pa-4 anlagen-card">
+                <v-card-text class="center-content">
+                  <div class="heizkreis">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 90 94.3" style="enable-background:new 0 0 90 94.3;" xml:space="preserve">
+                    <g id="Ebene_2">
+                    </g>
+                    <g id="Ebene_1" xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+                        <g>
+                            <path class="st0" d=""/>
+                            <line id="vorlauf1" class="st1" x1="0" y1="85.7" x2="90" y2="85.7"
+                            @click="handleAreaClick('Vorlauf')"/>
+                            <line id="rücklauf1" class="st2" x1="0" y1="92.8" x2="89.9" y2="92.8"
+                            @click="handleAreaClick('Rücklauf')"/>
+                            <polyline class="st3" points="65.1,92.8 65.1,11 59.7,11 		"/>
+                            <polyline id = 'rücklauf' class="st4" points="65.1,92.8 65.1,11 59.7,11"
+                            @click="handleAreaClick('Rücklauf')"/>
+                            <circle class="st5" cx="46.5" cy="11.8" r="7.8"/>
+                            <circle id = 'hkAllgemein' class="st5" cx="46.5" cy="11.8" r="11.3"
+                            @click="handleAreaClick('Heizkreis allgemein')"/>
+                            <circle id = 'pumpe' class="st5" cx="28.7" cy="39.8" r="6.4"
+                              @click="handleAreaClick('Pumpe')"/>
+                            <polyline class="st3" points="35,39.8 28.7,33.5 22.3,39.8 		"/>
+                            <path class="st3" d="M25,55l3.4,5.9l3.4-5.9C31.7,55,25,55,25,55z"/>
+                            <path class="st6" d="M25,66.7l3.4-5.9l3.4,5.9C31.7,66.7,25,66.7,25,66.7z"/>
+                            <path class="st6" d="M34.2,64.2l-5.9-3.4l5.9-3.4V64.2z"/>
+                            <circle id ='ventil' class="st5" cx="16.7" cy="60.9" r="5.7"
+                              @click="handleAreaClick('Ventil')"/>
+                            <line class="st3" x1="22.4" y1="60.9" x2="28.4" y2="60.9"/>
+                            <line id ='vorlauf2' class="st7" x1="28.4" y1="68.1" x2="28.4" y2="85.7"
+                            @click="handleAreaClick('Vorlauf')"/>
+                            <line id="vorlauf3" class="st7" x1="28.7" y1="47.4" x2="28.7" y2="53.9"
+                            @click="handleAreaClick('Vorlauf')"/>
+                            <polyline id ='vorlauf' class="st7" points="28.6,32.1 28.6,11 33.4,11"
+                            @click="handleAreaClick('Vorlauf')"/>
+                            <line id="rücklauf2" class="st4" x1="35.8" y1="60.9" x2="65.1" y2="60.9"
+                            @click="handleAreaClick('Rücklauf')"/>
+                        </g>
+                    </g>
+                    </svg>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="8">
+              <v-card 
+              style="border-radius: 40px; background-color: whitesmoke"
+              variant="outlined" class="anlagen-card">
+                <v-tabs
+                  color="success"
                 >
-                  {{ komponente }}
-                </v-tab>
-              </v-tabs>
-            </v-card>
-            <div v-for="element in this.komponenteZeigen" :key="element.idShort">
-              <AnlagenMonitoringCard :element="element"/>
-            </div>
-          </v-col>
-        </v-row>
+                  <v-tab v-for="komponente in this.allComponents" :key="komponente"
+                  @click="handleAreaClick(komponente)"
+                  >
+                    {{ komponente }}
+                  </v-tab>
+                </v-tabs>
+              </v-card>
+              <div v-for="element in this.komponenteZeigen" :key="element.idShort">
+                <AnlagenMonitoringCard :element="element"/>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-container>
     </div>
 </template>

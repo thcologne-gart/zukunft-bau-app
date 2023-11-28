@@ -2,10 +2,16 @@
     <div>
         <v-row>
             <v-col cols = "3" v-for="kpi in this.kpis" :key="kpi.name">
-                <v-card variant="flat" color ="#FFFAF4">
-                    <v-card-subtitle class="multiline-title center-content text-body-2">{{ kpi.name }}</v-card-subtitle>
+                <v-card variant="outlined"
+                style="border-radius: 40px; background-color: whitesmoke">
+                    <v-toolbar color="success">
+                        <v-toolbar-title class="title-center" style="color: white; font-size: 16px">
+                        {{ kpi.name }}
+                        </v-toolbar-title>                        
+                    </v-toolbar>
                     <v-card-text class="center-content text-h6">
-                        <v-avatar :style="{ border: `2px solid ${kpi.color}` }" size="80">
+                        <v-avatar :style="{ border: `2px solid ${kpi.color}` }" 
+                        size="70">
                             {{ kpi.value }}
                         </v-avatar>
                     </v-card-text>
@@ -64,7 +70,11 @@ export default {
   border: 2px solid #4caf50; /* Green border color */
   box-sizing: content-box; /* Ensure the border is included in the size */
 }
-.multiline-title {
-    white-space: normal;
+
+.title-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 </style>

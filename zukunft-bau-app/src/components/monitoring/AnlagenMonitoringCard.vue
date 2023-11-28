@@ -1,14 +1,17 @@
 <template>
     <div>
         <v-card
-            class="mx-auto my-8" elevation="1" rounded="0">
+            variant="outlined"
+            style="border-radius: 40px; background-color: whitesmoke"
+            class="mx-auto my-8" >
             <v-toolbar density="compact" color="monitoring">
                 <v-toolbar-title class="text-center" style="font-size: 18px">
                     {{ element.name }}
                 </v-toolbar-title>
             </v-toolbar>
             <v-divider class="border-opacity-100" color="success"></v-divider>
-            <v-card-text class="px-6 pb-0">
+            <v-card-text class="px-6 pb-0"
+                style="background-color: whitesmoke;">
                 <v-row align="center" no-gutters>
                   <v-col cols="3"
                     >

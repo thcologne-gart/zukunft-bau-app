@@ -224,6 +224,7 @@ export const useMonitoringStore = defineStore('monitoring', {
             const url = this.aasServer + readTimeSeries
             let responseBasyx = ''        
             const actualTime = Math.floor(new Date().getTime() / 1000)
+            console.log(actualTime)
             let path = submodelElementPath + '/PresentValue'
             try {
                 const response = await axios.post(url, {
