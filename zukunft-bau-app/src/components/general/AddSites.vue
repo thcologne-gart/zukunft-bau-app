@@ -7,7 +7,8 @@
     <v-container :style="{ width: '90%' }">
       <v-card-actions class="d-flex justify-center align-center">
         <v-btn
-            color="warning"
+            rounded="xl"
+            variant="text" color="rgba(255, 74, 28, 1.0)"
             text
             @click="show = !show"
         >
@@ -30,7 +31,9 @@
           ></v-text-field>
         <vue-google-autocomplete class="autocomplete-container" id="map" v-model="place" v-on:placechanged="setPlace"></vue-google-autocomplete>
         <v-container class="d-flex justify-center align-center">
-          <v-btn class="max-3" type="reset" variant="outlined" color="warning" 
+          <v-btn class="max-3" type="reset" 
+            rounded="xl"
+            variant="text" color="rgba(255, 74, 28, 1.0)"
             @click= "currentPlace = '';
             generalStore.addSiteInformation(
               country,

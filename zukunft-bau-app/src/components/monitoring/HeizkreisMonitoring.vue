@@ -76,9 +76,12 @@
                   </v-tab>
                 </v-tabs>
               </v-card>
+              <AnlagenMonitoringCard :elements="this.komponenteZeigen"/>
+              <!--
               <div v-for="element in this.komponenteZeigen" :key="element.idShort">
-                <AnlagenMonitoringCard :element="element"/>
+                <AnlagenMonitoringCard :elements="element"/>
               </div>
+            -->
             </v-col>
           </v-row>
         </v-container>

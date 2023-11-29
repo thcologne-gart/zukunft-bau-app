@@ -4,8 +4,10 @@
         variant="outlined"
         style="border-radius: 40px; background-color: whitesmoke;">
         <v-toolbar
+        style="background-color: whitesmoke;"
             >
-            <v-toolbar-title style="color: #3B5249">
+            <v-toolbar-title style="color: #3B5249;"
+            class="d-flex justify-center align-center">
                 <span>{{ currentTitle }}</span>
             </v-toolbar-title>
         </v-toolbar>
