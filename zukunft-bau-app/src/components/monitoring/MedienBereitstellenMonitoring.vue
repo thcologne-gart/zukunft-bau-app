@@ -19,6 +19,7 @@
               <v-card
                 style="border-radius: 40px; background-color: whitesmoke"
                 variant="outlined" class="pa-4 anlagen-card">
+                <!--
                 <v-card-text class="center-content">
                   <div class="heizkreis">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -60,6 +61,7 @@
                     </svg>
                   </div>
                 </v-card-text>
+            -->
               </v-card>
             </v-col>
             <v-col cols="8">
@@ -100,20 +102,24 @@ export default {
   data() {
     return {
       viewBox: '0 0 400 120', // Adjust the viewBox dimensions to fit your image
-      rücklauf: [],
-      rücklaufEnthalten: false,
-      vorlauf: [],
-      vorlaufEnthalten: false,
-      pumpe: [],
-      pumpeEnthalten: false,
-      heizkreisAllgemein: [],
-      hkEnthalten: false,
-      ventil: [],
-      ventilEnthalten: false,
-      heizkurve: [],
-      heizkurveEnthalten: false,
-      warmwasserbereitung: [], 
-      warmwasserbereitungEnthalten: false,
+      bereitstellenAllgemein: [],
+      bereitstellenAllgemeinEnthalten: false,
+      enthärtung: [],
+      enthärtungEnthalten: false,
+      entsalzung: [],
+      entsalzungEnthalten: false,
+      wasseraufbereitung: [],
+      wasseraufbereitungEnthalten: false,
+      frischwasser: [],
+      frischwasserEnthalten: false,
+      dosieranlage: [],
+      dosieranlageEnthalten: false,
+      kraftstoffreinigung: [],
+      kraftstoffreinigungEnthalten: false,
+      thermischeDesinfektion: [],
+      thermischeDesinfektionEnthalten: false,
+      nachfüllstation: [],
+      nachfüllstationEnthalten: false,
       komponenteZeigen: [],
       allComponents: null,
       allSes: null
@@ -179,52 +185,51 @@ export default {
             }
         )
         this.allSes = allSE
-        //console.log(elements);
-        /*
-        const elements = submodelElements.map(element => ({
-          'aasId': aasId,
-          'submodelName': submodelId,
-          'idShort': element.idShort,
-          'name': element.descriptions[0].text,
-          'semanticId': element.semanticId.keys[0].value
-        }));
-        */
-      
-        if (semanticId === 'https://th-koeln.de/gart/ComponentReturnAAS/1/0') {
-          this.rücklauf = elements;
-          this.rücklaufEnthalten = true
-          allComponents.push('Rücklauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAAS/1/0') {
-          this.vorlauf = elements;
-          this.vorlaufEnthalten = true
-          allComponents.push('Vorlauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentPumpAAS/1/0') {
-          this.pumpe = elements;
-          this.pumpeEnthalten = true
-          allComponents.push('Pumpe')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCurveAAS/1/0') {
-          this.heizkurve = elements;
-          this.heizkurveEnthalten = true
-          allComponents.push('Heizkurve')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCircuitGeneralAAS/1/0') {
-          this.heizkreisAllgemein = elements;
-          this.hkEnthalten = true
-          allComponents.push('Heizkreis allgemein')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentValveAAS/1/0') {
-          this.ventil = elements;
-          this.ventilEnthalten = true
-          allComponents.push('Ventil')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHotWaterPreparationAAS/1/0') {
-          this.warmwasserbereitung = elements;
-          this.warmwasserbereitungEnthalten = true
-          allComponents.push('Warmwasserbereitung')
-        }
+    
+        if (semanticId === 'https://th-koeln.de/gart/ComponentGeneralProvisionAAS/1/0') {
+          this.bereitstellenAllgemein = elements;
+          this.bereitstellenAllgemeinEnthalten = true
+          allComponents.push('Allgemein')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentDosingSystemAAS/1/0') {
+          this.dosieranlage = elements;
+          this.dosieranlageEnthalten = true
+          allComponents.push('Dosieranlage')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentSofteningAAS/1/0') {
+          this.enthärtung = elements;
+          this.enthärtungEnthalten = true
+          allComponents.push('Enthärtung')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentDesalinationAAS/1/0') {
+          this.entsalzung = elements;
+          this.entsalzungEnthalten = true
+          allComponents.push('Entsalzung')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentFreshWaterModuleAAS/1/0') {
+          this.frischwasser = elements;
+          this.frischwasserEnthalten = true
+          allComponents.push('Frischwassermodul')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentFuelCleaningAAS/1/0') {
+          this.kraftstoffreinigung = elements;
+          this.kraftstoffreinigungEnthalten = true
+          allComponents.push('Kraftstoffreinigung')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentRefillStationAAS/1/0') {
+          this.nachfüllstation = elements;
+          this.nachfüllstationEnthalten = true
+          allComponents.push('Nachfüllstation')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentThermalDisinfectionAAS/1/0') {
+          this.thermischeDesinfektion = elements;
+          this.thermischeDesinfektionEnthalten = true
+          allComponents.push('Thermische Desinfektion')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentWaterTreatmentAAS/1/0') {
+          this.wasseraufbereitung = elements;
+          this.wasseraufbereitungEnthalten = true
+          allComponents.push('Wasseraufbereitung')
+        } 
       }
+
       this.allComponents = allComponents
       await this.monitoringStore.setLoadingMonitoringComponent('false')
-      this.getCssInfos(allComponents)
+      //this.getCssInfos(allComponents)
     },
-
+    /*
     getCssInfos(allComponents) {
       for (let element in allComponents) {
         let name = allComponents[element]
@@ -270,6 +275,7 @@ export default {
         this.komponenteZeigen = this.heizkreisAllgemein
       }
     },
+    */
   },
 };
 </script>

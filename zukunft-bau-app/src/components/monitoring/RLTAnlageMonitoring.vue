@@ -17,7 +17,8 @@
           <v-row>
               <v-col cols="5">
                 <v-card
-                  variant="outlined" class="pa-4 anlagen-card">
+                style="border-radius: 40px; background-color: whitesmoke"
+                variant="outlined" class="pa-4 anlagen-card">
                   <v-card-text class="center-content">
                     <svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 519.14 160.95">
                           <rect id ="außenluftfilter" class="cls-2" x="55.19" y="112.82" width="31.86" height="47.62"
@@ -142,7 +143,8 @@
                 </v-card>
               </v-col>
               <v-col cols="7">
-                <v-card variant="outlined" class="anlagen-card">
+                <v-card style="border-radius: 40px; background-color: whitesmoke"
+                variant="outlined" class="anlagen-card">
                   <v-tabs
                     color="success"
                   >
@@ -153,9 +155,7 @@
                     </v-tab>
                   </v-tabs>
                 </v-card>
-                <div v-for="element in this.komponenteZeigen" :key="element.idShort">
-                  <AnlagenMonitoringCard :element="element"/>
-                </div>
+                <AnlagenMonitoringCard :elements="this.komponenteZeigen"/>
               </v-col>
             </v-row>
           </v-container>
@@ -579,10 +579,15 @@ export default {
 .heizkreis {
     width:80%;
 }
-.v-container {
-  padding: 0px;
-}
 .anlagen-card {
   background-color: #ffffff;
+}
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Optional: If you want to center-align text within v-card-text */
+  height: 100%; /* Optional: Set a specific height if needed */
 }
 </style>

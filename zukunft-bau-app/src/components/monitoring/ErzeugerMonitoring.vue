@@ -19,6 +19,7 @@
               <v-card
                 style="border-radius: 40px; background-color: whitesmoke"
                 variant="outlined" class="pa-4 anlagen-card">
+                <!--
                 <v-card-text class="center-content">
                   <div class="heizkreis">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -60,6 +61,7 @@
                     </svg>
                   </div>
                 </v-card-text>
+            -->
               </v-card>
             </v-col>
             <v-col cols="8">
@@ -100,20 +102,16 @@ export default {
   data() {
     return {
       viewBox: '0 0 400 120', // Adjust the viewBox dimensions to fit your image
-      rücklauf: [],
-      rücklaufEnthalten: false,
-      vorlauf: [],
-      vorlaufEnthalten: false,
-      pumpe: [],
-      pumpeEnthalten: false,
-      heizkreisAllgemein: [],
-      hkEnthalten: false,
-      ventil: [],
-      ventilEnthalten: false,
-      heizkurve: [],
-      heizkurveEnthalten: false,
-      warmwasserbereitung: [], 
-      warmwasserbereitungEnthalten: false,
+      wärmepumpe: [],
+      wärmepumpeEnthalten: false,
+      kessel: [],
+      kesselEnthalten: false,
+      bhkw: [],
+      bhkwEnthalten: [],
+      pellet: [],
+      pelletEnthalten: false,
+      wärmeerzeugerAllgemein: [],
+      wärmeerzeugerAllgemeinEnthalten: false,
       komponenteZeigen: [],
       allComponents: null,
       allSes: null
@@ -179,52 +177,34 @@ export default {
             }
         )
         this.allSes = allSE
-        //console.log(elements);
-        /*
-        const elements = submodelElements.map(element => ({
-          'aasId': aasId,
-          'submodelName': submodelId,
-          'idShort': element.idShort,
-          'name': element.descriptions[0].text,
-          'semanticId': element.semanticId.keys[0].value
-        }));
-        */
-      
-        if (semanticId === 'https://th-koeln.de/gart/ComponentReturnAAS/1/0') {
-          this.rücklauf = elements;
-          this.rücklaufEnthalten = true
-          allComponents.push('Rücklauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentSupplyAAS/1/0') {
-          this.vorlauf = elements;
-          this.vorlaufEnthalten = true
-          allComponents.push('Vorlauf')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentPumpAAS/1/0') {
-          this.pumpe = elements;
-          this.pumpeEnthalten = true
-          allComponents.push('Pumpe')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCurveAAS/1/0') {
-          this.heizkurve = elements;
-          this.heizkurveEnthalten = true
-          allComponents.push('Heizkurve')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatingCircuitGeneralAAS/1/0') {
-          this.heizkreisAllgemein = elements;
-          this.hkEnthalten = true
-          allComponents.push('Heizkreis allgemein')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentValveAAS/1/0') {
-          this.ventil = elements;
-          this.ventilEnthalten = true
-          allComponents.push('Ventil')
-        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHotWaterPreparationAAS/1/0') {
-          this.warmwasserbereitung = elements;
-          this.warmwasserbereitungEnthalten = true
-          allComponents.push('Warmwasserbereitung')
-        }
+    
+        if (semanticId === 'https://th-koeln.de/gart/ComponentChpAAS/1/0') {
+          this.bhkw = elements;
+          this.bhkwEnthalten = true
+          allComponents.push('BHKW')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentBoilerAAS/1/0') {
+          this.kesel = elements;
+          this.kesselEnthalten = true
+          allComponents.push('Kessel')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentPelletBoilersAAS/1/0') {
+          this.pellet = elements;
+          this.pelletEnthalten = true
+          allComponents.push('Pelletkessel')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatSupplierGeneralAAS/1/0') {
+          this.wärmeerzeugerAllgemein = elements;
+          this.wärmeerzeugerAllgemeinEnthalten = true
+          allComponents.push('Wärmeerzeuger Allgemein')
+        } else if (semanticId === 'https://th-koeln.de/gart/ComponentHeatPumpAAS/1/0') {
+          this.wärmepumpe = elements;
+          this.wärmepumpeEnthalten = true
+          allComponents.push('Wärmepumpe')
+        } 
       }
       this.allComponents = allComponents
       await this.monitoringStore.setLoadingMonitoringComponent('false')
-      this.getCssInfos(allComponents)
+      //this.getCssInfos(allComponents)
     },
-
+    /*
     getCssInfos(allComponents) {
       for (let element in allComponents) {
         let name = allComponents[element]
@@ -270,6 +250,7 @@ export default {
         this.komponenteZeigen = this.heizkreisAllgemein
       }
     },
+    */
   },
 };
 </script>

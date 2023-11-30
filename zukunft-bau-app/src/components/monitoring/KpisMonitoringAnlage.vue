@@ -51,7 +51,6 @@
                                     :model-value="isExpanded(kpi)"
                                     :label="`${isExpanded(kpi) ? 'Hide' : 'Show'} details`"
                                     density="compact"
-                                    inset
                                     @click="() => toggleExpand(kpi)"
                                 ></v-switch>
                             </div>
