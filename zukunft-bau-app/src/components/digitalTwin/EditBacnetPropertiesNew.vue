@@ -22,14 +22,14 @@
                 <v-toolbar
                 color="success"
                 >
-                <v-toolbar-title style="color: white;">Edit {{ datenpunkt['name'] }}</v-toolbar-title>
+                <v-toolbar-title style="color: white;">Edit {{ datenpunkt['datenpunktLabel'] }}</v-toolbar-title>
                 </v-toolbar>
                 <v-container>
                     <v-row>
                         <v-col
-                        cols="4"
+                        cols="6"
                         >
-                            <v-list lines="two">
+                            <v-list>
                                 <v-list-item>
                                     <v-list-item-subtitle>Object Name</v-list-item-subtitle>
                                     <v-list-item-title>{{ datenpunkt['objectName'] }}</v-list-item-title>
@@ -37,12 +37,24 @@
                             </v-list>
                         </v-col>
                         <v-col
-                        cols="8"
+                        cols="6"
                         >
-                            <v-list lines="two">
+                            <v-list>
                                 <v-list-item>
+                                    <v-list-item-subtitle>Object Type</v-list-item-subtitle>
+                                    <v-list-item-title>{{ datenpunkt['objectType'] }}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-0">
+                        <v-col
+                        cols="12"
+                        >
+                            <v-list class="mt-0">
+                                <v-list-item class="mt-0">
                                     <v-list-item-subtitle>Description</v-list-item-subtitle>
-                                    <v-list-item-title>{{ datenpunkt['definition'] }}</v-list-item-title>
+                                    <v-list-item-title>{{ datenpunkt['description'] }}</v-list-item-title>
                                 </v-list-item>
                             </v-list>
                         </v-col>
@@ -52,7 +64,7 @@
                         <v-col cols="8">
                             <v-select 
                             :items="grundfunktionen" 
-                            v-model="predictedGrundfunktion" 
+                            v-model="datenpunkt['grundfunktionLabel']"
                             label= 'Grundfunktion' 
                             @update:model-value="changeGrundfunktion"
                             />
@@ -61,8 +73,8 @@
                             <v-btn
                             class="ma-1"
                             v-bind="props"
-                            variant="outlined"
-                            color = "warning"
+                            rounded="xl"
+                            variant="text" color="rgba(255, 74, 28, 1.0)"
                             @click="editZweiteEbene()">
                             New Prediction
                             </v-btn>
@@ -72,9 +84,9 @@
                         <v-col cols="8">
                             <div v-for="(value, key) in zweiteEbeneDict" :key="key">
                                 <v-select
-                                v-if="predictedGrundfunktion == key"
+                                v-if="datenpunkt['grundfunktionLabel'] == key"
                                 :items="value" 
-                                v-model="predictedZweiteEbene" 
+                                v-model="datenpunkt['zweiteEbeneLabel']" 
                                 label= 'Zweite Grundfunktion' 
                                 @update:model-value="changeZweiteEbene"
                                 />
@@ -91,8 +103,8 @@
                             <v-btn
                             class="ma-1"
                             v-bind="props"
-                            variant="outlined"
-                            color = "warning"
+                            rounded="xl"
+                            variant="text" color="rgba(255, 74, 28, 1.0)"
                             @click ="editKomponente()">
                             New Prediction
                             </v-btn>
@@ -102,9 +114,9 @@
                         <v-col cols="8">
                             <div v-for="(value, key) in komponentenEbeneDict" :key="key">
                                 <v-select
-                                v-if="predictedZweiteEbene == key"
+                                v-if="datenpunkt['zweiteEbeneLabel'] == key"
                                 :items="value" 
-                                v-model="predictedKomponente" 
+                                v-model="datenpunkt['komponenteLabel']" 
                                 label= 'Komponente' 
                                 @update:model-value="changeKomponente"
                                 />
@@ -121,8 +133,8 @@
                             <v-btn
                             class="ma-1"
                             v-bind="props"
-                            variant="outlined"
-                            color = "warning"
+                            rounded="xl"
+                            variant="text" color="rgba(255, 74, 28, 1.0)"
                             @click ="editDatenpunkt()">
                             New Prediction
                             </v-btn>
@@ -132,9 +144,9 @@
                         <v-col cols="8">
                             <div v-for="(value, key) in datenpunktEbeneDict" :key="key">
                                 <v-select
-                                v-if="predictedKomponente == key"
+                                v-if="datenpunkt['komponenteLabel'] == key"
                                 :items="value" 
-                                v-model="predictedDatenpunkt" 
+                                v-model="datenpunkt['datenpunktLabel']" 
                                 label= 'Datenpunkt' 
                                 @update:model-value="changeDatenpunkt"
                                 />
@@ -151,8 +163,8 @@
                             <v-btn
                             class="ma-1"
                             v-bind="props"
-                            variant="outlined"
-                            color = "warning"
+                            rounded="xl"
+                            variant="text" color="rgba(255, 74, 28, 1.0)"
                             @click ="updataDatenpunktBasyx()">
                             Submit
                             </v-btn>
@@ -161,8 +173,10 @@
                     <div class="d-flex flex-column align-center">
                         <v-card-actions>
                             <v-btn
-                                variant="outlined"
-                                color = "warning"
+                                class="ma-1"
+                                v-bind="props"
+                                rounded="xl"
+                                variant="text" color="rgba(255, 74, 28, 1.0)"
                                 @click="dialog = false"
                             >
                                 Close

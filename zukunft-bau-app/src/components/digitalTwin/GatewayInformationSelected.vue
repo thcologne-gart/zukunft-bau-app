@@ -3,7 +3,7 @@
         <v-row>
             <v-col cols ="6" v-for="gateway in generalStore.loadedGatewayInformation" :key="gateway['AAS ID']">
                 <v-card v-if="gateway['ParentAasIdShort'][0] == buildingId"
-                style="border-radius: 40px; background-color: whitesmoke"
+                style="border-radius: 20px; background-color: whitesmoke"
                 variant="outlined"
                 max-width="70%" class="mx-auto my-8">
                     <v-toolbar color="success">

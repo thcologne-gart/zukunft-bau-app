@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <v-card 
-            style="border-radius: 40px; background-color: whitesmoke" 
+            style="border-radius: 20px; background-color: whitesmoke" 
             variant="outlined"
             class="mx-10 card-background">
                 <v-card-title style="font-size: 18px">

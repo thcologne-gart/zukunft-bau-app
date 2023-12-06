@@ -22,10 +22,51 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
         stromVersorgen: [],
         medienVersorgen: [],
         sichern: [],        
+        userId: ''
         // all these properties will have their type inferred automatically
       }
     },
     actions: {
+        async getSeElement(aasId, submodelIdShort, idShort, elementData) {
+            const generalStore = useGeneralStore()
+            const userId = generalStore.userId
+            this.userId = userId
+            const bacnetNlpInformationPaths = {
+                presentValue: [idShort, 'PresentValue'],
+                grundfunktionLabel: [idShort, 'DataSource', 'PredictionGrundfunktion', 'LabelResult'],
+                zweiteEbene: [idShort, 'DataSource', 'PredictionFunktionEbeneZwei', 'LabelResult'],
+                komponenten: [idShort, 'DataSource', 'PredictionKomponente', 'LabelResult'],
+                datenpunkt: [idShort, 'DataSource', 'PredictionDatapoint', 'LabelResult'],
+                anlage: [idShort, 'DataSource', 'PredictionAnlage', 'LabelResult'],
+                bacnetData: [idShort, 'DataSource']
+                //objectName: [idShort, 'DataSource', 'ObjectName'],
+                //objectType: [idShort,'DataSource', 'ObjectType'],
+                //description: [idShort, 'DataSource', 'Description'],
+                //objectIdentifier: [idShort, 'DataSource', 'ObjectIdentifier'],
+            }
+            const getSeValue = 'submodel/getsubmodelelementvalue';
+            const urlSeValue = this.aasServer + getSeValue;
+
+            const requests = Object.entries(bacnetNlpInformationPaths).map(async ([element, value]) => {
+                try {
+                    const response = await axios.post(urlSeValue, {
+                        userId: userId,
+                        aasIdentifier: aasId,
+                        submodelIdShort: submodelIdShort,
+                        submodelElementShortIdPath: value
+                    });
+                    if (response.data !== '') {
+                        elementData[element] = response.data['value'];
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        
+            await Promise.all(requests);
+        
+            return elementData;
+        }, 
         async startNlp(aasId, aasIdShort) {
             console.log(aasId)
             console.log(aasIdShort)

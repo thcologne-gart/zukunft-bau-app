@@ -2,7 +2,7 @@
     <div>
         <v-card
             color ="success" variant="outlined" class="pa-4"
-            style="border-radius: 40px; background-color: whitesmoke;">
+            style="border-radius: 20px; background-color: whitesmoke;">
             <v-card-actions>
                 <v-btn
                 rounded="xl"

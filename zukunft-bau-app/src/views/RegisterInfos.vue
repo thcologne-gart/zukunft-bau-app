@@ -2,7 +2,7 @@
     <v-card class="mx-auto my-16"
         max-width="65%"
         variant="outlined"
-        style="border-radius: 40px; background-color: whitesmoke;">
+        style="border-radius: 20px; background-color: whitesmoke;">
         <v-toolbar
         style="background-color: whitesmoke;"
             >

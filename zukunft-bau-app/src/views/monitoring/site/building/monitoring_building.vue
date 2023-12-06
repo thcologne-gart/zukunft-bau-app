@@ -14,7 +14,7 @@
                     cols = '4'>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke" 
+                        style="border-radius: 20px; background-color: whitesmoke" 
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyHeatAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">
@@ -37,7 +37,7 @@
                         </v-card>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke"
+                        style="border-radius: 20px; background-color: whitesmoke"
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyAirAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">
@@ -60,7 +60,7 @@
                         </v-card>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke"
+                        style="border-radius: 20px; background-color: whitesmoke"
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyColdAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">
@@ -83,7 +83,7 @@
                         </v-card>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke"
+                        style="border-radius: 20px; background-color: whitesmoke"
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyMediaAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">
@@ -106,7 +106,7 @@
                         </v-card>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke"
+                        style="border-radius: 20px; background-color: whitesmoke"
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSecureAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">
@@ -129,7 +129,7 @@
                         </v-card>
                         <v-card 
                         variant="outlined"
-                        style="border-radius: 40px; background-color: whitesmoke"
+                        style="border-radius: 20px; background-color: whitesmoke"
                         max-width="80%" v-if="aasGrundfunktion.aasGrundfunktion.semanticId ==='https://th-koeln.de/gart/BaseFunctionSupplyElectricityAAS/1/0'" 
                         class="mx-auto my-8">
                             <v-card-title class="text-center" style="font-size: 18px">

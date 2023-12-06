@@ -42,7 +42,7 @@
                     <v-card class="mx-auto" 
                     max-width="70%"
                     variant="outlined"
-                    style="border-radius: 40px; background-color: whitesmoke">
+                    style="border-radius: 20px; background-color: whitesmoke">
                         <v-tabs
                             color="success"
                             grow

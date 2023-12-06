@@ -17,7 +17,7 @@
           <v-row>
               <v-col cols="5">
                 <v-card
-                style="border-radius: 40px; background-color: whitesmoke"
+                style="border-radius: 20px; background-color: whitesmoke"
                 variant="outlined" class="pa-4 anlagen-card">
                   <v-card-text class="center-content">
                     <svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 519.14 160.95">
@@ -143,7 +143,7 @@
                 </v-card>
               </v-col>
               <v-col cols="7">
-                <v-card style="border-radius: 40px; background-color: whitesmoke"
+                <v-card style="border-radius: 20px; background-color: whitesmoke"
                 variant="outlined" class="anlagen-card">
                   <v-tabs
                     color="success"

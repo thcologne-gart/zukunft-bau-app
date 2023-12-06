@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <v-card style="border-radius: 40px; background-color: whitesmoke"  
+            <v-card style="border-radius: 20px; background-color: whitesmoke"  
             variant="outlined"
             class="mx-10">
                 <v-card-title style="font-size: 18px">

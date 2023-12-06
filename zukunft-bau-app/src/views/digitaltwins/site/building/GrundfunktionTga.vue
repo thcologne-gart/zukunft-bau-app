@@ -3,7 +3,7 @@
         <v-container class="ma-0">
             <v-row>
                 <v-col cols="4">
-                    <BuildingCardVisualization />
+                    <BuildingCardVisualization :grundfunktionId="this.$route.params.grundfunktion"/>
                 </v-col>
                 <v-col cols="8">
                     <!--
@@ -13,7 +13,7 @@
                 -->
                     <v-row>
                         <v-col cols="4" v-for="(funktion, key) in monitoringStore.aasZweiteGrundfunktion" :key="key">
-                            <v-card style="border-radius: 40px;" variant="outlined">
+                            <v-card style="border-radius: 20px;" variant="outlined">
                                 <v-card-title class="title-center" style="font-size: 18px">
                                     {{ funktion.idShort }}
                                 </v-card-title>
@@ -43,7 +43,7 @@
                         </v-container>
                         <v-col>
                             <v-card v-if="selectedAnlage !== null"
-                            style="border-radius: 40px;"
+                            style="border-radius: 20px;"
                                 variant="outlined" class="pa-4 anlagen-card">
                                 <v-row>
                                     <v-col cols="2"></v-col>
@@ -72,9 +72,10 @@
                                             Komponenten: 
                                         </v-col>
                                         <v-col cols="9">
-                                            <v-btn v-for="(component, key) in this.allSes" :key="key"
-                                            variant="outlined" id="component-button" size="small"
-                                            rounded class="ma-2" @click="showProperties(component.elements)">
+                                            <v-btn v-for="(component, index) in this.allSes" :key="index"
+                                            :variant="activeButtonIndex === index ? 'outlined' : 'flat'"
+                                            id="component-button" size="small"
+                                            rounded class="ma-2" @click="showProperties(component.elements, component.anlagenInformation.idShort, index)">
                                                 {{ component.anlagenInformation.idShort }}
                                             </v-btn>
                                         </v-col>
@@ -85,14 +86,22 @@
                                                 v-model:page="page"
                                                 :headers="headers"
                                                 :items="this.selectedComponentElements"
-                                                density="comfortable"
                                                 hover
                                                 :items-per-page="itemsPerPage"
                                             >
-
+                                            <template v-slot:headers="{ columns }">
+                                                <tr style="background-color: rgba(232, 232, 232, 1)">
+                                                    <template v-for="column in columns" :key="column.key">
+                                                        <td>
+                                                            <span>{{ column.title }}</span>
+                                                        </td>
+                                                    </template>
+                                                </tr>
+                                            </template>
                                             <template v-slot:item.actions="{ item }">
                                                 <EditBacnetPropertiesNew :datenpunkt="item"/>
                                             </template>
+
                                             <template v-slot:bottom>
                                                 <div class="text-center pt-2">
                                                     <v-pagination
@@ -110,59 +119,6 @@
                     </v-row>
                 </v-col>
             </v-row>
-            <!--
-            <v-row v-for="(funktion, key) in zweiteGrundfunktion" :key="key">
-                <v-col v-if="Object.values(funktion).length !== 0" cols = '4'>
-                    <v-card max-width="70%" class="mx-auto my-8" elevation="1" rounded="0">
-                        <v-toolbar
-                        color="success"
-                        >
-                            <v-toolbar-title class="text-center" style="color: white; font-size: 20px">{{ key }}</v-toolbar-title>
-                        </v-toolbar>
-                        <v-divider class="mx-4" :thickness="3"></v-divider>
-                        <div v-for="(komponente, key) in Object.values(funktion)" :key="key">
-                            <v-expansion-panels v-if="komponente.length !== 0">
-                                <v-expansion-panel elevation="0" rounded="0">
-                                    <v-expansion-panel-title style="font-size: 18px;" >{{ Object.keys(funktion)[key] }}</v-expansion-panel-title>
-                                    <v-expansion-panel-text>
-                                        <div v-for="datenpunkt in komponente" :key="datenpunkt['DatenpunktEbeneValue']">
-                                            <v-expansion-panels>
-                                                <v-expansion-panel elevation="0" rounded="0">
-                                                    <v-row>
-                                                        <v-col>
-                                                            <v-expansion-panel-title style="font-size: 16px;" color="#fcf0f7">
-                                                                {{ datenpunkt['DatenpunktEbeneValue'] }}
-                                                            </v-expansion-panel-title>
-                                                            <v-expansion-panel-text>
-                                                                <v-row>
-                                                                    <v-col cols="8">
-                                                                        <p class="my-4">Score Datenpunkt: {{ datenpunkt['DatenpunktEbeneScore'] }}</p>
-                                                                    </v-col>
-                                                                    <v-col cols="4">
-                                                                        <EditBacnetProperties @editNlp="getNlpSubmodel('TestAAS')" :datenpunkt="datenpunkt"/>
-                                                                    </v-col>
-                                                                </v-row>
-                                                                <v-divider></v-divider>
-                                                                <p class="my-4">BACnet Object Name: {{ datenpunkt['ObjectName'] }}</p>
-                                                                <v-divider></v-divider>
-                                                                <p class="my-4">BACnet Description: {{ datenpunkt['Description'] }}</p>
-                                                                <v-divider></v-divider>
-                                                                <p class="my-4">BACnet Object Type: {{ datenpunkt['ObjectType'] }}</p>
-                                                                <v-divider class="border-opacity-75"></v-divider>
-                                                            </v-expansion-panel-text>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-expansion-panel>
-                                            </v-expansion-panels>
-                                        </div>
-                                    </v-expansion-panel-text>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                        </div>
-                    </v-card>
-                </v-col>
-            </v-row>
-        -->
         </v-container>
     </div>
 </template>
@@ -177,14 +133,15 @@ import { useGeneralStore } from "@/store/general"
 export default{
     data() {
         return {
+            expanded: [],
             page: 1,
             itemsPerPage: 10,
             dialog: false,
             headers: [
-                {title: 'Name', key: 'name'},
+                {title: 'Name', key: 'datenpunktLabel'},
                 {title: 'Object Name', key: 'objectName'},
-                {title: 'Description', key: 'definition'},
-                {title: 'Object Type', key: 'type'},
+                {title: 'Description', key: 'description'},
+                //{title: 'Object Type', key: 'objectType'},
                 {title: 'Edit', align: 'center', key: 'actions', sortable: false }
             ],
             funktionZweiteEbene: {},
@@ -197,6 +154,8 @@ export default{
             allSes: null,
             selectedAnlage: null,
             selectedComponentElements: null,
+            selectedComponentIdShort: null,
+            activeButtonIndex: null,
             loadingAnlage: false,
             anlage: null
         }
@@ -237,10 +196,13 @@ export default{
         },
     },
     methods: {
-        showProperties(elements) {
+        showProperties(elements, componentIdShort, index) {
             this.selectedComponentElements = elements
+            this.selectedComponentIdShort = componentIdShort
+            this.activeButtonIndex = index
         },
         async getAnlagenData(anlage) {
+            this.activeButtonIndex = null
             this.anlage = anlage
             this.selectedComponentElements = null
             this.selectedAnlage = null
@@ -263,7 +225,20 @@ export default{
                         'name': element.descriptions[0].text,
                         'semanticId': element.semanticId.keys[0].value
                     };
-                    elementData = await this.monitoringStore.getSeValueAnlagenmonitoring(aasId, submodelId, element.idShort, elementData)
+                    elementData = await this.digitalTwinStore.getSeElement(aasId, submodelId, element.idShort, elementData)
+                    elementData['objectName'] = elementData['bacnetData'][7]['value']
+                    elementData['objectType'] = elementData['bacnetData'][8]['value']
+                    elementData['description'] = elementData['bacnetData'][9]['value']
+                    elementData['grundfunktionLabel'] = elementData['grundfunktionLabel'][0]['value']
+                    elementData['grundfunktionScore'] = elementData['grundfunktionLabel'][1]['value']
+                    elementData['zweiteEbeneLabel'] = elementData['zweiteEbene'][0]['value']
+                    elementData['zweiteEbeneScore'] = elementData['zweiteEbene'][1]['value']
+                    elementData['komponenteLabel'] = elementData['komponenten'][0]['value']
+                    elementData['komponenteScore'] = elementData['komponenten'][1]['value']
+                    elementData['datenpunktLabel'] = elementData['datenpunkt'][0]['value']
+                    elementData['datenpunktScore'] = elementData['datenpunkt'][1]['value']
+                    elementData['anlageLabel'] = elementData['anlage'][0]['value']
+                    elementData['anlageScore'] = elementData['anlage'][1]['value']
                     // elementData.presentValue = supplementaryInfos.presentValue;
                     return elementData
                 });
@@ -314,7 +289,7 @@ export default{
 
 <style scoped>
 #component-button {
-    background-color: #ffffff;
+    background-color: whitesmoke;
 }
 #chipErkennung {
     background-color: #ffffff;

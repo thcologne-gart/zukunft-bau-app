@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card 
-        style="border-radius: 40px; background-color: rgba(178, 255, 169, 0.3);"
+        style="border-radius: 20px; background-color: rgba(178, 255, 169, 0.3);"
         variant="outlined" class="pa-4">
             <v-data-iterator 
             :items="kpis"
@@ -19,7 +19,7 @@
                         <v-card
                         variant="outlined"
 
-                        style="border-radius: 40px; background-color: whitesmoke">
+                        style="border-radius: 20px; background-color: whitesmoke">
                             <!--
                             <v-img
                             :gradient="`to top right, rgba(255, 255, 255, .1), rgba(${item.raw.color}, .15)`"

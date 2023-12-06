@@ -17,7 +17,7 @@
           <v-row>
             <v-col cols="4">
               <v-card
-                style="border-radius: 40px; background-color: whitesmoke"
+                style="border-radius: 20px; background-color: whitesmoke"
                 variant="outlined" class="pa-4 anlagen-card">
                 <!--
                 <v-card-text class="center-content">
@@ -66,7 +66,7 @@
             </v-col>
             <v-col cols="8">
               <v-card 
-              style="border-radius: 40px; background-color: whitesmoke"
+              style="border-radius: 20px; background-color: whitesmoke"
               variant="outlined" class="anlagen-card">
                 <v-tabs
                   color="success"

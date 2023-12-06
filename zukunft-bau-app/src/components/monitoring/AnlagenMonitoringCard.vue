@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card
-        style="border-radius: 40px; background-color: whitesmoke;"
+        style="border-radius: 20px; background-color: whitesmoke;"
         variant="outlined" class="pa-4 mt-6">
         <v-data-table
             style="background-color: whitesmoke;"
@@ -29,7 +29,7 @@
             <div v-for="element in this.elements" :key="element.idShort">
                 <v-card 
                     variant="outlined"
-                    style="border-radius: 40px; background-color: whitesmoke"
+                    style="border-radius: 20px; background-color: whitesmoke"
                     class="mx-auto my-8" >
 
 
