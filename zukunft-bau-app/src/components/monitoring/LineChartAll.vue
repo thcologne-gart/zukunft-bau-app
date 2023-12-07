@@ -171,11 +171,11 @@ export default {
 
             let aasId = this.allElements[komponente].anlagenInformation.aasId;
             let timeSeriesData = await this.monitoringStore.getTimeSeriesValues(element.idShort, element.submodelName, aasId);
-            console.log(timeSeriesData)
+            //console.log(timeSeriesData)
             //data.push(timeSeriesData)
             //names.push(element.name)
             elementsToDisplay.push({
-              'name': element.name,
+              'name': element.datenpunktLabel,
               'data': timeSeriesData,
               'color': semanticIdMappings[semanticId]
             });

@@ -19,7 +19,7 @@
                 <v-toolbar
                 color="success"
                 >
-                <v-toolbar-title style="color: white;">{{ datenpunkt['name'] }}</v-toolbar-title>
+                <v-toolbar-title style="color: white;">{{ datenpunkt['datenpunktLabel'] }}</v-toolbar-title>
                 </v-toolbar>
                 <v-container>
                     <LineChart v-if="datenpunkt.chartType.trim() === 'LineChart'" :aasId="datenpunkt.aasId" :submodelRefIdShort="datenpunkt.submodelName" :submodelElementPath="datenpunkt.idShort"/>

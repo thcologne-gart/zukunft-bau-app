@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useGeneralStore } from "@/store/general"
+import { useMonitoringStore } from "@/store/monitoring"
 //import { all } from 'core-js/library/es6/promise'
 
 export const useDigitalTwinsStore = defineStore('digitalTwins', {
@@ -29,6 +30,7 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
     actions: {
         async getSeElement(aasId, submodelIdShort, idShort, elementData) {
             const generalStore = useGeneralStore()
+            const monitoringStore = useMonitoringStore()
             const userId = generalStore.userId
             this.userId = userId
             const bacnetNlpInformationPaths = {
@@ -64,6 +66,12 @@ export const useDigitalTwinsStore = defineStore('digitalTwins', {
             });
         
             await Promise.all(requests);
+
+            // Hier wurden nun für AI's LineCharts abegrufen, jetzt der Versuch für alle
+            //const chartType = await monitoringStore.getChartType(elementData.semanticId) 
+            //elementData['chartType'] = chartType
+
+            elementData['chartType'] = 'LineChart'
         
             return elementData;
         }, 

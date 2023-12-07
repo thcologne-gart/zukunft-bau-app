@@ -94,6 +94,7 @@
 <script>
 import { useGeneralStore } from "@/store/general"
 import { useMonitoringStore } from "@/store/monitoring"
+import { useDigitalTwinsStore } from "@/store/digitaltwins"
 import AnlagenMonitoringCard from "@/components/monitoring/AnlagenMonitoringCard.vue"
 import LineChartAll from "@/components/monitoring/LineChartAll.vue"
 import KpisMonitoringAnlage from "@/components/monitoring/KpisMonitoringAnlage.vue"
@@ -132,6 +133,9 @@ export default {
     }, 
     monitoringStore () {
       return useMonitoringStore()
+    },
+    digitalTwinStore () {
+      return useDigitalTwinsStore()
     }
   },
   methods: {
@@ -159,8 +163,8 @@ export default {
             path: [element.idShort]
           }
           */
-          elementData = await this.monitoringStore.getSeValueAnlagenmonitoring(aasId, submodelId, element.idShort, elementData)
-          // elementData.presentValue = supplementaryInfos.presentValue;
+          elementData = await this.digitalTwinStore.getSeElement(aasId, submodelId, element.idShort, elementData)
+          elementData['datenpunktLabel'] = elementData['datenpunkt'][0]['value']
           return elementData
         });
 
