@@ -9,8 +9,8 @@
               <v-btn
                 class="ma-1"
                 v-bind="props"
-                variant="outlined"
-                color = "success"
+                rounded="xl"
+                variant="text" color="rgba(255, 74, 28, 1.0)"
             >Edit information</v-btn>
             </v-container>
           </template>
@@ -64,7 +64,7 @@
                   required
                   ></v-text-field>
               </v-form>
-              <v-card-actions>
+                <div class="text-center">
                   <v-btn 
                   @click="generalStore.editOrganizationInformation(
                     editOrganizationName, 
@@ -73,15 +73,17 @@
                     editOrganizationZip,
                     editOrganizationStreet
                   ), dialog = false"
-                  class="ma-3" variant="outlined" color="success">Submit</v-btn>
+                  rounded="xl"
+                  variant="text" color="rgba(255, 74, 28, 1.0)"
+                  class="ma-3">Submit</v-btn>
                 <v-btn
-                    variant="outlined"
-                    color = "success"
+                  rounded="xl"
+                  variant="text" color="rgba(255, 74, 28, 1.0)"
                     @click="dialog = false"
                 >
                     Close
                 </v-btn>
-                </v-card-actions>
+                </div>
         </v-card>
     </v-dialog>
   </div>

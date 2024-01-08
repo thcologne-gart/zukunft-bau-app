@@ -78,6 +78,7 @@
 
 <script>
 export default{
+
     setup(){
         // das hier dann aus deinem store laden:
         const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"} ]

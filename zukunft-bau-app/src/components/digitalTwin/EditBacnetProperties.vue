@@ -11,7 +11,7 @@
               <v-btn
                 v-bind="props"
                 variant="outlined"
-                color = "success"
+                color = "warning"
                 size="small"
             >Edit Datenpunkt</v-btn>
             </v-container>
@@ -60,7 +60,7 @@
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success"
+                            color = "warning"
                             @click="editZweiteEbene()">
                             New Prediction
                             </v-btn>
@@ -90,7 +90,7 @@
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success"
+                            color = "warning"
                             @click ="editKomponente()">
                             New Prediction
                             </v-btn>
@@ -120,7 +120,7 @@
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success"
+                            color = "warning"
                             @click ="editDatenpunkt()">
                             New Prediction
                             </v-btn>
@@ -150,7 +150,7 @@
                             class="ma-1"
                             v-bind="props"
                             variant="outlined"
-                            color = "success"
+                            color = "warning"
                             @click ="updataDatenpunktBasyx()">
                             Submit
                             </v-btn>
@@ -160,7 +160,7 @@
                         <v-card-actions>
                             <v-btn
                                 variant="outlined"
-                                color = "success"
+                                color = "warning"
                                 @click="dialog = false"
                             >
                                 Close

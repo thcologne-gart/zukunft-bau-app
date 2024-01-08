@@ -43,7 +43,7 @@ export default {
 .card {
     margin-inline: 20%;
     margin-bottom: 30px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 .form-group {
     text-align: left;

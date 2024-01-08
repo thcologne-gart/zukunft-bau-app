@@ -10,15 +10,18 @@
         </div>
     -->
         <v-container>
-            <h2 style="color: #bc3384;">Digital Twins - Übersicht</h2>
-            <div>{{ generalStore.loadedBacnetInformation }}</div>
+            <!--<h2 style="color: #3B5249;">Digital Twins - Übersicht</h2>-->
+            <!--
             <v-btn
-            @click="generalStore.addBacnetDevice()">Create Bacnet</v-btn>
+            @click="generalStore.addBacnetDevice()">Create Bacnet
+            </v-btn>
+        -->
             <v-row>
                 <v-col cols="6" v-for="site in generalStore.loadedSiteInformationWithBuildings" :key="Object.keys(site)[0]">
                     <DigitalTwinOverview :site="site"/>
                 </v-col>
             </v-row>
+            <!--<GatewayInformation />-->
         </v-container>
     </div>
 </template> 
@@ -26,6 +29,7 @@
 <script>
 import { useGeneralStore } from "@/store/general"
 import DigitalTwinOverview from "@/components/digitalTwin/DigitalTwinOverview.vue"
+//import GatewayInformation from "@/components/digitalTwin/GatewayInformation.vue"
 
 export default{
     setup(){
@@ -33,7 +37,8 @@ export default{
         const sites=[ {name:"Köln",id:"1"},{name:"Hamburg",id:"2"} ]
     return{sites}},
     components: {
-        DigitalTwinOverview
+        DigitalTwinOverview, 
+        //GatewayInformation
     },
     computed: {
         generalStore () {

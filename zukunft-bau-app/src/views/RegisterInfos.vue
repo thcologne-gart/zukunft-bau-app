@@ -1,15 +1,19 @@
 <template>
     <v-card class="mx-auto my-16"
-        max-width="65%">
+        max-width="65%"
+        variant="outlined"
+        style="border-radius: 20px; background-color: whitesmoke;">
         <v-toolbar
-            color="white"
+        style="background-color: whitesmoke;"
             >
-            <v-toolbar-title style="color: #bc3384">
+            <v-toolbar-title style="color: #3B5249;"
+            class="d-flex justify-center align-center">
                 <span>{{ currentTitle }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-divider :thickness="4"></v-divider>
-        <v-window v-model="step">
+        <v-window v-model="step"
+        style="background-color: whitesmoke;">
         <v-window-item
             v-for="n in length"
             :key="`card-${n}`"
@@ -32,7 +36,10 @@
 
         <v-card-actions class="justify-space-between">
         <v-btn
-            variant="plain"
+            rounded="xl"
+            style="background-color: whitesmoke;"
+            variant="plain" 
+            color="highlight"
             icon="mdi-chevron-left"
             @click="prev"
         ></v-btn>
@@ -50,13 +57,14 @@
             <v-btn
                 :variant="isSelected ? 'outlined' : 'text'"
                 icon="mdi-record"
-                color="success"
+                color="highlight"
                 @click="toggle"
             ></v-btn>
             </v-item>
         </v-item-group>
         <v-btn
             variant="plain"
+            color="highlight"
             icon="mdi-chevron-right"
             @click="next"
         ></v-btn>
@@ -86,6 +94,7 @@ export default {
     computed: {
         currentTitle () {
             switch (this.step) {
+            //case 1: return 'Registrierung Unternehmen'
             case 1: return 'Registrierung Unternehmen'
             case 2: return 'Registrierung Liegenschaften'
             default: return 'Registrierung Gebäude'

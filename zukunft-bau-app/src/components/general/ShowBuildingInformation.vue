@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div>        
         <v-card-actions>
+            
             <v-btn
+                rounded="xl"
                 variant="outlined"
                 color = "success"
                 @click="show = !show"
@@ -14,7 +16,7 @@
             <div v-show="show">
                 <v-divider></v-divider>
                 <v-container :style="{ width: '80%' }">
-                    <v-table class="grey lighten-3">
+                    <v-table style="background-color: whitesmoke;">
                     <thead>
                         <tr>
                         <th class="text-left">

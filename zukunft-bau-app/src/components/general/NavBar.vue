@@ -2,10 +2,11 @@
     <div>
         <v-app-bar
             id="top-header"
-            color="primary"
+            color="monitoring"
+            elevation="1"
             >
             
-            <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+            <!--v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>-->
             <!-- <v-btn id="home-icon" icon @click="$router.push('/home')"></v-btn> -->
             <v-toolbar-title
                 id="navbar-title" 
@@ -17,8 +18,8 @@
                 {{ solution.title }}
               </v-btn>
             </div>
-            <v-btn id="user" icon>
-                <v-icon>mdi-account</v-icon>
+            <v-btn @click="auth.signOut">
+                Sign out
             </v-btn>
 
             <!-- <v-menu left bottom>
@@ -35,6 +36,7 @@
                 </v-list>
             </v-menu> -->
             </v-app-bar>
+            <!--
             <v-navigation-drawer
               v-model="drawer"
               absolute
@@ -51,19 +53,21 @@
                 >
                 <div v-for="item in appBarItems" :key="item.title">
                   <v-list-item :to="item.link">
-                    <!-- <v-list-item-icon>
+                    <v-list-item-icon>
                       <v-icon>mdi-home</v-icon>
-                    </v-list-item-icon> -->
+                    </v-list-item-icon>
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                   </v-list-item>
                 </div>
                 </v-list-item-group>
               </v-list>
             </v-navigation-drawer>
+          -->
     </div>
 </template>
 
 <script>
+import { useAuthenticator } from '@aws-amplify/ui-vue'
 
 export default {
   data: () => ({
@@ -78,10 +82,15 @@ export default {
     }
   },
   computed: {
+    auth () {
+      const auth = useAuthenticator()
+      return auth
+    },
     solutions () {
       const solutions = [
         { icon: '', title: 'Home', link: '/' },
-        { icon: '', title: 'Digitale Zwillinge', link: '/digitaltwins' },
+        //{ icon: '', title: 'Digitale Zwillinge', link: '/digitaltwins' },
+        { icon: '', title: 'Digital Twins', link: '/digitaltwins' },
         { icon: '', title: 'Monitoring', link: '/monitoring' }, //vorher link:buildingperformance
       ]
       return solutions

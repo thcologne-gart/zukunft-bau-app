@@ -1,6 +1,7 @@
 <template>
     <v-container :style="{ width: '80%' }">
-        <v-table class="grey lighten-3">
+        <v-table
+        style="background-color: whitesmoke;">
             <thead>
                 <tr>
                 <th class="text-left">
@@ -36,6 +37,13 @@ export default {
                 'Sitz des Unternehmens (Stadt)',
                 'Sitz des Unternehmens (Postleitzahl)',
                 'Straße und Hausnummer'
+               /*
+               'Company name',
+               'Head office (Country)',
+               'Head office (City)',
+               'Head office (Postal code)',
+               'Street'
+               */
             ]
         }
     },

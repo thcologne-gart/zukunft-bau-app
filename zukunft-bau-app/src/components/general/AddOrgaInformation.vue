@@ -48,8 +48,8 @@
               form.zipcode,
               form.street
             )"
-            class="ma-3" variant="outlined" color="success">Submit</v-btn>
-            <v-btn @click="onReset" class="max-3" type="reset" variant="outlined" color="success">Reset</v-btn>
+            class="ma-3" variant="outlined" color="warning">Submit</v-btn>
+            <v-btn @click="onReset" class="max-3" type="reset" variant="outlined" color="warning">Reset</v-btn>
         </v-container>
       </v-form>
     </div>
@@ -133,7 +133,7 @@ export default {
 .card {
     margin-inline: 20%;
     margin-bottom: 30px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 .form-group {
     text-align: left;

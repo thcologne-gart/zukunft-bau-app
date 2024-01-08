@@ -1,6 +1,6 @@
 <template>
   <v-container :style="{ width: '80%' }">
-    <v-table class="grey lighten-3">
+    <v-table style="background-color: whitesmoke;">
       <thead>
         <tr>
           <th class="text-left">
